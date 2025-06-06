@@ -1,7 +1,10 @@
 # model/model_building_blocks/vgg16_block.py
 
+# global imports
 import tensorflow as tf
 from tensorflow.keras.layers import Conv2D, MaxPooling2D
+
+# local imports
 
 class Vgg16Block:
     """

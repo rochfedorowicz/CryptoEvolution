@@ -1,5 +1,9 @@
 # environment/order.py
- 
+
+# global imports
+
+# local imports
+
 class Order():
     """
     Class storing information regarding particular order.

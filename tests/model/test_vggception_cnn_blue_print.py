@@ -1,15 +1,15 @@
 # tests/model/test_vggception_cnn_blue_print.py
 
-from unittest import TestCase
-import logging
-from typing import Any
-from ddt import ddt, data, unpack
-from tensorflow.keras.layers import SeparableConv2D, Conv2D, MaxPooling2D, Add, Flatten, Dense
+# global imports
 import gc
+import logging
+from ddt import data, ddt, unpack
+from tensorflow.keras.layers import Add, Conv2D, Dense, Flatten, MaxPooling2D, SeparableConv2D
+from typing import Any
+from unittest import TestCase
 
+# local imports
 from source.model import VGGceptionCnnBluePrint
-
-COMPARE_MILIONS = -6
 
 @ddt
 class VGGceptionCnnBluePrintTestCase(TestCase):
@@ -17,6 +17,9 @@ class VGGceptionCnnBluePrintTestCase(TestCase):
     Test case for VGGceptionCnnBluePrint class. Stores all the test cases
     and allows for convenient test case execution.
     """
+
+    # local constants
+    __COMPARE_MILLIONS = -6
 
     def setUp(self) -> None:
         """
@@ -106,7 +109,7 @@ class VGGceptionCnnBluePrintTestCase(TestCase):
         expected_last_CNN_layer_shape = (None, 1, input_data['spatial_data_shape'][1], expected_nr_of_filters_in_last_CNN_layer)
 
         logging.info(f"Instantiating model with params = {input_data}.")
-        model = self.__sut.instantiate_model(**input_data)
+        model = self.__sut.instantiate_model(**input_data).get_model()
 
         nr_of_parameters = model.count_params()
         nr_of_separable_conv_layers = 0
@@ -143,4 +146,4 @@ class VGGceptionCnnBluePrintTestCase(TestCase):
         self.assertEqual(nr_of_add_layers, expected_nr_of_xception_blocks)
         self.assertEqual(last_CNN_layer_shape, expected_last_CNN_layer_shape)
         self.assertEqual(nr_of_dense_layers, expected_nr_of_dense_layers)
-        self.assertAlmostEqual(nr_of_parameters, expected_nr_of_parameters, COMPARE_MILIONS)
+        self.assertAlmostEqual(nr_of_parameters, expected_nr_of_parameters, self.__COMPARE_MILLIONS)

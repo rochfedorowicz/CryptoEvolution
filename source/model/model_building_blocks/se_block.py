@@ -1,7 +1,10 @@
 # model/model_building_blocks/se_block.py
 
+# global imports
 import tensorflow as tf
-from tensorflow.keras.layers import GlobalAveragePooling2D, Reshape, Dense, Multiply
+from tensorflow.keras.layers import Dense, GlobalAveragePooling2D, Multiply, Reshape
+
+# local imports
 
 class SEBlock:
     """
@@ -54,7 +57,7 @@ class SEBlock:
         x = GlobalAveragePooling2D()(input_tensor)
         x = Reshape(x_shape)(x)
         x = Dense(filters // self.__reduction_ratio, activation = 'relu', use_bias = False)(x)
-        x = Dense(filters, activation='sigmoid', use_bias=False)(x)
+        x = Dense(filters, activation = 'sigmoid', use_bias = False)(x)
 
         output_tensor = Multiply()([input_tensor, x])
 

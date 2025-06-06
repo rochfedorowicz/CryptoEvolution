@@ -1,13 +1,15 @@
 # environment/broker.py
 
+# global imports
 import copy
 
-from .order import Order
+# local imports
+from source.environment import Order
 
 class Broker():
     """
     Responsible for managing and placing orders. It implements
-    real-environment behavior of orders price actions. 
+    real-environment behavior of orders price actions.
     """
 
     def __init__(self, leverage: int = 1) -> None:
@@ -18,11 +20,11 @@ class Broker():
             leverage (int): Coefficient of multiplication used to simulate
                 leverage trading.
         """
-        
+
         self.__leverage: int = leverage
         self.__current_orders: list[Order] = []
         self.__recently_closed_orders: list[Order] = []
-    
+
     def get_leverage(self) -> int:
         """
         Leverage getter.
@@ -42,7 +44,7 @@ class Broker():
         """
 
         return copy.copy(self.__current_orders)
-    
+
     def place_order(self, amount: float, is_buy_order: bool, stop_loss: float, take_profit: float) -> None:
         """
         Creates trade with given parameters and attach it to current broker's orders.
@@ -58,11 +60,11 @@ class Broker():
         """
 
         self.__current_orders.append(Order(amount, is_buy_order, stop_loss, take_profit))
-    
+
     def update_orders(self, coefficient: float) -> list[Order]:
         """
         Updates and closes orders. The current value of the order is multiplied by
-        coefficient and if stop loss or take profit boundaries are crossed, then 
+        coefficient and if stop loss or take profit boundaries are crossed, then
         the order is closed.
 
         Parameters:
@@ -90,11 +92,11 @@ class Broker():
             self.__current_orders.remove(order)
 
         return self.__recently_closed_orders
-    
+
     def reset(self) -> None:
         """
         Resets broker by clearing the currently ongoing and recently closed
-        lists of orders. 
+        lists of orders.
         """
 
         self.__current_orders.clear()

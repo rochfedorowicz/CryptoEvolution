@@ -1,20 +1,26 @@
 # environment/reward_validator_base.py
 
-from .order import Order
+# global imports
+from abc import ABC, abstractmethod
 
-class RewardValidatorBase():
+# local imports
+from source.environment import Order
+
+class RewardValidatorBase(ABC):
     """
     Awards reward for successful or failure order basing on approach defined in
     derivative class.
     """
 
+    @abstractmethod
     def __init__(self, *args) -> None:
         """
         Class constructor. Parameters are specified in derivative classes.
         """
 
-        raise NotImplementedError
-    
+        pass
+
+    @abstractmethod
     def validate_orders(self, orders: list[Order]) -> float:
         """
         Calculates number of points to be rewarded for list of closed trades.
@@ -26,4 +32,4 @@ class RewardValidatorBase():
             (float): Calcualted reward.
         """
 
-        raise NotImplementedError
+        pass

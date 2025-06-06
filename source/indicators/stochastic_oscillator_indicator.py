@@ -1,11 +1,15 @@
 # indicators/stochastic_oscillator_indicator.py
 
-from .indicator_base import *
+# global imports
+import pandas as pd
+
+# local imports
+from source.indicators import IndicatorHandlerBase
 
 class StochasticOscillatorIndicatorHandler(IndicatorHandlerBase):
     """
     Implements stochastic oscillator indicator. It describes how expensive or cheap
-    current price is over the given period. Result of calculation is percentage 
+    current price is over the given period. Result of calculation is percentage
     assuming values over 80% for expensive and under 20% for cheap price.
     """
 
@@ -35,10 +39,10 @@ class StochasticOscillatorIndicatorHandler(IndicatorHandlerBase):
         high_series = data['high']
         low_series = data['low']
         close_series = data['close']
-        
+
         highest_high = high_series.rolling(window = self.window_size, min_periods = 1).max()
         lowest_low = low_series.rolling(window = self.window_size, min_periods = 1).min()
-        
+
         stochastic_data_df = pd.DataFrame(index = data.index)
         stochastic_data_df['K%'] = 100 * ((close_series - lowest_low) / (highest_high - lowest_low))
         stochastic_data_df['D%'] = stochastic_data_df['K%'].rolling(window = self.d_period, min_periods = 1).mean()

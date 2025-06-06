@@ -1,6 +1,10 @@
 # indicators/moving_volume_profile_indicator.py
 
-from .volume_profile_indicator import *
+# global imports
+import pandas as pd
+
+# local imports
+from source.indicators import VolumeProfileIndicatorHandler
 
 class MovingVolumeProfileIndicatorHandler(VolumeProfileIndicatorHandler):
     """

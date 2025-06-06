@@ -1,15 +1,17 @@
 # tests/environment/test_points_reward_validator.py
 
-from unittest import TestCase
-from ddt import ddt, data, unpack
+# global imports
 import logging
+from ddt import data, ddt, unpack
+from unittest import TestCase
 
+# local imports
 from source.environment import Order, PointsRewardValidator
 
 @ddt
 class PointsRewardValidatorTestCase(TestCase):
     """
-    Test case PointsRewardValidator class. Stores all the test cases 
+    Test case PointsRewardValidator class. Stores all the test cases
     and allows for convenient test case execution.
     """
 
@@ -21,7 +23,7 @@ class PointsRewardValidatorTestCase(TestCase):
 
         logging.info("Setting up test environment.")
         self.validator = PointsRewardValidator()
-    
+
     def tearDown(self) -> None:
         """
         Tear down function responsible for cleaning up all the
@@ -41,7 +43,7 @@ class PointsRewardValidatorTestCase(TestCase):
         """
         Tests PointsRewardValidator's validate orders functionality.
 
-        Verifies that policy used for points calculation works in 
+        Verifies that policy used for points calculation works in
         accordance with the assumptions.
 
         Asserts:

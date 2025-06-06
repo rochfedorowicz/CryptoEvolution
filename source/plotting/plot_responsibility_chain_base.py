@@ -1,9 +1,15 @@
 # plotting/plot_responsibility_chain_base.py
 
+# global imports
 import matplotlib.pyplot as plt
+from abc import ABC, abstractmethod
+from reportlab.lib.pagesizes import letter
+from reportlab.lib.units import inch
 from typing import Optional
 
-class PlotResponsibilityChainBase():
+# local imports
+
+class PlotResponsibilityChainBase(ABC):
     """
     Base class for implementing the responsibility chain pattern for plotting.
 
@@ -14,7 +20,13 @@ class PlotResponsibilityChainBase():
     the _can_plot and _plot methods.
     """
 
+    # local constants
+    __KEY_STR: str = 'key'
+    __PLOT_DATA_STR: str = 'plot_data'
     __next_chain_link: 'PlotResponsibilityChainBase' = None
+
+    # derived constants
+    _EXPECTED_FIGURE_SIZE = (int(letter[0] // inch - 1), int(letter[1] // inch - 2))
 
     def plot(self, data) -> Optional[plt.Axes]:
         """
@@ -29,8 +41,8 @@ class PlotResponsibilityChainBase():
                                None if no handler in the chain could process the request.
         """
 
-        key = data['key']
-        plot_data = data['plot_data']
+        key = data[self.__KEY_STR]
+        plot_data = data[self.__PLOT_DATA_STR]
 
         if (self._can_plot(key)):
             return self._plot(plot_data)
@@ -49,8 +61,13 @@ class PlotResponsibilityChainBase():
                                                           requests if this handler cannot.
         """
 
-        self.__next_chain_link = next_chain_link
+        current_last_chain_link = self
+        while current_last_chain_link.__next_chain_link is not None:
+            current_last_chain_link = current_last_chain_link.__next_chain_link
 
+        current_last_chain_link.__next_chain_link = next_chain_link
+
+    @abstractmethod
     def _can_plot(self, key: str) -> bool:
         """
         Determines if this handler can plot the given plot type.
@@ -62,13 +79,10 @@ class PlotResponsibilityChainBase():
 
         Returns:
             bool: True if this handler can process the plot request, False otherwise.
-
-        Raises:
-            NotImplementedError: If the method is not implemented by a subclass.
         """
+        pass
 
-        raise NotImplementedError("Subclasses must implement this method")
-
+    @abstractmethod
     def _plot(self, plot_data: dict) -> plt.Axes:
         """
         Generates the actual plot from the provided data.
@@ -82,9 +96,6 @@ class PlotResponsibilityChainBase():
 
         Returns:
             plt.Axes: Matplotlib Axes object containing the generated plot.
-
-        Raises:
-            NotImplementedError: If the method is not implemented by a subclass.
         """
 
-        raise NotImplementedError("Subclasses must implement this method")
+        pass

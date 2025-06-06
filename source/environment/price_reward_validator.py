@@ -1,6 +1,9 @@
 # environment/price_reward_validator.py
 
-from .reward_validator_base import RewardValidatorBase, Order
+# global imports
+
+# local imports
+from source.environment import Order, RewardValidatorBase
 
 class PriceRewardValidator(RewardValidatorBase):
     """

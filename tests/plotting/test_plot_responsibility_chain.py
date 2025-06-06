@@ -1,11 +1,21 @@
 # tests/plotting/test_plot_responsibility_chain.py
 
-from unittest import TestCase
+# global imports
 import logging
 import matplotlib.pyplot as plt
-from ddt import ddt, data, unpack
+from ddt import data, ddt, unpack
+from unittest import TestCase
+from unittest.mock import Mock
 
-from mock_plot_responsibility_chain import MockPlotResponsibilityChain
+# local imports
+from source.plotting import PlotResponsibilityChainBase
+
+class TestPlotResponsibilityChain(PlotResponsibilityChainBase):
+    def _can_plot(self, _):
+        pass
+
+    def _plot(self, _):
+        pass
 
 @ddt
 class PlotResponsibilityChainTestCase(TestCase):
@@ -21,14 +31,21 @@ class PlotResponsibilityChainTestCase(TestCase):
         """
 
         logging.info("Setting up test environment.")
-        first_chain_link = MockPlotResponsibilityChain(plt.subplots()[1], 'key_1')
-        second_chain_link = MockPlotResponsibilityChain(plt.subplots()[1], 'key_2')
-        third_chain_link = MockPlotResponsibilityChain(plt.subplots()[1], 'key_3')
+        self.__chain_list: list[PlotResponsibilityChainBase] = []
+        self.__chain_list.append(TestPlotResponsibilityChain())
+        self.__chain_list.append(TestPlotResponsibilityChain())
+        self.__chain_list.append(TestPlotResponsibilityChain())
+        self.__chain_list[0].add_next_chain_link(self.__chain_list[1])
+        self.__chain_list[0].add_next_chain_link(self.__chain_list[2])
 
-        second_chain_link.add_next_chain_link(third_chain_link)
-        first_chain_link.add_next_chain_link(second_chain_link)
+        self.__chain_list[0]._can_plot = Mock(side_effect = lambda key: key == 'key_1')
+        self.__chain_list[0]._plot = Mock(return_value = plt.subplots()[1])
+        self.__chain_list[1]._can_plot = Mock(side_effect = lambda key: key == 'key_2')
+        self.__chain_list[1]._plot = Mock(return_value = plt.subplots()[1])
+        self.__chain_list[2]._can_plot = Mock(side_effect = lambda key: key == 'key_3')
+        self.__chain_list[2]._plot = Mock(return_value = plt.subplots()[1])
 
-        self.__sut: MockPlotResponsibilityChain = first_chain_link
+        self.__sut: PlotResponsibilityChainBase = self.__chain_list[0]
 
     def tearDown(self) -> None:
         """
@@ -40,13 +57,13 @@ class PlotResponsibilityChainTestCase(TestCase):
         plt.close('all')
 
     @data(
-        ('key_1', plt.Axes),
-        ('key_2', plt.Axes),
-        ('key_3', plt.Axes),
-        ('key_4', type(None))
+        ('key_1', plt.Axes, 0),
+        ('key_2', plt.Axes, 1),
+        ('key_3', plt.Axes, 2),
+        ('key_4', type(None), -1)  # Unrecognized key
     )
     @unpack
-    def test_plot_responsibility_chain_plot(self, key: str, expected_result_type: type) -> None:
+    def test_plot_responsibility_chain_plot(self, key: str, expected_result_type: type, index: int) -> None:
         """
         Tests the responsibility chain pattern implementation for plot handling.
 
@@ -75,3 +92,7 @@ class PlotResponsibilityChainTestCase(TestCase):
 
         logging.info("Checking expected result type.")
         self.assertTrue(isinstance(result, expected_result_type))
+        if index >= 0:
+            for i in range(index + 1):
+                self.__chain_list[i]._can_plot.assert_called_once_with(key)
+            self.__chain_list[index]._plot.assert_called_once()

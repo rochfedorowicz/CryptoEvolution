@@ -1,7 +1,10 @@
 # model/model_building_blocks/inception_block.py
 
+# global imports
 import tensorflow as tf
-from tensorflow.keras.layers import Conv2D, MaxPooling2D, Concatenate
+from tensorflow.keras.layers import Concatenate, Conv2D, MaxPooling2D
+
+# local imports
 
 class InceptionBlock:
     """

@@ -1,23 +1,16 @@
 # tests/environment/test_trading_environment.py
 
+# global imports
+import logging
 import numpy as np
+import pandas as pd
 from unittest import TestCase
 from unittest.mock import Mock, patch
-import pandas as pd
-import logging
 from types import SimpleNamespace
 
-from source.environment import TradingEnvironment, Order, Broker
-from source.environment.mock_validator import MockRewardValidator
-
-MOCKED_CSV_DATA = pd.DataFrame(data={
-    'low': [20000.0, 20500.0, 20100.0, 20100.0, 20000.0],
-    'high': [20900.0, 20900.0, 21000.0, 20900.0, 21700.0],
-    'open': [20050.0, 20600.0, 20400.0, 20800.0, 20200.0],
-    'close': [20600.0, 20400.0, 20800.0, 20200.0, 20900.0],
-    'volume': [1000.0, 1200.0, 1100.0, 1300.0, 900.0]
-}, index = pd.DatetimeIndex(['2020-03-01', '2020-03-02', '2020-03-03',
-                             '2020-03-04', '2020-03-05'], name='time'))
+# local imports
+from source.environment import Broker, LabelAnnotatorBase, LabeledDataBalancer, Order, \
+    RewardValidatorBase, TradingEnvironment
 
 class TradingEnvironmentTestCase(TestCase):
     """
@@ -25,8 +18,18 @@ class TradingEnvironmentTestCase(TestCase):
     and allows for convenient test case execution.
     """
 
+    # local constants
+    __MOCKED_CSV_DATA = pd.DataFrame(data = {
+        'low': [20000.0, 20500.0, 20100.0, 20100.0, 20000.0],
+        'high': [20900.0, 20900.0, 21000.0, 20900.0, 21700.0],
+        'open': [20050.0, 20600.0, 20400.0, 20800.0, 20200.0],
+        'close': [20600.0, 20400.0, 20800.0, 20200.0, 20900.0],
+        'volume': [1000.0, 1200.0, 1100.0, 1300.0, 900.0]
+    }, index = pd.DatetimeIndex(['2020-03-01', '2020-03-02', '2020-03-03',
+                                 '2020-03-04', '2020-03-05'], name = 'time'))
+
     @patch('pandas.read_csv', new_callable = Mock)
-    def setUp(self, mock_pd_read_csv: Mock) -> None:
+    def setUp(self, mocked_pd_read_csv: Mock) -> None:
         """
         Setup function responsible for creation of system under
         test (sut) for this class.
@@ -37,14 +40,12 @@ class TradingEnvironmentTestCase(TestCase):
         """
 
         logging.info("Setting up test environment.")
-        mock_pd_read_csv.return_value = MOCKED_CSV_DATA
+        mocked_pd_read_csv.return_value = self.__MOCKED_CSV_DATA
 
         data_path = 'PATH_TO_MOCKED_CSV_DATA'
         initial_budget = 1000.0
         max_amount_of_trades = 5
         window_size = 2
-        validator_lambda = lambda orders: np.sum([order.current_value - order.initial_value for order in orders])
-        validator = MockRewardValidator(validator_lambda)
         sell_stop_loss = 0.95
         sell_take_profit = 1.05
         buy_stop_loss = sell_stop_loss
@@ -53,9 +54,18 @@ class TradingEnvironmentTestCase(TestCase):
         penalty_starts = 2
         penalty_stops = 4
         static_reward_adjustment = 1
-        self.env = TradingEnvironment(data_path, initial_budget, max_amount_of_trades, window_size, validator,
-                                      sell_stop_loss, sell_take_profit, buy_stop_loss, buy_take_profit, test_ratio,
-                                      penalty_starts, penalty_stops, static_reward_adjustment)
+
+        self.__mocked_reward_validator: RewardValidatorBase = Mock(spec = RewardValidatorBase)
+        self.__mocked_reward_validator.validate_orders = lambda orders: \
+            np.sum([order.current_value - order.initial_value for order in orders])
+        self.__mocked_label_annotator: LabelAnnotatorBase = Mock(spec = LabelAnnotatorBase)
+        self.__mocked_data_balancer: LabeledDataBalancer = Mock(spec = LabeledDataBalancer)
+        self.__sut: TradingEnvironment = TradingEnvironment(data_path, initial_budget, max_amount_of_trades,
+                                                            window_size, self.__mocked_reward_validator,
+                                                            self.__mocked_label_annotator, sell_stop_loss,
+                                                            sell_take_profit, buy_stop_loss, buy_take_profit,
+                                                            test_ratio, penalty_starts, penalty_stops,
+                                                            static_reward_adjustment, self.__mocked_data_balancer)
 
     def tearDown(self) -> None:
         """
@@ -73,8 +83,8 @@ class TradingEnvironmentTestCase(TestCase):
         """
 
         for name, value in kwargs.items():
-            for attribute_name in self.env.__dict__:
-                attribute_value = getattr(self.env, attribute_name)
+            for attribute_name in self.__sut.__dict__:
+                attribute_value = getattr(self.__sut, attribute_name)
 
                 if isinstance(attribute_value, SimpleNamespace):
                     if name in vars(attribute_value):
@@ -86,7 +96,7 @@ class TradingEnvironmentTestCase(TestCase):
                             setattr(attribute_value, broker_attribute_name, value)
 
                 elif name in attribute_name:
-                    setattr(self.env, attribute_name, value)
+                    setattr(self.__sut, attribute_name, value)
 
     def test_traiding_environment_create(self) -> None:
         """
@@ -102,7 +112,7 @@ class TradingEnvironmentTestCase(TestCase):
         """
 
         logging.info("Starting creation test case.")
-        traiding_consts = self.env.get_trading_consts()
+        traiding_consts = self.__sut.get_trading_consts()
 
         expected_state = [-1,   # normalized low[0] -> lower value from 20000.0 and 20500.0
                            0,   # normalized high[0] -> equal value from 20900.0 and 20900.0
@@ -119,9 +129,9 @@ class TradingEnvironmentTestCase(TestCase):
                            0]   # current_no_trades_penalty_coeff -> no penalty
 
         logging.info("Checking created observation state.")
-        assert [round(observation, 0) for observation in self.env.state] == expected_state
+        assert [round(observation, 0) for observation in self.__sut.state] == expected_state
 
-        logging.info("Checking created profitability fucntion.")
+        logging.info("Checking created profitability function.")
         assert traiding_consts.PROFITABILITY_FUNCTION(2) > 0
         assert traiding_consts.PROFITABILITY_FUNCTION(1) == 0
         assert traiding_consts.PROFITABILITY_FUNCTION(0) < 0
@@ -152,7 +162,7 @@ class TradingEnvironmentTestCase(TestCase):
         """
 
         logging.info("Starting step test case.")
-        traiding_consts = self.env.get_trading_consts()
+        traiding_consts = self.__sut.get_trading_consts()
 
         expected_money_to_be_spent_on_trade = 200
         expected_budget_after_buy = 800
@@ -165,7 +175,7 @@ class TradingEnvironmentTestCase(TestCase):
 
         logging.info("Performing buy action.")
         buy_action = 0
-        _, reward, _, step_info = self.env.step(buy_action)
+        _, reward, _, step_info = self.__sut.step(buy_action)
 
         logging.info("Checking step info for successful buy.")
         assert step_info['action'] == buy_action
@@ -178,7 +188,7 @@ class TradingEnvironmentTestCase(TestCase):
 
         logging.info("Performing sell action.")
         sell_action = 2
-        _, reward, _, step_info = self.env.step(sell_action)
+        _, reward, _, step_info = self.__sut.step(sell_action)
 
         logging.info("Checking step info for successful sell.")
         assert step_info['action'] == sell_action
@@ -204,7 +214,7 @@ class TradingEnvironmentTestCase(TestCase):
         """
 
         logging.info("Starting step test case.")
-        traiding_consts = self.env.get_trading_consts()
+        traiding_consts = self.__sut.get_trading_consts()
         self.__update_sut(currently_placed_trades = traiding_consts.MAX_AMOUNT_OF_TRADES)
 
         expected_money_to_be_spent_on_trade = 0
@@ -215,7 +225,7 @@ class TradingEnvironmentTestCase(TestCase):
 
         logging.info("Performing wait action.")
         wait_action = 1
-        _, reward, _, step_info = self.env.step(wait_action)
+        _, reward, _, step_info = self.__sut.step(wait_action)
 
         logging.info("Checking step info for successful wait.")
         assert step_info['action'] == wait_action
@@ -241,7 +251,7 @@ class TradingEnvironmentTestCase(TestCase):
         """
 
         logging.info("Starting step test case.")
-        traiding_consts = self.env.get_trading_consts()
+        traiding_consts = self.__sut.get_trading_consts()
         self.__update_sut(currently_placed_trades = traiding_consts.MAX_AMOUNT_OF_TRADES)
 
         expected_money_to_be_spent_on_trade = 0
@@ -255,7 +265,7 @@ class TradingEnvironmentTestCase(TestCase):
 
         logging.info("Performing buy action.")
         buy_action = 0
-        _, reward, _, step_info = self.env.step(buy_action)
+        _, reward, _, step_info = self.__sut.step(buy_action)
 
         logging.info("Checking step info for failure buy.")
         assert step_info['action'] == buy_action
@@ -268,7 +278,7 @@ class TradingEnvironmentTestCase(TestCase):
 
         logging.info("Performing sell action.")
         sell_action = 2
-        _, reward, _, step_info = self.env.step(sell_action)
+        _, reward, _, step_info = self.__sut.step(sell_action)
 
         logging.info("Checking step info for failure sell.")
         assert step_info['action'] == sell_action
@@ -295,7 +305,7 @@ class TradingEnvironmentTestCase(TestCase):
         """
 
         logging.info("Starting step test case.")
-        traiding_consts = self.env.get_trading_consts()
+        traiding_consts = self.__sut.get_trading_consts()
         orders = [Order(200, True, 0.99, 1.01)]
         self.__update_sut(current_orders = orders,
                           currently_placed_trades = 1,
@@ -311,7 +321,7 @@ class TradingEnvironmentTestCase(TestCase):
 
         logging.info("Performing wait action.")
         wait_action = 1
-        _, reward, _, step_info = self.env.step(wait_action)
+        _, reward, _, step_info = self.__sut.step(wait_action)
 
         logging.info("Checking step info for failure wait.")
         assert step_info['action'] == wait_action
@@ -346,11 +356,11 @@ class TradingEnvironmentTestCase(TestCase):
         expected_invested_after_wait = 0
         expected_coeff = (20800.0 - 20400.0) / 20400.0
         expected_orders_increase = [order.initial_value * expected_coeff for order in orders]
-        expected_reward = np.sum(expected_orders_increase) * self.env.get_broker().get_leverage()
+        expected_reward = np.sum(expected_orders_increase) * self.__sut.get_broker().get_leverage()
 
         logging.info("Performing wait action.")
         wait_action = 1
-        _, reward, _, step_info = self.env.step(wait_action)
+        _, reward, _, step_info = self.__sut.step(wait_action)
 
         logging.info("Checking step info for winning trades.")
         assert step_info['coeff'] == 1 + expected_coeff
@@ -382,11 +392,11 @@ class TradingEnvironmentTestCase(TestCase):
         expected_invested_after_wait = 0
         expected_coeff = (20800.0 - 20400.0) / 20400.0
         expected_orders_decrease = [-order.initial_value * expected_coeff for order in orders]
-        expected_reward = np.sum(expected_orders_decrease) * self.env.get_broker().get_leverage()
+        expected_reward = np.sum(expected_orders_decrease) * self.__sut.get_broker().get_leverage()
 
         logging.info("Performing wait action.")
         wait_action = 1
-        _, reward, _, step_info = self.env.step(wait_action)
+        _, reward, _, step_info = self.__sut.step(wait_action)
 
         logging.info("Checking step info for losing trades.")
         assert step_info['coeff'] == 1 + expected_coeff
@@ -412,7 +422,7 @@ class TradingEnvironmentTestCase(TestCase):
         """
 
         logging.info("Starting step scenario test case.")
-        traiding_consts = self.env.get_trading_consts()
+        traiding_consts = self.__sut.get_trading_consts()
         orders = [Order(200, True, 0.9, 1.1), Order(200, False, 0.8, 1.2)]
         self.__update_sut(leverage = 10,
                           current_orders = orders,
@@ -430,13 +440,13 @@ class TradingEnvironmentTestCase(TestCase):
         expected_nr_of_trades_after_third_wait = 0
         expected_first_coeff = (20800.0 - 20400.0) / 20400.0
         expected_reward_after_first_wait_at_most = expected_first_coeff * \
-            orders[0].initial_value * self.env.get_broker().get_leverage()
+            orders[0].initial_value * self.__sut.get_broker().get_leverage()
         expected_reward_after_second_wait = 0
         expected_reward_after_third_wait_at_most = -traiding_consts.STATIC_REWARD_ADJUSTMENT
 
         logging.info("Performing wait action.")
         wait_action = 1
-        _, reward, _, step_info = self.env.step(wait_action)
+        _, reward, _, step_info = self.__sut.step(wait_action)
         # no_trades_placed_for = PENALTY_STARTS + 1
 
         logging.info("Checking step info for getting penalty.")
@@ -447,7 +457,7 @@ class TradingEnvironmentTestCase(TestCase):
         assert round(reward, 0) <= expected_reward_after_first_wait_at_most
 
         logging.info("Performing wait action.")
-        _, reward, _, step_info = self.env.step(wait_action)
+        _, reward, _, step_info = self.__sut.step(wait_action)
         # no_trades_placed_for = PENALTY_STOPS
 
         logging.info("Checking step info for getting penalty.")
@@ -455,7 +465,7 @@ class TradingEnvironmentTestCase(TestCase):
         assert round(reward, 0) == expected_reward_after_second_wait
 
         logging.info("Performing wait action.")
-        _, reward, _, step_info = self.env.step(wait_action)
+        _, reward, _, step_info = self.__sut.step(wait_action)
         # no_trades_placed_for = PENALTY_STOPS + 1
 
         logging.info("Checking step info for getting penalty.")
@@ -475,7 +485,7 @@ class TradingEnvironmentTestCase(TestCase):
         """
 
         logging.info("Starting reset test case.")
-        traiding_consts = self.env.get_trading_consts()
+        traiding_consts = self.__sut.get_trading_consts()
         expected_budget = traiding_consts.INITIAL_BUDGET
         expected_invested = 0
         expected_no_trades_for = 0
@@ -483,13 +493,67 @@ class TradingEnvironmentTestCase(TestCase):
         expected_orders = []
 
         logging.info("Performing reset.")
-        self.env.reset()
+        self.__sut.reset()
 
         logging.info("Checking reset results.")
-        traiding_data = self.env.get_trading_data()
-        orders = self.env.get_broker().get_current_orders()
+        traiding_data = self.__sut.get_trading_data()
+        orders = self.__sut.get_broker().get_current_orders()
         assert traiding_data.current_budget == expected_budget
         assert traiding_data.currently_invested == expected_invested
         assert traiding_data.no_trades_placed_for == expected_no_trades_for
         assert traiding_data.currently_placed_trades == expected_nr_of_trades
         assert orders == expected_orders
+
+    def test_traiding_environment_get_labeled_data(self) -> None:
+        """
+        Tests the get_labeled_data method of the TradingEnvironment.
+
+        Verifies that the method correctly retrieves and processes labeled data,
+        including normalization and balancing of input and output data.
+
+        Asserts:
+            The input data is normalized correctly based on the mock data.
+            The output data is balanced and matches the expected values.
+            No test data is returned since should_split is False.
+        """
+
+        logging.info("Starting get labeled data test case.")
+        self.__mocked_label_annotator.annotate.return_value = pd.Series(np.array([1, 0, 1, 0, None]))
+        self.__mocked_data_balancer.balance.side_effect = lambda input_data, output_data: (input_data, output_data)
+        expected_input_data = [
+            [   # first data point
+                -1, # normalized low[0] -> lower value from 20000.0 and 20500.0
+                0,  # normalized high[0] -> equal value from 20900.0 and 20900.0
+                -1, # normalized open[0] -> lower value from 20050.0 and 20600.0
+                1,  # normalized close[0] -> higher value from 20600.0 and 20400.0
+                -1, # normalized volume[0] -> lower value from 1000.0 and 1200.0
+                1,  # normalized low[1] -> higher value from 20000.0 and 20500.0
+                0,  # normalized high[1] -> equal value from 20900.0 and 20900.0
+                1,  # normalized open[1] -> higher value from 20050.0 and 20600.0
+                -1, # normalized close[1] -> lower value from 20600.0 and 20400.0
+                1   # normalized volume[1] -> higher value from 1000.0 and 1200.0
+            ],
+            [   # second data point
+                1, # normalized low[1] -> higher value from 20500.0 and 20100.0
+                -1,  # normalized high[1] -> lower value from 20900.0 and 21000.0
+                1, # normalized open[1] -> higher value from 20600.0 and 20400.0
+                -1,  # normalized close[1] -> lower value from 20400.0 and 20800.0
+                1, # normalized volume[1] -> higher value from 1200.0 and 1100.0
+                -1,  # normalized low[2] -> lower value from 20500.0 and 20100.0
+                1,  # normalized high[2] -> higher value from 20900.0 and 21000.0
+                -1,  # normalized open[2] -> lower value from 20600.0 and 20400.0
+                1, # normalized close[2] -> higher value from 20400.0 and 20800.0
+                -1   # normalized volume[2] -> lower value from 1200.0 and 1100.0
+            ]
+        ]
+        expected_output_data = [1, 0]
+
+        logging.info("Performing get labeled data.")
+        input_data, output_data, input_data_test, output_data_test = self.__sut.get_labeled_data(should_split = False)
+
+        logging.info("Checking labeled data results.")
+        self.__mocked_data_balancer.balance.assert_called_once()
+        self.assertEqual(input_data.tolist(), expected_input_data)
+        self.assertEqual(output_data.tolist(), expected_output_data)
+        self.assertEqual(input_data_test.tolist(), [])
+        self.assertEqual(output_data_test.tolist(), [])

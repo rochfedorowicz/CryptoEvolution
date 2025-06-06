@@ -1,9 +1,11 @@
 # tests/environment/test_broker.py
 
-from unittest import TestCase
-from ddt import ddt, data, unpack
+# global imports
 import logging
+from ddt import data, ddt, unpack
+from unittest import TestCase
 
+# local imports
 from source.environment import Broker, Order
 
 @ddt
@@ -21,7 +23,7 @@ class BrokerTestCase(TestCase):
 
         logging.info("Setting up test environment.")
         self.broker = Broker()
-    
+
     def tearDown(self) -> None:
         """
         Tear down function responsible for cleaning up all the
@@ -29,12 +31,12 @@ class BrokerTestCase(TestCase):
         """
 
         logging.info("Tearing down test environment.")
-    
+
     def __update_sut(self, **kwargs) -> None:
         """
         Allows to update already created sut. It speeds up test
         cases' scenarios by enabling injecting certain values
-        also into private sut members. 
+        also into private sut members.
         """
 
         for name, value in kwargs.items():
@@ -51,13 +53,13 @@ class BrokerTestCase(TestCase):
         """
         Tests Broker's place order functionality.
 
-        Verifies that all the placed orders were created exactly with 
+        Verifies that all the placed orders were created exactly with
         exactly the same parameters as it was intended, and were not changed
         later.
 
         Asserts:
             Length of broker current orders matches number of trades to be
-            placed in a test case. Also, for each order all the members are 
+            placed in a test case. Also, for each order all the members are
             checked with original parameters passed to place order function.
         """
 

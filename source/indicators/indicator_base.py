@@ -1,21 +1,18 @@
 # indicators/indicator_base.py
 
+# global imports
 import pandas as pd
-import numpy as np
+from abc import ABC, abstractmethod
 
-class IndicatorHandlerBase():
+# local imports
+
+class IndicatorHandlerBase(ABC):
     """
     Base class for indicators. Enforces certain functions to be implemented
     in derivative classes.
     """
 
-    def __init__(self, *args) -> None:
-        """
-        Class constructor. Parameters are specified in derivative classes.
-        """
-
-        raise NotImplementedError
-        
+    @abstractmethod
     def calculate(self, data: pd.DataFrame) -> pd.DataFrame:
         """
         Calculates indicator values for given data.
@@ -27,5 +24,4 @@ class IndicatorHandlerBase():
             (pd.DataFrame): Output data with calculated values for certain indicator.
         """
 
-        raise NotImplementedError
-        
+        pass

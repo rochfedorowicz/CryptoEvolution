@@ -1,13 +1,15 @@
-# model/model_blue_prints/basic_cnn_blue_print.py
+# model/model_blue_prints/vggception_cnn_blue_print.py
 
-from tensorflow.keras import Model, layers
+# global imports
 import math
+from tensorflow.keras import layers, Model
+from typing import Optional
 
-from .base_blue_print import BaseBluePrint
-from ..model_building_blocks.vgg16_block import Vgg16Block
-from ..model_building_blocks.xception_block import XceptionBlock
+# local imports
+from source.model import BluePrintBase, ModelAdapterBase, TFModelAdapter, \
+      Vgg16Block, XceptionBlock
 
-class VGGceptionCnnBluePrint(BaseBluePrint):
+class VGGceptionCnnBluePrint(BluePrintBase):
     """
     Blueprint for creating a hybrid CNN architecture combining VGG and Xception patterns.
 
@@ -17,9 +19,30 @@ class VGGceptionCnnBluePrint(BaseBluePrint):
     and processing them through different network components before combining them.
     """
 
+    def __init__(self, number_of_filters: int = 32, cnn_squeezing_coeff: int = 2,
+                 dense_squeezing_coeff: int = 2, dense_repetition_coeff: int = 1,
+                 filters_number_coeff: int = 2) -> None:
+        """
+        Initializes the VGGceptionCnnBluePrint with the specified configuration parameters.
+
+        Parameters:
+            number_of_filters (int): Initial number of convolutional filters.
+            cnn_squeezing_coeff (int): Factor by which CNN dimensions are reduced.
+            dense_squeezing_coeff (int): Factor by which dense layer sizes are reduced.
+            dense_repetition_coeff (int): Number of dense layers of the same size to use.
+            filters_number_coeff (int): Factor by which filter count increases in convolutional layers.
+        """
+
+        self.__number_of_filters = number_of_filters
+        self.__cnn_squeezing_coeff = cnn_squeezing_coeff
+        self.__dense_squeezing_coeff = dense_squeezing_coeff
+        self.__dense_repetition_coeff = dense_repetition_coeff
+        self.__filters_number_coeff = filters_number_coeff
+
     def instantiate_model(self, input_shape: tuple[int, int], output_length: int, spatial_data_shape: tuple[int, int],
-                          number_of_filters: int = 32, cnn_squeezing_coeff: int = 2, dense_squeezing_coeff: int = 2,
-                          dense_repetition_coeff: int = 1, filters_number_coeff: int = 2) -> Model:
+                          number_of_filters: Optional[int] = None, cnn_squeezing_coeff: Optional[int] = None,
+                          dense_squeezing_coeff: Optional[int] = None, dense_repetition_coeff: Optional[int] = None,
+                          filters_number_coeff: Optional[int] = None) -> ModelAdapterBase:
         """
         Creates and returns a hybrid VGG-Xception CNN model according to specified parameters.
 
@@ -43,6 +66,17 @@ class VGGceptionCnnBluePrint(BaseBluePrint):
         Returns:
             Model: Keras model implementing the hybrid VGG-Xception architecture to be compiled further.
         """
+
+        if number_of_filters is None:
+            number_of_filters = self.__number_of_filters
+        if cnn_squeezing_coeff is None:
+            cnn_squeezing_coeff = self.__cnn_squeezing_coeff
+        if dense_squeezing_coeff is None:
+            dense_squeezing_coeff = self.__dense_squeezing_coeff
+        if dense_repetition_coeff is None:
+            dense_repetition_coeff = self.__dense_repetition_coeff
+        if filters_number_coeff is None:
+            filters_number_coeff = self.__filters_number_coeff
 
         spatial_data_rows, spatial_data_cols = spatial_data_shape
         spatial_data_length = spatial_data_rows * spatial_data_cols
@@ -88,4 +122,4 @@ class VGGceptionCnnBluePrint(BaseBluePrint):
 
         output = layers.Dense(output_length, activation='softmax')(dense)
 
-        return Model(inputs=input_vector, outputs=output)
+        return TFModelAdapter(Model(inputs = input_vector, outputs = output))
