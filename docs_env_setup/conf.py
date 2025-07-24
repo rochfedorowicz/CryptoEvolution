@@ -41,4 +41,10 @@ exclude_patterns = []
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = 'alabaster'
+html_theme_options = {
+    'page_width': '1400px',
+    'sidebar_width': '320px',
+    'body_max_width': 'none',
+    'fixed_sidebar': True,
+}
 html_static_path = ['_static']
