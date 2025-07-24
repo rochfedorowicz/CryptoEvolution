@@ -7,7 +7,7 @@
 
     <title>Plotting Module &#8212; Crypto Evolution 0.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=5ecbeea2" />
-    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=12dfc556" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=fbe5b29d" />
     <script src="../_static/documentation_options.js?v=2709fde1"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
@@ -23,9 +23,99 @@
   
 
   </head><body>
-  
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Crypto Evolution</a></h1>
 
-    <div class="document">
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="agent.html">Agent Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_handling.html">Data Handling Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="environment.html">Environment Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="indicators.html">Indicators Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model.html">Model Module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Plotting Module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#source.plotting.asset_price_movement_summary_plot_responsibility_chain.AssetPriceMovementSummaryPlotResponsibilityChain"><code class="docutils literal notranslate"><span class="pre">AssetPriceMovementSummaryPlotResponsibilityChain</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#source.plotting.asset_price_movement_summary_plot_responsibility_chain.AssetPriceMovementSummaryPlotResponsibilityChain.add_next_chain_link"><code class="docutils literal notranslate"><span class="pre">AssetPriceMovementSummaryPlotResponsibilityChain.add_next_chain_link()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.plotting.asset_price_movement_summary_plot_responsibility_chain.AssetPriceMovementSummaryPlotResponsibilityChain.plot"><code class="docutils literal notranslate"><span class="pre">AssetPriceMovementSummaryPlotResponsibilityChain.plot()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#source.plotting.classification_testing_plot_responsibility_chain.ClassificationTestingPlotResponsibilityChain"><code class="docutils literal notranslate"><span class="pre">ClassificationTestingPlotResponsibilityChain</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#source.plotting.classification_testing_plot_responsibility_chain.ClassificationTestingPlotResponsibilityChain.add_next_chain_link"><code class="docutils literal notranslate"><span class="pre">ClassificationTestingPlotResponsibilityChain.add_next_chain_link()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.plotting.classification_testing_plot_responsibility_chain.ClassificationTestingPlotResponsibilityChain.plot"><code class="docutils literal notranslate"><span class="pre">ClassificationTestingPlotResponsibilityChain.plot()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#source.plotting.classification_training_plot_responsibility_chain.ClassificationTrainingPlotResponsibilityChain"><code class="docutils literal notranslate"><span class="pre">ClassificationTrainingPlotResponsibilityChain</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#source.plotting.classification_training_plot_responsibility_chain.ClassificationTrainingPlotResponsibilityChain.PlottingMode"><code class="docutils literal notranslate"><span class="pre">ClassificationTrainingPlotResponsibilityChain.PlottingMode</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.plotting.classification_training_plot_responsibility_chain.ClassificationTrainingPlotResponsibilityChain.add_next_chain_link"><code class="docutils literal notranslate"><span class="pre">ClassificationTrainingPlotResponsibilityChain.add_next_chain_link()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.plotting.classification_training_plot_responsibility_chain.ClassificationTrainingPlotResponsibilityChain.plot"><code class="docutils literal notranslate"><span class="pre">ClassificationTrainingPlotResponsibilityChain.plot()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#source.plotting.performance_testing_plot_responsibility_chain.PerformanceTestingPlotResponsibilityChain"><code class="docutils literal notranslate"><span class="pre">PerformanceTestingPlotResponsibilityChain</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#source.plotting.performance_testing_plot_responsibility_chain.PerformanceTestingPlotResponsibilityChain.add_next_chain_link"><code class="docutils literal notranslate"><span class="pre">PerformanceTestingPlotResponsibilityChain.add_next_chain_link()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.plotting.performance_testing_plot_responsibility_chain.PerformanceTestingPlotResponsibilityChain.plot"><code class="docutils literal notranslate"><span class="pre">PerformanceTestingPlotResponsibilityChain.plot()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#source.plotting.plot_responsibility_chain_base.PlotResponsibilityChainBase"><code class="docutils literal notranslate"><span class="pre">PlotResponsibilityChainBase</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#source.plotting.plot_responsibility_chain_base.PlotResponsibilityChainBase.add_next_chain_link"><code class="docutils literal notranslate"><span class="pre">PlotResponsibilityChainBase.add_next_chain_link()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.plotting.plot_responsibility_chain_base.PlotResponsibilityChainBase.plot"><code class="docutils literal notranslate"><span class="pre">PlotResponsibilityChainBase.plot()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#source.plotting.price_movement_trend_class_summary_plot_responsibility_chain.PriceMovementTrendClassSummaryPlotResponsibilityChain"><code class="docutils literal notranslate"><span class="pre">PriceMovementTrendClassSummaryPlotResponsibilityChain</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#source.plotting.price_movement_trend_class_summary_plot_responsibility_chain.PriceMovementTrendClassSummaryPlotResponsibilityChain.add_next_chain_link"><code class="docutils literal notranslate"><span class="pre">PriceMovementTrendClassSummaryPlotResponsibilityChain.add_next_chain_link()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.plotting.price_movement_trend_class_summary_plot_responsibility_chain.PriceMovementTrendClassSummaryPlotResponsibilityChain.plot"><code class="docutils literal notranslate"><span class="pre">PriceMovementTrendClassSummaryPlotResponsibilityChain.plot()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#source.plotting.reinforcement_training_plot_responsibility_chain.ReinforcementTrainingPlotResponsibilityChain"><code class="docutils literal notranslate"><span class="pre">ReinforcementTrainingPlotResponsibilityChain</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#source.plotting.reinforcement_training_plot_responsibility_chain.ReinforcementTrainingPlotResponsibilityChain.add_next_chain_link"><code class="docutils literal notranslate"><span class="pre">ReinforcementTrainingPlotResponsibilityChain.add_next_chain_link()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.plotting.reinforcement_training_plot_responsibility_chain.ReinforcementTrainingPlotResponsibilityChain.plot"><code class="docutils literal notranslate"><span class="pre">ReinforcementTrainingPlotResponsibilityChain.plot()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="training.html">Training Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Utils Module</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="model.html" title="previous chapter">Model Module</a></li>
+      <li>Next: <a href="training.html" title="next chapter">Training Module</a></li>
+  </ul></li>
+</ul>
+</div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
       <div class="documentwrapper">
         <div class="bodywrapper">
           
@@ -364,99 +454,8 @@ and ‘plot_data’ containing the actual data to be plotted.</p>
           
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="Main">
-        <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="../index.html">Crypto Evolution</a></h1>
-
-
-
-
-
-
-
-
-<h3>Navigation</h3>
-<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="agent.html">Agent Module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="data_handling.html">Data Handling Module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="environment.html">Environment Module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="indicators.html">Indicators Module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="model.html">Model Module</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Plotting Module</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#source.plotting.asset_price_movement_summary_plot_responsibility_chain.AssetPriceMovementSummaryPlotResponsibilityChain"><code class="docutils literal notranslate"><span class="pre">AssetPriceMovementSummaryPlotResponsibilityChain</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#source.plotting.asset_price_movement_summary_plot_responsibility_chain.AssetPriceMovementSummaryPlotResponsibilityChain.add_next_chain_link"><code class="docutils literal notranslate"><span class="pre">AssetPriceMovementSummaryPlotResponsibilityChain.add_next_chain_link()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.plotting.asset_price_movement_summary_plot_responsibility_chain.AssetPriceMovementSummaryPlotResponsibilityChain.plot"><code class="docutils literal notranslate"><span class="pre">AssetPriceMovementSummaryPlotResponsibilityChain.plot()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#source.plotting.classification_testing_plot_responsibility_chain.ClassificationTestingPlotResponsibilityChain"><code class="docutils literal notranslate"><span class="pre">ClassificationTestingPlotResponsibilityChain</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#source.plotting.classification_testing_plot_responsibility_chain.ClassificationTestingPlotResponsibilityChain.add_next_chain_link"><code class="docutils literal notranslate"><span class="pre">ClassificationTestingPlotResponsibilityChain.add_next_chain_link()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.plotting.classification_testing_plot_responsibility_chain.ClassificationTestingPlotResponsibilityChain.plot"><code class="docutils literal notranslate"><span class="pre">ClassificationTestingPlotResponsibilityChain.plot()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#source.plotting.classification_training_plot_responsibility_chain.ClassificationTrainingPlotResponsibilityChain"><code class="docutils literal notranslate"><span class="pre">ClassificationTrainingPlotResponsibilityChain</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#source.plotting.classification_training_plot_responsibility_chain.ClassificationTrainingPlotResponsibilityChain.PlottingMode"><code class="docutils literal notranslate"><span class="pre">ClassificationTrainingPlotResponsibilityChain.PlottingMode</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.plotting.classification_training_plot_responsibility_chain.ClassificationTrainingPlotResponsibilityChain.add_next_chain_link"><code class="docutils literal notranslate"><span class="pre">ClassificationTrainingPlotResponsibilityChain.add_next_chain_link()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.plotting.classification_training_plot_responsibility_chain.ClassificationTrainingPlotResponsibilityChain.plot"><code class="docutils literal notranslate"><span class="pre">ClassificationTrainingPlotResponsibilityChain.plot()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#source.plotting.performance_testing_plot_responsibility_chain.PerformanceTestingPlotResponsibilityChain"><code class="docutils literal notranslate"><span class="pre">PerformanceTestingPlotResponsibilityChain</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#source.plotting.performance_testing_plot_responsibility_chain.PerformanceTestingPlotResponsibilityChain.add_next_chain_link"><code class="docutils literal notranslate"><span class="pre">PerformanceTestingPlotResponsibilityChain.add_next_chain_link()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.plotting.performance_testing_plot_responsibility_chain.PerformanceTestingPlotResponsibilityChain.plot"><code class="docutils literal notranslate"><span class="pre">PerformanceTestingPlotResponsibilityChain.plot()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#source.plotting.plot_responsibility_chain_base.PlotResponsibilityChainBase"><code class="docutils literal notranslate"><span class="pre">PlotResponsibilityChainBase</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#source.plotting.plot_responsibility_chain_base.PlotResponsibilityChainBase.add_next_chain_link"><code class="docutils literal notranslate"><span class="pre">PlotResponsibilityChainBase.add_next_chain_link()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.plotting.plot_responsibility_chain_base.PlotResponsibilityChainBase.plot"><code class="docutils literal notranslate"><span class="pre">PlotResponsibilityChainBase.plot()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#source.plotting.price_movement_trend_class_summary_plot_responsibility_chain.PriceMovementTrendClassSummaryPlotResponsibilityChain"><code class="docutils literal notranslate"><span class="pre">PriceMovementTrendClassSummaryPlotResponsibilityChain</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#source.plotting.price_movement_trend_class_summary_plot_responsibility_chain.PriceMovementTrendClassSummaryPlotResponsibilityChain.add_next_chain_link"><code class="docutils literal notranslate"><span class="pre">PriceMovementTrendClassSummaryPlotResponsibilityChain.add_next_chain_link()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.plotting.price_movement_trend_class_summary_plot_responsibility_chain.PriceMovementTrendClassSummaryPlotResponsibilityChain.plot"><code class="docutils literal notranslate"><span class="pre">PriceMovementTrendClassSummaryPlotResponsibilityChain.plot()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#source.plotting.reinforcement_training_plot_responsibility_chain.ReinforcementTrainingPlotResponsibilityChain"><code class="docutils literal notranslate"><span class="pre">ReinforcementTrainingPlotResponsibilityChain</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#source.plotting.reinforcement_training_plot_responsibility_chain.ReinforcementTrainingPlotResponsibilityChain.add_next_chain_link"><code class="docutils literal notranslate"><span class="pre">ReinforcementTrainingPlotResponsibilityChain.add_next_chain_link()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.plotting.reinforcement_training_plot_responsibility_chain.ReinforcementTrainingPlotResponsibilityChain.plot"><code class="docutils literal notranslate"><span class="pre">ReinforcementTrainingPlotResponsibilityChain.plot()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="training.html">Training Module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="utils.html">Utils Module</a></li>
-</ul>
-
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="../index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="model.html" title="previous chapter">Model Module</a></li>
-      <li>Next: <a href="training.html" title="next chapter">Training Module</a></li>
-  </ul></li>
-</ul>
-</div>
-<search id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</search>
-<script>document.getElementById('searchbox').style.display = "block"</script>
-
-
-
-
-
-
-
-
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
+    <div class="clearer"></div>
+  </div>
     <div class="footer">
       &#169;2024-2025, Roch Fedorowicz.
       

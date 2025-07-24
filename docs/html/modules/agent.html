@@ -7,7 +7,7 @@
 
     <title>Agent Module &#8212; Crypto Evolution 0.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=5ecbeea2" />
-    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=12dfc556" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=fbe5b29d" />
     <script src="../_static/documentation_options.js?v=2709fde1"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
@@ -23,9 +23,133 @@
   
 
   </head><body>
-  
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Crypto Evolution</a></h1>
 
-    <div class="document">
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Agent Module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#source.agent.agent_handler.AgentHandler"><code class="docutils literal notranslate"><span class="pre">AgentHandler</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#source.agent.agent_handler.AgentHandler.print_model_summary"><code class="docutils literal notranslate"><span class="pre">AgentHandler.print_model_summary()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.agent.agent_handler.AgentHandler.test_agent"><code class="docutils literal notranslate"><span class="pre">AgentHandler.test_agent()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.agent.agent_handler.AgentHandler.train_agent"><code class="docutils literal notranslate"><span class="pre">AgentHandler.train_agent()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#source.agent.agents.agent_base.AgentBase"><code class="docutils literal notranslate"><span class="pre">AgentBase</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#source.agent.agents.agent_base.AgentBase.load_model"><code class="docutils literal notranslate"><span class="pre">AgentBase.load_model()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.agent.agents.agent_base.AgentBase.print_summary"><code class="docutils literal notranslate"><span class="pre">AgentBase.print_summary()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.agent.agents.agent_base.AgentBase.save_model"><code class="docutils literal notranslate"><span class="pre">AgentBase.save_model()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#source.agent.agents.classification_learning_agent.ClassificationLearningAgent"><code class="docutils literal notranslate"><span class="pre">ClassificationLearningAgent</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#source.agent.agents.classification_learning_agent.ClassificationLearningAgent.classification_fit"><code class="docutils literal notranslate"><span class="pre">ClassificationLearningAgent.classification_fit()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.agent.agents.classification_learning_agent.ClassificationLearningAgent.classify"><code class="docutils literal notranslate"><span class="pre">ClassificationLearningAgent.classify()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.agent.agents.classification_learning_agent.ClassificationLearningAgent.get_model_adapter_tag"><code class="docutils literal notranslate"><span class="pre">ClassificationLearningAgent.get_model_adapter_tag()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.agent.agents.classification_learning_agent.ClassificationLearningAgent.load_model"><code class="docutils literal notranslate"><span class="pre">ClassificationLearningAgent.load_model()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.agent.agents.classification_learning_agent.ClassificationLearningAgent.print_summary"><code class="docutils literal notranslate"><span class="pre">ClassificationLearningAgent.print_summary()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.agent.agents.classification_learning_agent.ClassificationLearningAgent.save_model"><code class="docutils literal notranslate"><span class="pre">ClassificationLearningAgent.save_model()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#source.agent.agents.reinforcement_learning_agent.ReinforcementLearningAgent"><code class="docutils literal notranslate"><span class="pre">ReinforcementLearningAgent</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#source.agent.agents.reinforcement_learning_agent.ReinforcementLearningAgent.load_model"><code class="docutils literal notranslate"><span class="pre">ReinforcementLearningAgent.load_model()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.agent.agents.reinforcement_learning_agent.ReinforcementLearningAgent.perform"><code class="docutils literal notranslate"><span class="pre">ReinforcementLearningAgent.perform()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.agent.agents.reinforcement_learning_agent.ReinforcementLearningAgent.print_summary"><code class="docutils literal notranslate"><span class="pre">ReinforcementLearningAgent.print_summary()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.agent.agents.reinforcement_learning_agent.ReinforcementLearningAgent.reinforcement_learning_fit"><code class="docutils literal notranslate"><span class="pre">ReinforcementLearningAgent.reinforcement_learning_fit()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.agent.agents.reinforcement_learning_agent.ReinforcementLearningAgent.save_model"><code class="docutils literal notranslate"><span class="pre">ReinforcementLearningAgent.save_model()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#source.agent.strategies.classification_learning_strategy_handler.ClassificationLearningStrategyHandler"><code class="docutils literal notranslate"><span class="pre">ClassificationLearningStrategyHandler</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#source.agent.strategies.classification_learning_strategy_handler.ClassificationLearningStrategyHandler.PLOTTING_KEY"><code class="docutils literal notranslate"><span class="pre">ClassificationLearningStrategyHandler.PLOTTING_KEY</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.agent.strategies.classification_learning_strategy_handler.ClassificationLearningStrategyHandler.PLOTTING_KEYS"><code class="docutils literal notranslate"><span class="pre">ClassificationLearningStrategyHandler.PLOTTING_KEYS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.agent.strategies.classification_learning_strategy_handler.ClassificationLearningStrategyHandler.create_agent"><code class="docutils literal notranslate"><span class="pre">ClassificationLearningStrategyHandler.create_agent()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.agent.strategies.classification_learning_strategy_handler.ClassificationLearningStrategyHandler.fit"><code class="docutils literal notranslate"><span class="pre">ClassificationLearningStrategyHandler.fit()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#source.agent.strategies.classification_testable.ClassificationTestable"><code class="docutils literal notranslate"><span class="pre">ClassificationTestable</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#source.agent.strategies.classification_testable.ClassificationTestable.classify"><code class="docutils literal notranslate"><span class="pre">ClassificationTestable.classify()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#source.agent.strategies.classification_testing_strategy_handler.ClassificationTestingStrategyHandler"><code class="docutils literal notranslate"><span class="pre">ClassificationTestingStrategyHandler</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#source.agent.strategies.classification_testing_strategy_handler.ClassificationTestingStrategyHandler.PLOTTING_KEY"><code class="docutils literal notranslate"><span class="pre">ClassificationTestingStrategyHandler.PLOTTING_KEY</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.agent.strategies.classification_testing_strategy_handler.ClassificationTestingStrategyHandler.evaluate"><code class="docutils literal notranslate"><span class="pre">ClassificationTestingStrategyHandler.evaluate()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#source.agent.strategies.learning_strategy_handler_base.LearningStrategyHandlerBase"><code class="docutils literal notranslate"><span class="pre">LearningStrategyHandlerBase</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#source.agent.strategies.learning_strategy_handler_base.LearningStrategyHandlerBase.PLOTTING_KEY"><code class="docutils literal notranslate"><span class="pre">LearningStrategyHandlerBase.PLOTTING_KEY</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.agent.strategies.learning_strategy_handler_base.LearningStrategyHandlerBase.create_agent"><code class="docutils literal notranslate"><span class="pre">LearningStrategyHandlerBase.create_agent()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.agent.strategies.learning_strategy_handler_base.LearningStrategyHandlerBase.fit"><code class="docutils literal notranslate"><span class="pre">LearningStrategyHandlerBase.fit()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#source.agent.strategies.performance_testable.PerformanceTestable"><code class="docutils literal notranslate"><span class="pre">PerformanceTestable</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#source.agent.strategies.performance_testable.PerformanceTestable.perform"><code class="docutils literal notranslate"><span class="pre">PerformanceTestable.perform()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#source.agent.strategies.performance_testing_strategy_handler.PerformanceTestingStrategyHandler"><code class="docutils literal notranslate"><span class="pre">PerformanceTestingStrategyHandler</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#source.agent.strategies.performance_testing_strategy_handler.PerformanceTestingStrategyHandler.PLOTTING_KEY"><code class="docutils literal notranslate"><span class="pre">PerformanceTestingStrategyHandler.PLOTTING_KEY</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.agent.strategies.performance_testing_strategy_handler.PerformanceTestingStrategyHandler.evaluate"><code class="docutils literal notranslate"><span class="pre">PerformanceTestingStrategyHandler.evaluate()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#source.agent.strategies.reinforcement_learning_strategy_handler.ReinforcementLearningStrategyHandler"><code class="docutils literal notranslate"><span class="pre">ReinforcementLearningStrategyHandler</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#source.agent.strategies.reinforcement_learning_strategy_handler.ReinforcementLearningStrategyHandler.PLOTTING_KEY"><code class="docutils literal notranslate"><span class="pre">ReinforcementLearningStrategyHandler.PLOTTING_KEY</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.agent.strategies.reinforcement_learning_strategy_handler.ReinforcementLearningStrategyHandler.create_agent"><code class="docutils literal notranslate"><span class="pre">ReinforcementLearningStrategyHandler.create_agent()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.agent.strategies.reinforcement_learning_strategy_handler.ReinforcementLearningStrategyHandler.fit"><code class="docutils literal notranslate"><span class="pre">ReinforcementLearningStrategyHandler.fit()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#source.agent.strategies.testing_strategy_handler_base.TestingStrategyHandlerBase"><code class="docutils literal notranslate"><span class="pre">TestingStrategyHandlerBase</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#source.agent.strategies.testing_strategy_handler_base.TestingStrategyHandlerBase.evaluate"><code class="docutils literal notranslate"><span class="pre">TestingStrategyHandlerBase.evaluate()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="data_handling.html">Data Handling Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="environment.html">Environment Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="indicators.html">Indicators Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model.html">Model Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plotting.html">Plotting Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="training.html">Training Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Utils Module</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../index.html" title="previous chapter">Welcome to CryptoEvolution’s documentation!</a></li>
+      <li>Next: <a href="data_handling.html" title="next chapter">Data Handling Module</a></li>
+  </ul></li>
+</ul>
+</div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
       <div class="documentwrapper">
         <div class="bodywrapper">
           
@@ -660,133 +784,8 @@ functions for evaluating agents in a trading environment.</p>
           
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="Main">
-        <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="../index.html">Crypto Evolution</a></h1>
-
-
-
-
-
-
-
-
-<h3>Navigation</h3>
-<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Agent Module</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#source.agent.agent_handler.AgentHandler"><code class="docutils literal notranslate"><span class="pre">AgentHandler</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#source.agent.agent_handler.AgentHandler.print_model_summary"><code class="docutils literal notranslate"><span class="pre">AgentHandler.print_model_summary()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.agent.agent_handler.AgentHandler.test_agent"><code class="docutils literal notranslate"><span class="pre">AgentHandler.test_agent()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.agent.agent_handler.AgentHandler.train_agent"><code class="docutils literal notranslate"><span class="pre">AgentHandler.train_agent()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#source.agent.agents.agent_base.AgentBase"><code class="docutils literal notranslate"><span class="pre">AgentBase</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#source.agent.agents.agent_base.AgentBase.load_model"><code class="docutils literal notranslate"><span class="pre">AgentBase.load_model()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.agent.agents.agent_base.AgentBase.print_summary"><code class="docutils literal notranslate"><span class="pre">AgentBase.print_summary()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.agent.agents.agent_base.AgentBase.save_model"><code class="docutils literal notranslate"><span class="pre">AgentBase.save_model()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#source.agent.agents.classification_learning_agent.ClassificationLearningAgent"><code class="docutils literal notranslate"><span class="pre">ClassificationLearningAgent</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#source.agent.agents.classification_learning_agent.ClassificationLearningAgent.classification_fit"><code class="docutils literal notranslate"><span class="pre">ClassificationLearningAgent.classification_fit()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.agent.agents.classification_learning_agent.ClassificationLearningAgent.classify"><code class="docutils literal notranslate"><span class="pre">ClassificationLearningAgent.classify()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.agent.agents.classification_learning_agent.ClassificationLearningAgent.get_model_adapter_tag"><code class="docutils literal notranslate"><span class="pre">ClassificationLearningAgent.get_model_adapter_tag()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.agent.agents.classification_learning_agent.ClassificationLearningAgent.load_model"><code class="docutils literal notranslate"><span class="pre">ClassificationLearningAgent.load_model()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.agent.agents.classification_learning_agent.ClassificationLearningAgent.print_summary"><code class="docutils literal notranslate"><span class="pre">ClassificationLearningAgent.print_summary()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.agent.agents.classification_learning_agent.ClassificationLearningAgent.save_model"><code class="docutils literal notranslate"><span class="pre">ClassificationLearningAgent.save_model()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#source.agent.agents.reinforcement_learning_agent.ReinforcementLearningAgent"><code class="docutils literal notranslate"><span class="pre">ReinforcementLearningAgent</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#source.agent.agents.reinforcement_learning_agent.ReinforcementLearningAgent.load_model"><code class="docutils literal notranslate"><span class="pre">ReinforcementLearningAgent.load_model()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.agent.agents.reinforcement_learning_agent.ReinforcementLearningAgent.perform"><code class="docutils literal notranslate"><span class="pre">ReinforcementLearningAgent.perform()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.agent.agents.reinforcement_learning_agent.ReinforcementLearningAgent.print_summary"><code class="docutils literal notranslate"><span class="pre">ReinforcementLearningAgent.print_summary()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.agent.agents.reinforcement_learning_agent.ReinforcementLearningAgent.reinforcement_learning_fit"><code class="docutils literal notranslate"><span class="pre">ReinforcementLearningAgent.reinforcement_learning_fit()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.agent.agents.reinforcement_learning_agent.ReinforcementLearningAgent.save_model"><code class="docutils literal notranslate"><span class="pre">ReinforcementLearningAgent.save_model()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#source.agent.strategies.classification_learning_strategy_handler.ClassificationLearningStrategyHandler"><code class="docutils literal notranslate"><span class="pre">ClassificationLearningStrategyHandler</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#source.agent.strategies.classification_learning_strategy_handler.ClassificationLearningStrategyHandler.PLOTTING_KEY"><code class="docutils literal notranslate"><span class="pre">ClassificationLearningStrategyHandler.PLOTTING_KEY</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.agent.strategies.classification_learning_strategy_handler.ClassificationLearningStrategyHandler.PLOTTING_KEYS"><code class="docutils literal notranslate"><span class="pre">ClassificationLearningStrategyHandler.PLOTTING_KEYS</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.agent.strategies.classification_learning_strategy_handler.ClassificationLearningStrategyHandler.create_agent"><code class="docutils literal notranslate"><span class="pre">ClassificationLearningStrategyHandler.create_agent()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.agent.strategies.classification_learning_strategy_handler.ClassificationLearningStrategyHandler.fit"><code class="docutils literal notranslate"><span class="pre">ClassificationLearningStrategyHandler.fit()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#source.agent.strategies.classification_testable.ClassificationTestable"><code class="docutils literal notranslate"><span class="pre">ClassificationTestable</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#source.agent.strategies.classification_testable.ClassificationTestable.classify"><code class="docutils literal notranslate"><span class="pre">ClassificationTestable.classify()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#source.agent.strategies.classification_testing_strategy_handler.ClassificationTestingStrategyHandler"><code class="docutils literal notranslate"><span class="pre">ClassificationTestingStrategyHandler</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#source.agent.strategies.classification_testing_strategy_handler.ClassificationTestingStrategyHandler.PLOTTING_KEY"><code class="docutils literal notranslate"><span class="pre">ClassificationTestingStrategyHandler.PLOTTING_KEY</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.agent.strategies.classification_testing_strategy_handler.ClassificationTestingStrategyHandler.evaluate"><code class="docutils literal notranslate"><span class="pre">ClassificationTestingStrategyHandler.evaluate()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#source.agent.strategies.learning_strategy_handler_base.LearningStrategyHandlerBase"><code class="docutils literal notranslate"><span class="pre">LearningStrategyHandlerBase</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#source.agent.strategies.learning_strategy_handler_base.LearningStrategyHandlerBase.PLOTTING_KEY"><code class="docutils literal notranslate"><span class="pre">LearningStrategyHandlerBase.PLOTTING_KEY</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.agent.strategies.learning_strategy_handler_base.LearningStrategyHandlerBase.create_agent"><code class="docutils literal notranslate"><span class="pre">LearningStrategyHandlerBase.create_agent()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.agent.strategies.learning_strategy_handler_base.LearningStrategyHandlerBase.fit"><code class="docutils literal notranslate"><span class="pre">LearningStrategyHandlerBase.fit()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#source.agent.strategies.performance_testable.PerformanceTestable"><code class="docutils literal notranslate"><span class="pre">PerformanceTestable</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#source.agent.strategies.performance_testable.PerformanceTestable.perform"><code class="docutils literal notranslate"><span class="pre">PerformanceTestable.perform()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#source.agent.strategies.performance_testing_strategy_handler.PerformanceTestingStrategyHandler"><code class="docutils literal notranslate"><span class="pre">PerformanceTestingStrategyHandler</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#source.agent.strategies.performance_testing_strategy_handler.PerformanceTestingStrategyHandler.PLOTTING_KEY"><code class="docutils literal notranslate"><span class="pre">PerformanceTestingStrategyHandler.PLOTTING_KEY</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.agent.strategies.performance_testing_strategy_handler.PerformanceTestingStrategyHandler.evaluate"><code class="docutils literal notranslate"><span class="pre">PerformanceTestingStrategyHandler.evaluate()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#source.agent.strategies.reinforcement_learning_strategy_handler.ReinforcementLearningStrategyHandler"><code class="docutils literal notranslate"><span class="pre">ReinforcementLearningStrategyHandler</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#source.agent.strategies.reinforcement_learning_strategy_handler.ReinforcementLearningStrategyHandler.PLOTTING_KEY"><code class="docutils literal notranslate"><span class="pre">ReinforcementLearningStrategyHandler.PLOTTING_KEY</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.agent.strategies.reinforcement_learning_strategy_handler.ReinforcementLearningStrategyHandler.create_agent"><code class="docutils literal notranslate"><span class="pre">ReinforcementLearningStrategyHandler.create_agent()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.agent.strategies.reinforcement_learning_strategy_handler.ReinforcementLearningStrategyHandler.fit"><code class="docutils literal notranslate"><span class="pre">ReinforcementLearningStrategyHandler.fit()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#source.agent.strategies.testing_strategy_handler_base.TestingStrategyHandlerBase"><code class="docutils literal notranslate"><span class="pre">TestingStrategyHandlerBase</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#source.agent.strategies.testing_strategy_handler_base.TestingStrategyHandlerBase.evaluate"><code class="docutils literal notranslate"><span class="pre">TestingStrategyHandlerBase.evaluate()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="data_handling.html">Data Handling Module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="environment.html">Environment Module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="indicators.html">Indicators Module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="model.html">Model Module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="plotting.html">Plotting Module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="training.html">Training Module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="utils.html">Utils Module</a></li>
-</ul>
-
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="../index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="../index.html" title="previous chapter">Welcome to CryptoEvolution’s documentation!</a></li>
-      <li>Next: <a href="data_handling.html" title="next chapter">Data Handling Module</a></li>
-  </ul></li>
-</ul>
-</div>
-<search id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</search>
-<script>document.getElementById('searchbox').style.display = "block"</script>
-
-
-
-
-
-
-
-
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
+    <div class="clearer"></div>
+  </div>
     <div class="footer">
       &#169;2024-2025, Roch Fedorowicz.
       

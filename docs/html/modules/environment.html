@@ -7,7 +7,7 @@
 
     <title>Environment Module &#8212; Crypto Evolution 0.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=5ecbeea2" />
-    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=12dfc556" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=fbe5b29d" />
     <script src="../_static/documentation_options.js?v=2709fde1"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
@@ -23,9 +23,124 @@
   
 
   </head><body>
-  
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Crypto Evolution</a></h1>
 
-    <div class="document">
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="agent.html">Agent Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_handling.html">Data Handling Module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Environment Module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#source.environment.broker.Broker"><code class="docutils literal notranslate"><span class="pre">Broker</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#source.environment.broker.Broker.get_current_orders"><code class="docutils literal notranslate"><span class="pre">Broker.get_current_orders()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.environment.broker.Broker.get_leverage"><code class="docutils literal notranslate"><span class="pre">Broker.get_leverage()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.environment.broker.Broker.place_order"><code class="docutils literal notranslate"><span class="pre">Broker.place_order()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.environment.broker.Broker.reset"><code class="docutils literal notranslate"><span class="pre">Broker.reset()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.environment.broker.Broker.update_orders"><code class="docutils literal notranslate"><span class="pre">Broker.update_orders()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#source.environment.label_annotator_base.LabelAnnotatorBase"><code class="docutils literal notranslate"><span class="pre">LabelAnnotatorBase</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#source.environment.label_annotator_base.LabelAnnotatorBase.annotate"><code class="docutils literal notranslate"><span class="pre">LabelAnnotatorBase.annotate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.environment.label_annotator_base.LabelAnnotatorBase.get_output_classes"><code class="docutils literal notranslate"><span class="pre">LabelAnnotatorBase.get_output_classes()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#source.environment.labeled_data_balancer.LabeledDataBalancer"><code class="docutils literal notranslate"><span class="pre">LabeledDataBalancer</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#source.environment.labeled_data_balancer.LabeledDataBalancer.balance"><code class="docutils literal notranslate"><span class="pre">LabeledDataBalancer.balance()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#source.environment.order.Order"><code class="docutils literal notranslate"><span class="pre">Order</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#source.environment.points_reward_validator.PointsRewardValidator"><code class="docutils literal notranslate"><span class="pre">PointsRewardValidator</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#source.environment.points_reward_validator.PointsRewardValidator.validate_orders"><code class="docutils literal notranslate"><span class="pre">PointsRewardValidator.validate_orders()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#source.environment.price_reward_validator.PriceRewardValidator"><code class="docutils literal notranslate"><span class="pre">PriceRewardValidator</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#source.environment.price_reward_validator.PriceRewardValidator.validate_orders"><code class="docutils literal notranslate"><span class="pre">PriceRewardValidator.validate_orders()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#source.environment.reward_validator_base.RewardValidatorBase"><code class="docutils literal notranslate"><span class="pre">RewardValidatorBase</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#source.environment.reward_validator_base.RewardValidatorBase.validate_orders"><code class="docutils literal notranslate"><span class="pre">RewardValidatorBase.validate_orders()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#source.environment.simple_label_annotator.SimpleLabelAnnotator"><code class="docutils literal notranslate"><span class="pre">SimpleLabelAnnotator</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#source.environment.simple_label_annotator.SimpleLabelAnnotator.annotate"><code class="docutils literal notranslate"><span class="pre">SimpleLabelAnnotator.annotate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.environment.simple_label_annotator.SimpleLabelAnnotator.get_output_classes"><code class="docutils literal notranslate"><span class="pre">SimpleLabelAnnotator.get_output_classes()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#source.environment.trading_environment.TradingEnvironment"><code class="docutils literal notranslate"><span class="pre">TradingEnvironment</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#source.environment.trading_environment.TradingEnvironment.TEST_MODE"><code class="docutils literal notranslate"><span class="pre">TradingEnvironment.TEST_MODE</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.environment.trading_environment.TradingEnvironment.TRAIN_MODE"><code class="docutils literal notranslate"><span class="pre">TradingEnvironment.TRAIN_MODE</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.environment.trading_environment.TradingEnvironment.action_space"><code class="docutils literal notranslate"><span class="pre">TradingEnvironment.action_space</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.environment.trading_environment.TradingEnvironment.close"><code class="docutils literal notranslate"><span class="pre">TradingEnvironment.close()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.environment.trading_environment.TradingEnvironment.get_broker"><code class="docutils literal notranslate"><span class="pre">TradingEnvironment.get_broker()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.environment.trading_environment.TradingEnvironment.get_data_for_iteration"><code class="docutils literal notranslate"><span class="pre">TradingEnvironment.get_data_for_iteration()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.environment.trading_environment.TradingEnvironment.get_environment_length"><code class="docutils literal notranslate"><span class="pre">TradingEnvironment.get_environment_length()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.environment.trading_environment.TradingEnvironment.get_environment_spatial_data_dimension"><code class="docutils literal notranslate"><span class="pre">TradingEnvironment.get_environment_spatial_data_dimension()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.environment.trading_environment.TradingEnvironment.get_labeled_data"><code class="docutils literal notranslate"><span class="pre">TradingEnvironment.get_labeled_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.environment.trading_environment.TradingEnvironment.get_mode"><code class="docutils literal notranslate"><span class="pre">TradingEnvironment.get_mode()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.environment.trading_environment.TradingEnvironment.get_trading_consts"><code class="docutils literal notranslate"><span class="pre">TradingEnvironment.get_trading_consts()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.environment.trading_environment.TradingEnvironment.get_trading_data"><code class="docutils literal notranslate"><span class="pre">TradingEnvironment.get_trading_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.environment.trading_environment.TradingEnvironment.metadata"><code class="docutils literal notranslate"><span class="pre">TradingEnvironment.metadata</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.environment.trading_environment.TradingEnvironment.np_random"><code class="docutils literal notranslate"><span class="pre">TradingEnvironment.np_random</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.environment.trading_environment.TradingEnvironment.observation_space"><code class="docutils literal notranslate"><span class="pre">TradingEnvironment.observation_space</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.environment.trading_environment.TradingEnvironment.render"><code class="docutils literal notranslate"><span class="pre">TradingEnvironment.render()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.environment.trading_environment.TradingEnvironment.render_mode"><code class="docutils literal notranslate"><span class="pre">TradingEnvironment.render_mode</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.environment.trading_environment.TradingEnvironment.reset"><code class="docutils literal notranslate"><span class="pre">TradingEnvironment.reset()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.environment.trading_environment.TradingEnvironment.reward_range"><code class="docutils literal notranslate"><span class="pre">TradingEnvironment.reward_range</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.environment.trading_environment.TradingEnvironment.set_mode"><code class="docutils literal notranslate"><span class="pre">TradingEnvironment.set_mode()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.environment.trading_environment.TradingEnvironment.spec"><code class="docutils literal notranslate"><span class="pre">TradingEnvironment.spec</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.environment.trading_environment.TradingEnvironment.step"><code class="docutils literal notranslate"><span class="pre">TradingEnvironment.step()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.environment.trading_environment.TradingEnvironment.unwrapped"><code class="docutils literal notranslate"><span class="pre">TradingEnvironment.unwrapped</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="indicators.html">Indicators Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model.html">Model Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plotting.html">Plotting Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="training.html">Training Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Utils Module</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="data_handling.html" title="previous chapter">Data Handling Module</a></li>
+      <li>Next: <a href="indicators.html" title="next chapter">Indicators Module</a></li>
+  </ul></li>
+</ul>
+</div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
       <div class="documentwrapper">
         <div class="bodywrapper">
           
@@ -592,124 +707,8 @@ environment to be updated.</p>
           
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="Main">
-        <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="../index.html">Crypto Evolution</a></h1>
-
-
-
-
-
-
-
-
-<h3>Navigation</h3>
-<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="agent.html">Agent Module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="data_handling.html">Data Handling Module</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Environment Module</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#source.environment.broker.Broker"><code class="docutils literal notranslate"><span class="pre">Broker</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#source.environment.broker.Broker.get_current_orders"><code class="docutils literal notranslate"><span class="pre">Broker.get_current_orders()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.environment.broker.Broker.get_leverage"><code class="docutils literal notranslate"><span class="pre">Broker.get_leverage()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.environment.broker.Broker.place_order"><code class="docutils literal notranslate"><span class="pre">Broker.place_order()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.environment.broker.Broker.reset"><code class="docutils literal notranslate"><span class="pre">Broker.reset()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.environment.broker.Broker.update_orders"><code class="docutils literal notranslate"><span class="pre">Broker.update_orders()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#source.environment.label_annotator_base.LabelAnnotatorBase"><code class="docutils literal notranslate"><span class="pre">LabelAnnotatorBase</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#source.environment.label_annotator_base.LabelAnnotatorBase.annotate"><code class="docutils literal notranslate"><span class="pre">LabelAnnotatorBase.annotate()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.environment.label_annotator_base.LabelAnnotatorBase.get_output_classes"><code class="docutils literal notranslate"><span class="pre">LabelAnnotatorBase.get_output_classes()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#source.environment.labeled_data_balancer.LabeledDataBalancer"><code class="docutils literal notranslate"><span class="pre">LabeledDataBalancer</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#source.environment.labeled_data_balancer.LabeledDataBalancer.balance"><code class="docutils literal notranslate"><span class="pre">LabeledDataBalancer.balance()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#source.environment.order.Order"><code class="docutils literal notranslate"><span class="pre">Order</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#source.environment.points_reward_validator.PointsRewardValidator"><code class="docutils literal notranslate"><span class="pre">PointsRewardValidator</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#source.environment.points_reward_validator.PointsRewardValidator.validate_orders"><code class="docutils literal notranslate"><span class="pre">PointsRewardValidator.validate_orders()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#source.environment.price_reward_validator.PriceRewardValidator"><code class="docutils literal notranslate"><span class="pre">PriceRewardValidator</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#source.environment.price_reward_validator.PriceRewardValidator.validate_orders"><code class="docutils literal notranslate"><span class="pre">PriceRewardValidator.validate_orders()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#source.environment.reward_validator_base.RewardValidatorBase"><code class="docutils literal notranslate"><span class="pre">RewardValidatorBase</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#source.environment.reward_validator_base.RewardValidatorBase.validate_orders"><code class="docutils literal notranslate"><span class="pre">RewardValidatorBase.validate_orders()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#source.environment.simple_label_annotator.SimpleLabelAnnotator"><code class="docutils literal notranslate"><span class="pre">SimpleLabelAnnotator</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#source.environment.simple_label_annotator.SimpleLabelAnnotator.annotate"><code class="docutils literal notranslate"><span class="pre">SimpleLabelAnnotator.annotate()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.environment.simple_label_annotator.SimpleLabelAnnotator.get_output_classes"><code class="docutils literal notranslate"><span class="pre">SimpleLabelAnnotator.get_output_classes()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#source.environment.trading_environment.TradingEnvironment"><code class="docutils literal notranslate"><span class="pre">TradingEnvironment</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#source.environment.trading_environment.TradingEnvironment.TEST_MODE"><code class="docutils literal notranslate"><span class="pre">TradingEnvironment.TEST_MODE</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.environment.trading_environment.TradingEnvironment.TRAIN_MODE"><code class="docutils literal notranslate"><span class="pre">TradingEnvironment.TRAIN_MODE</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.environment.trading_environment.TradingEnvironment.action_space"><code class="docutils literal notranslate"><span class="pre">TradingEnvironment.action_space</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.environment.trading_environment.TradingEnvironment.close"><code class="docutils literal notranslate"><span class="pre">TradingEnvironment.close()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.environment.trading_environment.TradingEnvironment.get_broker"><code class="docutils literal notranslate"><span class="pre">TradingEnvironment.get_broker()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.environment.trading_environment.TradingEnvironment.get_data_for_iteration"><code class="docutils literal notranslate"><span class="pre">TradingEnvironment.get_data_for_iteration()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.environment.trading_environment.TradingEnvironment.get_environment_length"><code class="docutils literal notranslate"><span class="pre">TradingEnvironment.get_environment_length()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.environment.trading_environment.TradingEnvironment.get_environment_spatial_data_dimension"><code class="docutils literal notranslate"><span class="pre">TradingEnvironment.get_environment_spatial_data_dimension()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.environment.trading_environment.TradingEnvironment.get_labeled_data"><code class="docutils literal notranslate"><span class="pre">TradingEnvironment.get_labeled_data()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.environment.trading_environment.TradingEnvironment.get_mode"><code class="docutils literal notranslate"><span class="pre">TradingEnvironment.get_mode()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.environment.trading_environment.TradingEnvironment.get_trading_consts"><code class="docutils literal notranslate"><span class="pre">TradingEnvironment.get_trading_consts()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.environment.trading_environment.TradingEnvironment.get_trading_data"><code class="docutils literal notranslate"><span class="pre">TradingEnvironment.get_trading_data()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.environment.trading_environment.TradingEnvironment.metadata"><code class="docutils literal notranslate"><span class="pre">TradingEnvironment.metadata</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.environment.trading_environment.TradingEnvironment.np_random"><code class="docutils literal notranslate"><span class="pre">TradingEnvironment.np_random</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.environment.trading_environment.TradingEnvironment.observation_space"><code class="docutils literal notranslate"><span class="pre">TradingEnvironment.observation_space</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.environment.trading_environment.TradingEnvironment.render"><code class="docutils literal notranslate"><span class="pre">TradingEnvironment.render()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.environment.trading_environment.TradingEnvironment.render_mode"><code class="docutils literal notranslate"><span class="pre">TradingEnvironment.render_mode</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.environment.trading_environment.TradingEnvironment.reset"><code class="docutils literal notranslate"><span class="pre">TradingEnvironment.reset()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.environment.trading_environment.TradingEnvironment.reward_range"><code class="docutils literal notranslate"><span class="pre">TradingEnvironment.reward_range</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.environment.trading_environment.TradingEnvironment.set_mode"><code class="docutils literal notranslate"><span class="pre">TradingEnvironment.set_mode()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.environment.trading_environment.TradingEnvironment.spec"><code class="docutils literal notranslate"><span class="pre">TradingEnvironment.spec</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.environment.trading_environment.TradingEnvironment.step"><code class="docutils literal notranslate"><span class="pre">TradingEnvironment.step()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source.environment.trading_environment.TradingEnvironment.unwrapped"><code class="docutils literal notranslate"><span class="pre">TradingEnvironment.unwrapped</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="indicators.html">Indicators Module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="model.html">Model Module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="plotting.html">Plotting Module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="training.html">Training Module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="utils.html">Utils Module</a></li>
-</ul>
-
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="../index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="data_handling.html" title="previous chapter">Data Handling Module</a></li>
-      <li>Next: <a href="indicators.html" title="next chapter">Indicators Module</a></li>
-  </ul></li>
-</ul>
-</div>
-<search id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</search>
-<script>document.getElementById('searchbox').style.display = "block"</script>
-
-
-
-
-
-
-
-
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
+    <div class="clearer"></div>
+  </div>
     <div class="footer">
       &#169;2024-2025, Roch Fedorowicz.
       
