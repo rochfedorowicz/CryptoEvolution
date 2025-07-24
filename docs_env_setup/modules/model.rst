@@ -1,12 +1,27 @@
 Model Module
 ============
 
+.. automodule:: source.model.model_adapters.model_adapter_base
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: source.model.model_adapters.sklearn_model_adapter
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: source.model.model_adapters.tf_model_adapter
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 .. automodule:: source.model.model_blue_prints.base_blue_print
    :members:
    :undoc-members:
    :show-inheritance:
 
-.. automodule:: source.model.model_blue_prints.mock_blue_print
+.. automodule:: source.model.model_blue_prints.general_sklearn_blue_print
    :members:
    :undoc-members:
    :show-inheritance:
