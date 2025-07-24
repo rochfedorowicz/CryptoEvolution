@@ -5,3 +5,8 @@ Data Handling Module
    :members:
    :undoc-members:
    :show-inheritance:
+
+.. automodule:: source.data_handling.coinbase_handler
+   :members:
+   :undoc-members:
+   :show-inheritance:

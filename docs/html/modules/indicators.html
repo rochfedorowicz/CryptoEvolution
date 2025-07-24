@@ -1,19 +1,16 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Indicators Module &#8212; Crypto Evolution 0.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=12dfc556" />
+    <script src="../_static/documentation_options.js?v=2709fde1"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Model Module" href="model.html" />
@@ -36,17 +33,17 @@
           <div class="body" role="main">
             
   <section id="module-source.indicators.donchain_channels_indicator">
-<span id="indicators-module"></span><h1>Indicators Module<a class="headerlink" href="#module-source.indicators.donchain_channels_indicator" title="Permalink to this heading">¶</a></h1>
+<span id="indicators-module"></span><h1>Indicators Module<a class="headerlink" href="#module-source.indicators.donchain_channels_indicator" title="Link to this heading">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="source.indicators.donchain_channels_indicator.DonchainChannelsIndicatorHandler">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DonchainChannelsIndicatorHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">window_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">20</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.indicators.donchain_channels_indicator.DonchainChannelsIndicatorHandler" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DonchainChannelsIndicatorHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">window_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">20</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.indicators.donchain_channels_indicator.DonchainChannelsIndicatorHandler" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#source.indicators.indicator_base.IndicatorHandlerBase" title="source.indicators.indicator_base.IndicatorHandlerBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">IndicatorHandlerBase</span></code></a></p>
 <p>Implements donchain channels indicator. It indicates the highest and the
 lowest price for the certain period, creating so called channel. It also
 calculates average price as the average of the lowest and the highest price.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="source.indicators.donchain_channels_indicator.DonchainChannelsIndicatorHandler.calculate">
-<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#source.indicators.donchain_channels_indicator.DonchainChannelsIndicatorHandler.calculate" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#source.indicators.donchain_channels_indicator.DonchainChannelsIndicatorHandler.calculate" title="Link to this definition">¶</a></dt>
 <dd><p>Calculates donchain channels indicator values for given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -63,16 +60,16 @@ calculates average price as the average of the lowest and the highest price.</p>
 
 </dd></dl>
 
-<span class="target" id="module-source.indicators.moving_volume_profile_indicator"></span><dl class="py class">
+<dl class="py class" id="module-source.indicators.moving_volume_profile_indicator">
 <dt class="sig sig-object py" id="source.indicators.moving_volume_profile_indicator.MovingVolumeProfileIndicatorHandler">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MovingVolumeProfileIndicatorHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">window_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">14</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_of_steps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">40</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.indicators.moving_volume_profile_indicator.MovingVolumeProfileIndicatorHandler" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MovingVolumeProfileIndicatorHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">window_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">14</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_of_steps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">40</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.indicators.moving_volume_profile_indicator.MovingVolumeProfileIndicatorHandler" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#source.indicators.volume_profile_indicator.VolumeProfileIndicatorHandler" title="source.indicators.volume_profile_indicator.VolumeProfileIndicatorHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">VolumeProfileIndicatorHandler</span></code></a></p>
 <p>Implements moving volume profile indicator. Uses normal volume profile indicator
 to calculate volume profile for the given window size. It denotes volume traded
 at certain price over the period given by window size.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="source.indicators.moving_volume_profile_indicator.MovingVolumeProfileIndicatorHandler.calculate">
-<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#source.indicators.moving_volume_profile_indicator.MovingVolumeProfileIndicatorHandler.calculate" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#source.indicators.moving_volume_profile_indicator.MovingVolumeProfileIndicatorHandler.calculate" title="Link to this definition">¶</a></dt>
 <dd><p>Calculates moving volume profile indicator values for given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -89,16 +86,16 @@ at certain price over the period given by window size.</p>
 
 </dd></dl>
 
-<span class="target" id="module-source.indicators.volume_profile_indicator"></span><dl class="py class">
+<dl class="py class" id="module-source.indicators.volume_profile_indicator">
 <dt class="sig sig-object py" id="source.indicators.volume_profile_indicator.VolumeProfileIndicatorHandler">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">VolumeProfileIndicatorHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">number_of_steps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">40</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.indicators.volume_profile_indicator.VolumeProfileIndicatorHandler" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">VolumeProfileIndicatorHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">number_of_steps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">40</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.indicators.volume_profile_indicator.VolumeProfileIndicatorHandler" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#source.indicators.indicator_base.IndicatorHandlerBase" title="source.indicators.indicator_base.IndicatorHandlerBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">IndicatorHandlerBase</span></code></a></p>
 <p>Implements static volume profile indicator. It denotes volume traded at
 certain price levels. Calculated data can not be directly mapped to input
 data and should be treated as the separate chart.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="source.indicators.volume_profile_indicator.VolumeProfileIndicatorHandler.calculate">
-<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#source.indicators.volume_profile_indicator.VolumeProfileIndicatorHandler.calculate" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#source.indicators.volume_profile_indicator.VolumeProfileIndicatorHandler.calculate" title="Link to this definition">¶</a></dt>
 <dd><p>Calculates static volume profile indicator values for given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -115,16 +112,16 @@ data and should be treated as the separate chart.</p>
 
 </dd></dl>
 
-<span class="target" id="module-source.indicators.stochastic_oscillator_indicator"></span><dl class="py class">
+<dl class="py class" id="module-source.indicators.stochastic_oscillator_indicator">
 <dt class="sig sig-object py" id="source.indicators.stochastic_oscillator_indicator.StochasticOscillatorIndicatorHandler">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">StochasticOscillatorIndicatorHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">window_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">14</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_period</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.indicators.stochastic_oscillator_indicator.StochasticOscillatorIndicatorHandler" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">StochasticOscillatorIndicatorHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">window_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">14</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_period</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.indicators.stochastic_oscillator_indicator.StochasticOscillatorIndicatorHandler" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#source.indicators.indicator_base.IndicatorHandlerBase" title="source.indicators.indicator_base.IndicatorHandlerBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">IndicatorHandlerBase</span></code></a></p>
 <p>Implements stochastic oscillator indicator. It describes how expensive or cheap
 current price is over the given period. Result of calculation is percentage
 assuming values over 80% for expensive and under 20% for cheap price.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="source.indicators.stochastic_oscillator_indicator.StochasticOscillatorIndicatorHandler.calculate">
-<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#source.indicators.stochastic_oscillator_indicator.StochasticOscillatorIndicatorHandler.calculate" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#source.indicators.stochastic_oscillator_indicator.StochasticOscillatorIndicatorHandler.calculate" title="Link to this definition">¶</a></dt>
 <dd><p>Calculates stochastic oscillator indicator values for given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -141,15 +138,15 @@ assuming values over 80% for expensive and under 20% for cheap price.</p>
 
 </dd></dl>
 
-<span class="target" id="module-source.indicators.indicator_base"></span><dl class="py class">
+<dl class="py class" id="module-source.indicators.indicator_base">
 <dt class="sig sig-object py" id="source.indicators.indicator_base.IndicatorHandlerBase">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">IndicatorHandlerBase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.indicators.indicator_base.IndicatorHandlerBase" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">IndicatorHandlerBase</span></span><a class="headerlink" href="#source.indicators.indicator_base.IndicatorHandlerBase" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
 <p>Base class for indicators. Enforces certain functions to be implemented
 in derivative classes.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="source.indicators.indicator_base.IndicatorHandlerBase.calculate">
-<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#source.indicators.indicator_base.IndicatorHandlerBase.calculate" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#source.indicators.indicator_base.IndicatorHandlerBase.calculate" title="Link to this definition">¶</a></dt>
 <dd><p>Calculates indicator values for given data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -173,7 +170,7 @@ in derivative classes.</p>
           
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper">
 <h1 class="logo"><a href="../index.html">Crypto Evolution</a></h1>
 
@@ -188,13 +185,32 @@ in derivative classes.</p>
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="agent.html">Agent Module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="aws.html">AWS Module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="coinbase.html">Coinbase Module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data_handling.html">Data Handling Module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="environment.html">Environment Module</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Indicators Module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Indicators Module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#source.indicators.donchain_channels_indicator.DonchainChannelsIndicatorHandler"><code class="docutils literal notranslate"><span class="pre">DonchainChannelsIndicatorHandler</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#source.indicators.donchain_channels_indicator.DonchainChannelsIndicatorHandler.calculate"><code class="docutils literal notranslate"><span class="pre">DonchainChannelsIndicatorHandler.calculate()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#source.indicators.moving_volume_profile_indicator.MovingVolumeProfileIndicatorHandler"><code class="docutils literal notranslate"><span class="pre">MovingVolumeProfileIndicatorHandler</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#source.indicators.moving_volume_profile_indicator.MovingVolumeProfileIndicatorHandler.calculate"><code class="docutils literal notranslate"><span class="pre">MovingVolumeProfileIndicatorHandler.calculate()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#source.indicators.volume_profile_indicator.VolumeProfileIndicatorHandler"><code class="docutils literal notranslate"><span class="pre">VolumeProfileIndicatorHandler</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#source.indicators.volume_profile_indicator.VolumeProfileIndicatorHandler.calculate"><code class="docutils literal notranslate"><span class="pre">VolumeProfileIndicatorHandler.calculate()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#source.indicators.stochastic_oscillator_indicator.StochasticOscillatorIndicatorHandler"><code class="docutils literal notranslate"><span class="pre">StochasticOscillatorIndicatorHandler</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#source.indicators.stochastic_oscillator_indicator.StochasticOscillatorIndicatorHandler.calculate"><code class="docutils literal notranslate"><span class="pre">StochasticOscillatorIndicatorHandler.calculate()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#source.indicators.indicator_base.IndicatorHandlerBase"><code class="docutils literal notranslate"><span class="pre">IndicatorHandlerBase</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#source.indicators.indicator_base.IndicatorHandlerBase.calculate"><code class="docutils literal notranslate"><span class="pre">IndicatorHandlerBase.calculate()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="model.html">Model Module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="paperspace.html">Paperspace Module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="plotting.html">Plotting Module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="training.html">Training Module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="utils.html">Utils Module</a></li>
@@ -209,7 +225,7 @@ in derivative classes.</p>
   </ul></li>
 </ul>
 </div>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
@@ -217,7 +233,7 @@ in derivative classes.</p>
       <input type="submit" value="Go" />
     </form>
     </div>
-</div>
+</search>
 <script>document.getElementById('searchbox').style.display = "block"</script>
 
 
@@ -235,7 +251,7 @@ in derivative classes.</p>
       &#169;2024-2025, Roch Fedorowicz.
       
       |
-      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 5.1.1</a>
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.4.7</a>
       &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
       
       |

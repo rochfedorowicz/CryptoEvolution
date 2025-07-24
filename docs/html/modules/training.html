@@ -1,19 +1,16 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Training Module &#8212; Crypto Evolution 0.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=12dfc556" />
+    <script src="../_static/documentation_options.js?v=2709fde1"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Utils Module" href="utils.html" />
@@ -36,98 +33,44 @@
           <div class="body" role="main">
             
   <section id="module-source.training.training_config">
-<span id="training-module"></span><h1>Training Module<a class="headerlink" href="#module-source.training.training_config" title="Permalink to this heading">¶</a></h1>
+<span id="training-module"></span><h1>Training Module<a class="headerlink" href="#module-source.training.training_config" title="Link to this heading">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="source.training.training_config.TrainingConfig">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TrainingConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nr_of_steps:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nr_of_episodes:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_blue_print:</span> <span class="pre">~source.model.model_blue_prints.base_blue_print.BaseBluePrint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_path:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_budget:</span> <span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_amount_of_trades:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window_size:</span> <span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validator:</span> <span class="pre">~source.environment.reward_validator_base.RewardValidatorBase</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sell_stop_loss:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sell_take_profit:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">1.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buy_stop_loss:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buy_take_profit:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">1.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">penalty_starts:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">penalty_stops:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">static_reward_adjustment:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">policy:</span> <span class="pre">~rl.policy.Policy</span> <span class="pre">=</span> <span class="pre">&lt;rl.policy.BoltzmannQPolicy</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizer:</span> <span class="pre">~tensorflow.python.keras.optimizer_v2.optimizer_v2.OptimizerV2</span> <span class="pre">=</span> <span class="pre">&lt;tensorflow.python.keras.optimizer_v2.adam.Adam</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repeat_test:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_ratio:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0.2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.training.training_config.TrainingConfig" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TrainingConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nr_of_steps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nr_of_episodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_blue_print</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">BluePrintBase</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_budget</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_amount_of_trades</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learning_strategy_handler</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="agent.html#source.agent.strategies.learning_strategy_handler_base.LearningStrategyHandlerBase" title="source.agent.strategies.learning_strategy_handler_base.LearningStrategyHandlerBase"><span class="pre">LearningStrategyHandlerBase</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">testing_strategy_handler</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="agent.html#source.agent.strategies.testing_strategy_handler_base.TestingStrategyHandlerBase" title="source.agent.strategies.testing_strategy_handler_base.TestingStrategyHandlerBase"><span class="pre">TestingStrategyHandlerBase</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">sell_stop_loss</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sell_take_profit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buy_stop_loss</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buy_take_profit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">penalty_starts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">penalty_stops</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">static_reward_adjustment</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repeat_test</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_ratio</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="environment.html#source.environment.reward_validator_base.RewardValidatorBase" title="source.environment.reward_validator_base.RewardValidatorBase"><span class="pre">RewardValidatorBase</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_annotator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="environment.html#source.environment.label_annotator_base.LabelAnnotatorBase" title="source.environment.label_annotator_base.LabelAnnotatorBase"><span class="pre">LabelAnnotatorBase</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labeled_data_balancer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="environment.html#source.environment.labeled_data_balancer.LabeledDataBalancer" title="source.environment.labeled_data_balancer.LabeledDataBalancer"><span class="pre">LabeledDataBalancer</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.training.training_config.TrainingConfig" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Responsible for creating and configuring training environment and agent.</p>
-<p>This class encapsulates all configuration parameters needed for training
-and testing a trading agent, including environment setup, agent creation,
-and reward validation. It provides a centralized way to manage training
-parameters and instantiate required components.</p>
+<p>Implements a configuration class for training agents in a trading environment. It encapsulates
+all necessary parameters for training, including the number of steps, episodes, model blueprint,
+data path, initial budget, maximum amount of trades, window size, and various reward parameters.
+It also provides methods for instantiating an agent handler and printing the configuration.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="source.training.training_config.TrainingConfig.instantiate_agent">
-<span class="sig-name descname"><span class="pre">instantiate_agent</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="agent.html#source.agent.agent_handler.AgentHandler" title="source.agent.agent_handler.AgentHandler"><span class="pre">AgentHandler</span></a></span></span><a class="headerlink" href="#source.training.training_config.TrainingConfig.instantiate_agent" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates and returns an AgentHandler based on the configuration.</p>
-<p>Uses the model blueprint to create a neural network model with the correct
-input and output dimensions based on the environment’s observation and action
-spaces. Then wraps this model in an AgentHandler with the specified policy
-and optimizer.</p>
+<dt class="sig sig-object py" id="source.training.training_config.TrainingConfig.instantiate_agent_handler">
+<span class="sig-name descname"><span class="pre">instantiate_agent_handler</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="agent.html#source.agent.agent_handler.AgentHandler" title="source.agent.agent_handler.AgentHandler"><span class="pre">AgentHandler</span></a></span></span><a class="headerlink" href="#source.training.training_config.TrainingConfig.instantiate_agent_handler" title="Link to this definition">¶</a></dt>
+<dd><p>Instantiates the agent handler with the configured environment and strategies.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Configured agent handler ready for training.</p>
+<dd class="field-odd"><p>An instance of the agent handler configured with the model blueprint,
+trading environment, learning strategy handler and testing strategy handler.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="agent.html#source.agent.agent_handler.AgentHandler" title="source.agent.agent_handler.AgentHandler">AgentHandler</a></p>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>RuntimeError</strong> – If environment has not been instantiated first.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="source.training.training_config.TrainingConfig.instantiate_environment">
-<span class="sig-name descname"><span class="pre">instantiate_environment</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="environment.html#source.environment.trading_environment.TradingEnvironment" title="source.environment.trading_environment.TradingEnvironment"><span class="pre">TradingEnvironment</span></a></span></span><a class="headerlink" href="#source.training.training_config.TrainingConfig.instantiate_environment" title="Permalink to this definition">¶</a></dt>
-<dd><p>Creates and returns a TradingEnvironment based on the configuration.</p>
-<p>Instantiates a new trading environment with the parameters specified
-in this config. Stores the created environment internally for later use
-when creating the agent.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Configured trading environment ready for training.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="environment.html#source.environment.trading_environment.TradingEnvironment" title="source.environment.trading_environment.TradingEnvironment">TradingEnvironment</a></p>
+<dd class="field-even"><p>(<a class="reference internal" href="agent.html#source.agent.agent_handler.AgentHandler" title="source.agent.agent_handler.AgentHandler">AgentHandler</a>)</p>
 </dd>
 </dl>
 </dd></dl>
 
 </dd></dl>
 
-<span class="target" id="module-source.training.training_handler"></span><dl class="py class">
+<dl class="py class" id="module-source.training.training_handler">
 <dt class="sig sig-object py" id="source.training.training_handler.TrainingHandler">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TrainingHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#source.training.training_config.TrainingConfig" title="source.training.training_config.TrainingConfig"><span class="pre">TrainingConfig</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">page_width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">612.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">page_height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">792.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">heading_spacing</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">caption_font_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">14</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text_font_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">font_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Courier'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">margins</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'bottom':</span> <span class="pre">30,</span> <span class="pre">'left':</span> <span class="pre">30,</span> <span class="pre">'right':</span> <span class="pre">30,</span> <span class="pre">'top':</span> <span class="pre">30}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_from_logs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">['ETA']</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.training.training_handler.TrainingHandler" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TrainingHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#source.training.training_config.TrainingConfig" title="source.training.training_config.TrainingConfig"><span class="pre">TrainingConfig</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">page_width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">612.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">page_height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">792.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">heading_spacing</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">caption_font_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">14</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text_font_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">font_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Courier'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">margins</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'bottom':</span> <span class="pre">30,</span> <span class="pre">'left':</span> <span class="pre">30,</span> <span class="pre">'right':</span> <span class="pre">30,</span> <span class="pre">'top':</span> <span class="pre">30}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_from_logs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">['ETA']</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.training.training_handler.TrainingHandler" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Responsible for orchestrating the training process and report generation.</p>
 <p>This class manages the complete training workflow, from initializing the
 environment and agent, running training and testing sessions, to generating
 PDF reports with performance visualizations and logs. It serves as the main
 entry point for executing and documenting trading agent training.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="source.training.training_handler.TrainingHandler.CAPTION_FONT_SIZE">
-<span class="sig-name descname"><span class="pre">CAPTION_FONT_SIZE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">14</span></em><a class="headerlink" href="#source.training.training_handler.TrainingHandler.CAPTION_FONT_SIZE" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="source.training.training_handler.TrainingHandler.EXCLUDE_FROM_LOGS">
-<span class="sig-name descname"><span class="pre">EXCLUDE_FROM_LOGS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['ETA']</span></em><a class="headerlink" href="#source.training.training_handler.TrainingHandler.EXCLUDE_FROM_LOGS" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="source.training.training_handler.TrainingHandler.FONT_NAME">
-<span class="sig-name descname"><span class="pre">FONT_NAME</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Courier'</span></em><a class="headerlink" href="#source.training.training_handler.TrainingHandler.FONT_NAME" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="source.training.training_handler.TrainingHandler.HEADING_SPACING">
-<span class="sig-name descname"><span class="pre">HEADING_SPACING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">20</span></em><a class="headerlink" href="#source.training.training_handler.TrainingHandler.HEADING_SPACING" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="source.training.training_handler.TrainingHandler.MARGINS">
-<span class="sig-name descname"><span class="pre">MARGINS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'bottom':</span> <span class="pre">30,</span> <span class="pre">'left':</span> <span class="pre">30,</span> <span class="pre">'right':</span> <span class="pre">30,</span> <span class="pre">'top':</span> <span class="pre">30}</span></em><a class="headerlink" href="#source.training.training_handler.TrainingHandler.MARGINS" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="source.training.training_handler.TrainingHandler.TEXT_FONT_SIZE">
-<span class="sig-name descname"><span class="pre">TEXT_FONT_SIZE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">8</span></em><a class="headerlink" href="#source.training.training_handler.TrainingHandler.TEXT_FONT_SIZE" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="source.training.training_handler.TrainingHandler.generate_report">
-<span class="sig-name descname"><span class="pre">generate_report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path_to_pdf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#source.training.training_handler.TrainingHandler.generate_report" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">generate_report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path_to_pdf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#source.training.training_handler.TrainingHandler.generate_report" title="Link to this definition">¶</a></dt>
 <dd><p>Generates a comprehensive PDF report of training and testing results.</p>
 <p>Creates a multi-page report with logs, training history plots, and test
 results visualizations based on the data collected during training.</p>
@@ -140,7 +83,7 @@ results visualizations based on the data collected during training.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="source.training.training_handler.TrainingHandler.run_training">
-<span class="sig-name descname"><span class="pre">run_training</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callbacks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">tensorflow.python.keras.callbacks.Callback</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights_load_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights_save_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#source.training.training_handler.TrainingHandler.run_training" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">run_training</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callbacks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Callback</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights_load_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights_save_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#source.training.training_handler.TrainingHandler.run_training" title="Link to this definition">¶</a></dt>
 <dd><p>Executes the training and testing process for the trading agent.</p>
 <p>This method orchestrates the complete training workflow, capturing logs,
 training the agent, and testing its performance. It populates internal
@@ -165,7 +108,7 @@ data structures with results that can later be used for report generation.</p>
           
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper">
 <h1 class="logo"><a href="../index.html">Crypto Evolution</a></h1>
 
@@ -180,15 +123,23 @@ data structures with results that can later be used for report generation.</p>
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="agent.html">Agent Module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="aws.html">AWS Module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="coinbase.html">Coinbase Module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data_handling.html">Data Handling Module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="environment.html">Environment Module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="indicators.html">Indicators Module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="model.html">Model Module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="paperspace.html">Paperspace Module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="plotting.html">Plotting Module</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Training Module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Training Module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#source.training.training_config.TrainingConfig"><code class="docutils literal notranslate"><span class="pre">TrainingConfig</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#source.training.training_config.TrainingConfig.instantiate_agent_handler"><code class="docutils literal notranslate"><span class="pre">TrainingConfig.instantiate_agent_handler()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#source.training.training_handler.TrainingHandler"><code class="docutils literal notranslate"><span class="pre">TrainingHandler</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#source.training.training_handler.TrainingHandler.generate_report"><code class="docutils literal notranslate"><span class="pre">TrainingHandler.generate_report()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.training.training_handler.TrainingHandler.run_training"><code class="docutils literal notranslate"><span class="pre">TrainingHandler.run_training()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="utils.html">Utils Module</a></li>
 </ul>
 
@@ -201,7 +152,7 @@ data structures with results that can later be used for report generation.</p>
   </ul></li>
 </ul>
 </div>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
@@ -209,7 +160,7 @@ data structures with results that can later be used for report generation.</p>
       <input type="submit" value="Go" />
     </form>
     </div>
-</div>
+</search>
 <script>document.getElementById('searchbox').style.display = "block"</script>
 
 
@@ -227,7 +178,7 @@ data structures with results that can later be used for report generation.</p>
       &#169;2024-2025, Roch Fedorowicz.
       
       |
-      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 5.1.1</a>
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.4.7</a>
       &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
       
       |
