@@ -1,7 +1,10 @@
 # model/model_building_blocks/vgg16_block.py
 
+# global imports
 import tensorflow as tf
-from tensorflow.keras.layers import SeparableConv2D, Conv2D, MaxPooling2D, BatchNormalization, Activation, Add
+from tensorflow.keras.layers import Activation, Add, BatchNormalization, Conv2D, MaxPooling2D, SeparableConv2D
+
+# local imports
 
 class XceptionBlock:
     """

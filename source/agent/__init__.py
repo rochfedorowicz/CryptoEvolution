@@ -1,3 +1,14 @@
 # agent/__init__.py
 
+from .strategies.performance_testable import PerformanceTestable
+from .strategies.classification_testable import ClassificationTestable
+from .agents.agent_base import AgentBase
+from .strategies.learning_strategy_handler_base import LearningStrategyHandlerBase
+from .strategies.testing_strategy_handler_base import TestingStrategyHandlerBase
 from .agent_handler import AgentHandler
+from .agents.reinforcement_learning_agent import ReinforcementLearningAgent
+from .agents.classification_learning_agent import ClassificationLearningAgent
+from .strategies.reinforcement_learning_strategy_handler import ReinforcementLearningStrategyHandler
+from .strategies.classification_learning_strategy_handler import ClassificationLearningStrategyHandler
+from .strategies.performance_testing_strategy_handler import PerformanceTestingStrategyHandler
+from .strategies.classification_testing_strategy_handler import ClassificationTestingStrategyHandler

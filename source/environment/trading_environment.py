@@ -1,33 +1,39 @@
 # environment/trading environment.py
 
-from gym import Env
-from gym.spaces import Discrete, Box
-import pandas as pd
-import numpy as np
-from sklearn.preprocessing import StandardScaler
+# global imports
+import copy
+import logging
 import math
+import numpy as np
+import pandas as pd
 import random
+from gym import Env
+from gym.spaces import Box, Discrete
+from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import train_test_split
+from tensorflow.keras.utils import to_categorical
 from types import SimpleNamespace
 from typing import Optional
-import copy
 
-from .broker import Broker
-from .reward_validator_base import RewardValidatorBase
+# local imports
+from source.environment import Broker, LabelAnnotatorBase, LabeledDataBalancer, RewardValidatorBase
 
 class TradingEnvironment(Env):
     """
     Implements stock market environment that actor can perform actions (place orders) in.
-    It is used to train Neural Network models with reinforcement learning approach. Can be
-    configure to award points and impose a penalty in a several way.
+    It is used to train various models using various approaches. Can be
+    configured to award points and impose a penalty in several ways.
     """
 
+    # global class constants
     TRAIN_MODE = 'train'
     TEST_MODE = 'test'
 
     def __init__(self, data_path: str, initial_budget: float, max_amount_of_trades: int, window_size: int,
-                 validator: RewardValidatorBase, sell_stop_loss: float, sell_take_profit: float,
-                 buy_stop_loss: float, buy_take_profit: float, test_ratio: float = 0.2, penalty_starts: int = 0,
-                 penalty_stops: int = 10, static_reward_adjustment: float = 1) -> None:
+                 validator: RewardValidatorBase, label_annotator: LabelAnnotatorBase, sell_stop_loss: float,
+                 sell_take_profit: float, buy_stop_loss: float, buy_take_profit: float, test_ratio: float = 0.2,
+                 penalty_starts: int = 0, penalty_stops: int = 10, static_reward_adjustment: float = 1,
+                 labeled_data_balancer: Optional[LabeledDataBalancer] = None) -> None:
         """
         Class constructor. Allows to define all crucial constans, reward validation methods,
         environmental penalty policies, etc.
@@ -42,6 +48,9 @@ class TradingEnvironment(Env):
                 into at certain iteration.
             validator (RewardValidatorBase): Validator implementing policy used to award points
                 for closed trades.
+            label_annotator (LabelAnnotatorBase): Annotator implementing policy used to label
+                data with target values. It is used to provide supervised agents with information
+                about what is the target class value for certain iteration.
             sell_stop_loss (float): Constant used to define losing boundary at which sell order
                 (short) is closed.
             sell_take_profit (float): Constant used to define winning boundary at which sell order
@@ -58,6 +67,8 @@ class TradingEnvironment(Env):
                 Reward for trading periods exceeding penalty stop constant will equal minus static reward adjustment.
             static_reward_adjustment (float): Constant use to penalize trader for bad choices or
                 reward it for good one.
+            labeled_data_balancer (Optional[LabeledDataBalancer]): Balancer used to balance
+                labeled data. If None, no balancing will be performed.
         """
 
         if test_ratio < 0.0 or test_ratio >= 1.0:
@@ -67,6 +78,8 @@ class TradingEnvironment(Env):
         self.__mode = TradingEnvironment.TRAIN_MODE
         self.__broker: Broker = Broker()
         self.__validator: RewardValidatorBase = validator
+        self.__label_annotator: LabelAnnotatorBase = label_annotator
+        self.__labeled_data_balancer: Optional[LabeledDataBalancer] = labeled_data_balancer
 
         self.__trading_data: SimpleNamespace = SimpleNamespace()
         self.__trading_data.current_budget: float = initial_budget
@@ -88,6 +101,7 @@ class TradingEnvironment(Env):
         self.__trading_consts.PROFITABILITY_FUNCTION = lambda x: -1.0 * math.exp(-x + 1) + 1
         self.__trading_consts.PENALTY_FUNCTION = lambda x: \
             min(1, 1 - math.tanh(-3.0 * (x - penalty_stops) / (penalty_stops - penalty_starts)))
+        self.__trading_consts.OUTPUT_CLASSES: int = vars(self.__label_annotator.get_output_classes())
 
         self.current_iteration: int = self.__trading_consts.WINDOW_SIZE
         self.state: list[float] = self.__prepare_state_data()
@@ -117,7 +131,26 @@ class TradingEnvironment(Env):
             TradingEnvironment.TEST_MODE: data_frame.iloc[dividing_index:].reset_index(drop=True)
         }
 
-    def __prepare_state_data(self) -> list[float]:
+    def __prepare_labeled_data(self) -> pd.DataFrame:
+        """
+        Prepares labeled data for training the model with classification approach.
+        It extracts the relevant features and labels from the environment's data.
+
+        Returns:
+            (pd.DataFrame): A DataFrame containing the features and labels for training.
+        """
+
+        new_rows = []
+        for i in range(self.current_iteration, self.get_environment_length() - 1):
+            data_row = self.__prepare_state_data(slice(i - self.__trading_consts.WINDOW_SIZE, i), include_trading_data = False)
+            new_rows.append(data_row)
+
+        new_data = pd.DataFrame(new_rows, columns=[f"feature_{i}" for i in range(len(new_rows[0]))])
+        labels = self.__label_annotator.annotate(self.__data[self.__mode]).shift(-self.current_iteration)
+
+        return new_data, labels.dropna()
+
+    def __prepare_state_data(self, index: Optional[slice] = None, include_trading_data: bool = True) -> list[float]:
         """
         Calculates state data as a list of floats representing current iteration's observation.
         Observations contains all input data refined to window size and couple of coefficients
@@ -127,19 +160,24 @@ class TradingEnvironment(Env):
            (list[float]): List with current observations for environment.
         """
 
-        current_market_data = self.__data[self.__mode].iloc[self.current_iteration - self.__trading_consts.WINDOW_SIZE : self.current_iteration]
+        if index is None:
+            index = slice(self.current_iteration - self.__trading_consts.WINDOW_SIZE, self.current_iteration)
+
+        current_market_data = self.__data[self.__mode].iloc[index]
         current_market_data_no_index = current_market_data.select_dtypes(include = [np.number])
         normalized_current_market_data_values = pd.DataFrame(StandardScaler().fit_transform(current_market_data_no_index),
                                                              columns = current_market_data_no_index.columns).values
         current_marked_data_list = normalized_current_market_data_values.ravel().tolist()
 
-        current_normalized_budget = 1.0 * self.__trading_data.current_budget / self.__trading_consts.INITIAL_BUDGET
-        current_profitability_coeff = self.__trading_consts.PROFITABILITY_FUNCTION(current_normalized_budget)
-        current_trades_occupancy_coeff = 1.0 * self.__trading_data.currently_placed_trades  / self.__trading_consts.MAX_AMOUNT_OF_TRADES
-        current_no_trades_penalty_coeff = self.__trading_consts.PENALTY_FUNCTION(self.__trading_data.no_trades_placed_for)
-        current_inner_state_list = [current_profitability_coeff, current_trades_occupancy_coeff, current_no_trades_penalty_coeff]
+        if include_trading_data:
+            current_normalized_budget = 1.0 * self.__trading_data.current_budget / self.__trading_consts.INITIAL_BUDGET
+            current_profitability_coeff = self.__trading_consts.PROFITABILITY_FUNCTION(current_normalized_budget)
+            current_trades_occupancy_coeff = 1.0 * self.__trading_data.currently_placed_trades  / self.__trading_consts.MAX_AMOUNT_OF_TRADES
+            current_no_trades_penalty_coeff = self.__trading_consts.PENALTY_FUNCTION(self.__trading_data.no_trades_placed_for)
+            current_inner_state_list = [current_profitability_coeff, current_trades_occupancy_coeff, current_no_trades_penalty_coeff]
+            current_marked_data_list += current_inner_state_list
 
-        return current_marked_data_list + current_inner_state_list
+        return current_marked_data_list
 
     def set_mode(self, mode: str) -> None:
         """
@@ -216,20 +254,62 @@ class TradingEnvironment(Env):
 
         return (self.__trading_consts.WINDOW_SIZE, self.__data[self.__mode].shape[1] - 1)
 
-    def get_data_for_iteration(self, columns: list[str], start: int, stop: int, step: int = 1) -> list[float]:
+    def get_labeled_data(self, should_split: bool = True, should_balance: bool = True,
+                         verbose: bool = True) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
         """
-        Data for certain iterations getter.
+        Prepares labeled data for training or testing the model.
+        It extracts the relevant features and labels from the environment's data.
+
+        Parameters:
+            should_split (bool): Whether to split the data into training and testing sets.
+                Defaults to True. If set to False, testing data will be empty.
+            should_balance (bool): Whether to balance the labeled data. Defaults to True.
+                Will be ignored if labeled_data_balancer is None.
+            verbose (bool): Whether to log the class cardinality before and after balancing.
+                Defaults to True.
+
+        Returns:
+            (tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]): A tuple containing the
+                input data, output data, test input data, and test output data.
+        """
+
+        input_data, output_data = self.__prepare_labeled_data()
+        input_data_test, output_data_test = [], []
+        if verbose:
+            logging.info(f"Original class cardinality: {np.array(to_categorical(output_data)).sum(axis = 0)}")
+
+        if self.__mode == TradingEnvironment.TRAIN_MODE:
+            if should_split:
+                input_data, input_data_test, output_data, output_data_test = \
+                    train_test_split(input_data, output_data, test_size = 0.1, random_state = 42,
+                                     stratify = output_data)
+
+            if self.__labeled_data_balancer is not None and should_balance:
+                input_data, output_data = self.__labeled_data_balancer.balance(input_data, output_data)
+                if verbose:
+                    logging.info(f"Balanced class cardinality: {np.array(to_categorical(output_data)).sum(axis = 0)}")
+
+        return copy.copy((np.array(input_data), np.array(output_data),
+                          np.array(input_data_test), np.array(output_data_test)))
+
+    def get_data_for_iteration(self, columns: list[str], start: int = 0, stop: Optional[int] = None,
+                               step: int = 1) -> list[float]:
+        """
+        Data getter for certain iterations.
 
         Parameters:
             columns (list[str]): List of column names to extract from data.
-            start (int): Start iteration index.
-            stop (int): Stop iteration index.
-            step (int): Step between iterations. Default is 1.
+            start (int): Start iteration index. Defaults to 0.
+            stop (int): Stop iteration index. Defaults to environment length minus one.
+            step (int): Step between iterations. Defaults to 1.
 
         Returns:
             (list[float]): Copy of part of data with specified columns
                 over specified iterations.
         """
+
+        if stop is None:
+            stop = self.get_environment_length() - 1
 
         return copy.copy(self.__data[self.__mode].loc[start:stop:step, columns].values.ravel().tolist())
 

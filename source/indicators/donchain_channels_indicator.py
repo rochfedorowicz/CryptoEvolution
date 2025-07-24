@@ -1,6 +1,10 @@
-# indicators/donchain_channels_indicator.py 
+# indicators/donchain_channels_indicator.py
 
-from .indicator_base import *
+# global imports
+import pandas as pd
+
+# local imports
+from source.indicators import IndicatorHandlerBase
 
 class DonchainChannelsIndicatorHandler(IndicatorHandlerBase):
     """
@@ -18,7 +22,7 @@ class DonchainChannelsIndicatorHandler(IndicatorHandlerBase):
         """
 
         self.window_size = window_size
-    
+
     def calculate(self, data: pd.DataFrame) -> pd.DataFrame:
         """
         Calculates donchain channels indicator values for given data.
@@ -34,5 +38,5 @@ class DonchainChannelsIndicatorHandler(IndicatorHandlerBase):
         donchian_df['upper_channel'] = data['high'].rolling(window = self.window_size, min_periods = 1).max()
         donchian_df['lower_channel'] = data['low'].rolling(window = self.window_size, min_periods = 1).min()
         donchian_df['middle_channel'] = (donchian_df['upper_channel'] + donchian_df['lower_channel']) / 2
-        
+
         return donchian_df

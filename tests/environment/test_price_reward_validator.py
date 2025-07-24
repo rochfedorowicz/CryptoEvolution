@@ -1,15 +1,17 @@
 # tests/environment/test_price_reward_validator.py
 
-from unittest import TestCase
-from ddt import ddt, data, unpack
+# global imports
 import logging
+from ddt import data, ddt, unpack
+from unittest import TestCase
 
+# local imports
 from source.environment import Order, PriceRewardValidator
 
 @ddt
 class PriceRewardValidatorTestCase(TestCase):
     """
-    Test case PriceRewardValidator class. Stores all the test cases 
+    Test case PriceRewardValidator class. Stores all the test cases
     and allows for convenient test case execution.
     """
 
@@ -21,7 +23,7 @@ class PriceRewardValidatorTestCase(TestCase):
 
         logging.info("Setting up test environment.")
         self.validator = PriceRewardValidator(1.0, False)
-    
+
     def tearDown(self) -> None:
         """
         Tear down function responsible for cleaning up all the
@@ -29,12 +31,12 @@ class PriceRewardValidatorTestCase(TestCase):
         """
 
         logging.info("Tearing down test environment.")
-    
+
     def __update_sut(self, **kwargs) -> None:
         """
         Allows to update already created sut. It speeds up test
         cases' scenarios by enabling injecting certain values
-        also into private sut members. 
+        also into private sut members.
         """
 
         for name, value in kwargs.items():
@@ -54,7 +56,7 @@ class PriceRewardValidatorTestCase(TestCase):
         """
         Tests PointsRewardValidator's validate orders functionality.
 
-        Verifies that policy used for points calculation works in 
+        Verifies that policy used for points calculation works in
         accordance with the assumptions.
 
         Asserts:

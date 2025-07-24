@@ -1,13 +1,14 @@
 # tests/agent/test_training_handler.py
 
+# global imports
 import logging
+from ddt import ddt
 from unittest import TestCase
 from unittest.mock import Mock, patch
-from ddt import ddt
 
-from source.training import TrainingHandler
-from source.training import TrainingConfig
-from source.agent import AgentHandler
+# local imports
+from source.agent import AgentHandler, ReinforcementLearningStrategyHandler, PerformanceTestingStrategyHandler
+from source.training import TrainingConfig, TrainingHandler
 
 @ddt
 class TrainingHandlerTestCase(TestCase):
@@ -27,10 +28,10 @@ class TrainingHandlerTestCase(TestCase):
         mock_config.nr_of_steps = 2000
         mock_config.nr_of_episodes = 10
         mock_config.repeat_test = 1
-        mock_config.instantiate_agent.return_value = Mock(spec = AgentHandler)
+        mock_config.instantiate_agent_handler.return_value = Mock(spec = AgentHandler)
 
         self.__sut: TrainingHandler = TrainingHandler(mock_config)
-        self.__mocked_agent_handler = mock_config.instantiate_agent.return_value
+        self.__mocked_agent_handler = mock_config.instantiate_agent_handler.return_value
 
     def tearDown(self) -> None:
         """
@@ -65,12 +66,39 @@ class TrainingHandlerTestCase(TestCase):
         """
 
         logging.info("Attempting to instantiate environment from TrainingConfig.")
+        mocked_train_key_1 = "mocked_train_key_1"
+        mocked_train_key_2 = "mocked_train_key_2"
+        mocked_train_data_1 = {"mocked_train_metric_1": 1}
+        mocked_train_data_2 = {"mocked_train_metric_2": 2}
+        mocked_test_key_1 = "mocked_test_key_1"
+        mocked_test_key_2 = "mocked_test_key_2"
+        mocked_test_data_1 = {"mocked_test_metric_1": 1}
+        mocked_test_data_2 = {"mocked_test_metric_2": 2}
         self.__mocked_agent_handler.print_model_summary.return_value = "Mocked model summary"
+        self.__mocked_agent_handler.train_agent.return_value = ([mocked_train_key_1, mocked_train_key_2],
+                                                                [mocked_train_data_1, mocked_train_data_2])
+        self.__mocked_agent_handler.test_agent.return_value = ({0: [mocked_test_key_1, mocked_test_key_2]},
+                                                               {0: [mocked_test_data_1, mocked_test_data_2]})
+
+        logging.info("Invoking run_training.")
         self.__sut.run_training()
 
         logging.info("Validating expected calls.")
+        self.__mocked_agent_handler.print_model_summary.assert_called_once()
         self.__mocked_agent_handler.train_agent.assert_called_once()
         self.__mocked_agent_handler.test_agent.assert_called_once()
+        self.assertEqual(self.__sut._TrainingHandler__generated_data, {
+            'train': {
+                mocked_train_key_1: mocked_train_data_1,
+                mocked_train_key_2: mocked_train_data_2
+            },
+            'test': {
+                0: {
+                    mocked_test_key_1: mocked_test_data_1,
+                    mocked_test_key_2: mocked_test_data_2
+                }
+            }
+        })
 
     @patch('reportlab.pdfgen.canvas.Canvas', new_callable = Mock)
     def test_training_handler_generate_report(self, mock_pdf: Mock = Mock()) -> None:
@@ -96,15 +124,19 @@ class TrainingHandlerTestCase(TestCase):
         self.__update_sut(_TrainingHandler__generated_data = {
             'train':
                 {
-                    'nb_steps': [100, 200],
-                    'episode_reward': [0.9, 0.3]
+                    ReinforcementLearningStrategyHandler.PLOTTING_KEY: {
+                        'nb_steps': [100, 200],
+                        'episode_reward': [0.9, 0.3]
+                    }
                  },
             'test': {
-                1: {
-                        'assets_values': [1000, 1100],
-                        'currency_prices': [80000, 81000],
-                        'iterations': [10, 20],
-                        'solvency_coefficient': 10,
+                0: {
+                        PerformanceTestingStrategyHandler.PLOTTING_KEY: {
+                            'assets_values': [1000, 1100],
+                            'currency_prices': [80000, 81000],
+                            'iterations': [10, 20],
+                            'solvency_coefficient': 10
+                        }
                     }
                 }
             }

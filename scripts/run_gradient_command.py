@@ -1,12 +1,15 @@
 # scripts/run_gradient_command.py
 
-import logging
-from source.paperspace import GradientHandler
+# global imports
 import argparse
+import logging
 from datetime import datetime
 from typing import Optional
 
-def str_to_dict(environment_dict_str: str) -> dict:
+# local imports
+from source.utils import GradientHandler
+
+def __str_to_dict(environment_dict_str: str) -> dict:
     environment_dict = dict()
 
     if not environment_dict_str:
@@ -37,7 +40,7 @@ def main(command: str, url: Optional[str] = None, notebook_name: Optional[str] =
     try:
         gradient_handler = GradientHandler()
         notebook_id = gradient_handler.create_notebook(command, url, notebook_name, machines,
-                                                       timeout, str_to_dict(environment))
+                                                       timeout, __str_to_dict(environment))
         if notebook_id is not None:
             logging.info(f'Instantiated training run successfully on notebook {notebook_id}.')
 

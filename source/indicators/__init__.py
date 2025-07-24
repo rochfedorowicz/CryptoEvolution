@@ -1,5 +1,6 @@
 # indicators/__init__.py
 
+from .indicator_base import IndicatorHandlerBase
 from .donchain_channels_indicator import DonchainChannelsIndicatorHandler
 from .stochastic_oscillator_indicator import StochasticOscillatorIndicatorHandler
 from .volume_profile_indicator import VolumeProfileIndicatorHandler

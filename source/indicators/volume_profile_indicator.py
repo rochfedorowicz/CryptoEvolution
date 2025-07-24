@@ -1,7 +1,12 @@
 # indicators/volume_profile_indicator.py
 
-from .indicator_base import *
+# global imports
+import numpy as np
+import pandas as pd
 from collections import defaultdict
+
+# local imports
+from source.indicators import IndicatorHandlerBase
 
 class VolumeProfileIndicatorHandler(IndicatorHandlerBase):
     """

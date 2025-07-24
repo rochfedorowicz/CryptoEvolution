@@ -1,5 +1,5 @@
 # scripts/create_data.py
- 
+
 # global imports
 import argparse
 import asyncio
@@ -9,11 +9,10 @@ import os
 import sys
 
 # local imports
-from source.aws import AWSHandler
-from source.data_handling.data_handler import DataHandler
+from source.data_handling import DataHandler
 from source.indicators import DonchainChannelsIndicatorHandler, \
     MovingVolumeProfileIndicatorHandler, StochasticOscillatorIndicatorHandler
-from source.utils import Granularity
+from source.utils import AWSHandler, Granularity
 
 def str_to_granularity(granularity_str):
     granularity_map = {
@@ -73,7 +72,7 @@ if __name__ == "__main__":
     parser.add_argument('--list_of_indicators', type = str, required = False,
                         help = '''List of indicators, that looks like: indicator_1,indicator_2,...,indicator_N.
                         Possible indicators are: donchain_channels, moving_volume_profile, stochastic_oscillator.''')
-    
+
     if sys.platform.startswith('win'):
         policy = asyncio.WindowsSelectorEventLoopPolicy()
     else:

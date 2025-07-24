@@ -1,31 +1,22 @@
-# tests/agent/test_training_config.py
+# tests/training/test_training_config.py
 
+# global imports
 import logging
-import pandas as pd
-import re
+from ddt import data, ddt, unpack
+from typing import Any
 from unittest import TestCase
 from unittest.mock import Mock, patch
-from ddt import ddt, data, unpack
-from typing import Any
-from types import SimpleNamespace
-from tensorflow.keras import Model
 
+# local imports
+from source.agent import AgentHandler, LearningStrategyHandlerBase, TestingStrategyHandlerBase
+from source.environment import TradingEnvironment
+from source.model import BluePrintBase
 from source.training import TrainingConfig
-from source.environment.mock_validator import MockRewardValidator
-from source.model import MockBluePrint
 
+# file constants
 INITIAL_BUDGET = 1000.0
 MAX_AMOUNT_OF_TRADES = 5
 WINDOW_SIZE = 48
-MOCKED_CSV_DATA = pd.DataFrame(data={
-    'low': [20000.0, 20500.0, 20100.0, 20100.0, 20000.0],
-    'high': [20900.0, 20900.0, 21000.0, 20900.0, 21700.0],
-    'open': [20050.0, 20600.0, 20400.0, 20800.0, 20200.0],
-    'close': [20600.0, 20400.0, 20800.0, 20200.0, 20900.0],
-    'volume': [1000.0, 1200.0, 1100.0, 1300.0, 900.0]
-}, index = pd.DatetimeIndex(['2020-03-01', '2020-03-02', '2020-03-03',
-                             '2020-03-04', '2020-03-05'], name='time'))
-MEMORY_LOCATION_IDENTIFIER_REGEX = r'\'.*\': <.* at 0x[0-9a-fA-F]+>'
 
 @ddt
 class TrainingConfigTestCase(TestCase):
@@ -43,18 +34,19 @@ class TrainingConfigTestCase(TestCase):
         logging.info("Setting up test environment.")
         nr_of_steps = 2000
         nr_of_episodes = 100
-        model_blue_print = MockBluePrint(Model())
+        self.__mocked_model_blue_print = Mock(spec = BluePrintBase)
+        self.__mocked_learning_strategy_handler = Mock(spec = LearningStrategyHandlerBase)
         data_path = "mock/path/to/data/set"
-        validator = MockRewardValidator(lambda: 0)
 
         self.__sut: TrainingConfig = TrainingConfig(nr_of_steps = nr_of_steps,
                                                     nr_of_episodes = nr_of_episodes,
-                                                    model_blue_print = model_blue_print,
+                                                    model_blue_print = self.__mocked_model_blue_print,
                                                     data_path = data_path,
                                                     initial_budget = INITIAL_BUDGET,
                                                     max_amount_of_trades = MAX_AMOUNT_OF_TRADES,
                                                     window_size = WINDOW_SIZE,
-                                                    validator = validator)
+                                                    learning_strategy_handler = self.__mocked_learning_strategy_handler,
+                                                    testing_strategy_handler = Mock(spec = TestingStrategyHandlerBase))
 
     def tearDown(self) -> None:
         """
@@ -99,14 +91,17 @@ class TrainingConfigTestCase(TestCase):
             "\tpenalty_starts: 0\n"
             "\tpenalty_stops: 10\n"
             "\tstatic_reward_adjustment: 1\n"
-            "\tvalidator: MockRewardValidator\n"
+            "\tvalidator: PriceRewardValidator\n"
+            "\t\t{'_PriceRewardValidator__coefficient': 1.0, '_PriceRewardValidator__normalizable': False}\n"
+            "\tlabel_annotator: SimpleLabelAnnotator\n"
+            "\t\t{'_output_classes': namespace(UP_TREND=0, DOWN_TREND=1, NO_TREND=2), '_SimpleLabelAnnotator__threshold': 0.01}\n"
+            "\tlabeled_data_balancer: None\n"
+            "\tmodel_blue_print: BluePrintBase\n"
             "\t\t{}\n"
-            "\tmodel_blue_print: MockBluePrint\n"
+            "\tlearning_strategy_handler: LearningStrategyHandlerBase\n"
             "\t\t{}\n"
-            "\tpolicy: BoltzmannQPolicy\n"
-            "\t\t{'tau': 1.0, 'clip': (-500.0, 500.0)}\n"
-            "\toptimizer: Adam\n"
-            "\t\t{'learning_rate': 0.001, 'decay': 0.0, 'beta_1': 0.9, 'beta_2': 0.999}\n")
+            "\ttesting_strategy_handler: TestingStrategyHandlerBase\n"
+            "\t\t{}\n")
     )
     @unpack
     def test_training_config___str__(self, params_to_update: dict[str, Any], expected_serialization_str: str) -> None:
@@ -127,71 +122,33 @@ class TrainingConfigTestCase(TestCase):
 
         logging.info("Attempting to serialize TrainingConfig.")
         self.__update_sut(**params_to_update)
-        result = str(self.__sut)
-        sanitized_result = re.sub(MEMORY_LOCATION_IDENTIFIER_REGEX, '', result)
+
+        with patch('builtins.vars', side_effect = lambda obj: {} if isinstance(obj, Mock) else obj.__dict__):
+            logging.info("Serializing TrainingConfig with updated parameters.")
+            result = str(self.__sut)
 
         logging.info("Validating expected result.")
-        self.assertEqual(sanitized_result, expected_serialization_str)
+        self.assertEqual(result, expected_serialization_str)
 
-    @patch('pandas.read_csv', new_callable = Mock)
-    @data(
-        ({}, SimpleNamespace(
-            INITIAL_BUDGET = INITIAL_BUDGET,
-            MAX_AMOUNT_OF_TRADES = MAX_AMOUNT_OF_TRADES,
-            WINDOW_SIZE = WINDOW_SIZE,
-            SELL_STOP_LOSS = 0.8,
-            SELL_TAKE_PROFIT = 1.2,
-            BUY_STOP_LOSS = 0.8,
-            BUY_TAKE_PROFIT = 1.2,
-            STATIC_REWARD_ADJUSTMENT = 1,
-            PENALTY_STARTS = 0,
-            PENALTY_STOPS = 10)
-        )
-    )
-    @unpack
-    def test_training_config_instantiate_environment(self, params_to_update: dict[str, Any],
-                                                     expected_training_consts: SimpleNamespace,
-                                                     mock_pd_read_csv: Mock) -> None:
+    @patch.object(TradingEnvironment, '__new__')
+    def test_training_config_instantiate_agent_handler(self, mocked_environment_constructor: Mock) -> None:
         """
-        Tests TrainingConfig's instantiate_environment functionality.
+        Tests TrainingConfig's instantiate_agent_handler functionality.
 
-        Verifies that instantiate_environment correctly creates a TradingEnvironment
-        with the expected configuration constants. Uses a mock for pandas.read_csv
-        to provide test data.
-
-        Parameters:
-            params_to_update: Dictionary with parameters to update in the training config.
-            expected_trading_consts: SimpleNamespace containing expected trading constants.
-            mock_pd_read_csv: Mock for pandas.read_csv function.
+        Verifies that the instantiate_agent_handler method correctly creates an AgentHandler.
 
         Asserts:
-            All trading constants in the instantiated environment match the expected values.
+            The created AgentHandler is associated with the mocked environment.
         """
 
-        logging.info("Attempting to instantiate environment from TrainingConfig.")
-        self.__update_sut(**params_to_update)
+        logging.info("Attempting to instantiate agent from TrainingConfig.")
+        mocked_environment_constructor.return_value = Mock(spec = TradingEnvironment)
 
-        mock_pd_read_csv.return_value = MOCKED_CSV_DATA
-        result = self.__sut.instantiate_environment()
+        logging.info("Invoking instantiate_agent_handler.")
+        agent_handler = self.__sut.instantiate_agent_handler()
 
-        logging.info("Validating returned environment.")
-        for const_name, expected_value in expected_training_consts.__dict__.items():
-            self.assertEqual(getattr(result.get_trading_consts(), const_name), expected_value)
-
-    def test_training_config_instantiate_agent__environment_not_instantiated(self) -> None:
-        """
-        Tests TrainingConfig's instantiate_agent error handling when environment is not instantiated.
-
-        Verifies that attempting to instantiate an agent without first instantiating
-        the environment raises a RuntimeError. This enforces the required sequence
-        of environment creation before agent creation.
-
-        Asserts:
-            A RuntimeError is raised when instantiate_agent is called before instantiate_environment.
-        """
-
-        logging.info("Attempting to instantiate agent from TrainingConfig without environment.")
-
-        logging.info("Validating expected errors to be raised.")
-        with self.assertRaises(RuntimeError) as context:
-            self.__sut.instantiate_agent()
+        logging.info("Validating expected calls and results.")
+        self.__mocked_learning_strategy_handler. \
+            create_agent.assert_called_once_with(self.__mocked_model_blue_print,
+                                                 mocked_environment_constructor.return_value)
+        self.assertTrue(isinstance(agent_handler, AgentHandler))

@@ -1,53 +1,73 @@
 # scripts/train_model.py
 
-import logging
-import json
-import os
+# global imports
 import argparse
+import json
+import logging
+import os
 import urllib.parse
-from typing import Any, Type
+import warnings
 from datetime import datetime
+from typing import Any
 
-from source.training import TrainingHandler, TrainingConfig
-from source.paperspace import GradientHandler
-from source.utils import CallbackFromStringConverter, ValidatorFromStringConverter, \
-    ModelBluePrintFromStringConverter, OptimizerFromStringConverter, PolicyFromStringConverter
-from source.aws import AWSHandler
+# local imports
+from source.training import TrainingConfig, TrainingHandler
+from source.utils import AWSHandler, DynamicFromStringConverter, GradientHandler
 
-CONVERTER_TYPE_MAP: dict[str, Type[Any]] = {
-            'model_blue_print': ModelBluePrintFromStringConverter,
-            'validator': ValidatorFromStringConverter,
-            'optimizer': OptimizerFromStringConverter,
-            'policy': PolicyFromStringConverter
-        }
+# suppress or filter out warnings
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+warnings.filterwarnings('ignore', category = DeprecationWarning)
+warnings.filterwarnings('ignore', category=  FutureWarning)
+warnings.filterwarnings('ignore', category = UserWarning)
 
-def __apply_string_converter(dict: dict, converter_type: Type[Any]) -> Any:
-        name = dict.get('name', None)
-        params = dict.get('parameters', None)
-        converter_instance = converter_type(**params)
-        return converter_instance.convert_from_string(name)
+def __attempt_from_string_conversion(presumed_dict: Any) -> Any:
+    if isinstance(presumed_dict, dict):
+        class_name = presumed_dict.get('class_name', None)
+        parameters = presumed_dict.get('parameters', None)
+        class_type = presumed_dict.get('class_type', None)
+        if (class_name is None or parameters is None) and class_type is None:
+            logging.error("Failed to convert from string!")
+            raise ValueError("Wrongly constructed configuration file! "
+                             "Dictionaries must contain 'class_name' and 'parameters' keys "
+                             "to be converted to an instance of a class or 'class_type' key to"
+                             " be converted to a type.")
+
+        if class_type is not None:
+            return DynamicFromStringConverter().get_class_handle(class_type)
+
+        for param_key, param_value in parameters.items():
+            parameters[param_key] = __attempt_from_string_conversion(param_value)
+
+        class_handle = DynamicFromStringConverter().get_class_handle(class_name)
+        return class_handle(**parameters)
+
+    elif isinstance(presumed_dict, list):
+        return [__attempt_from_string_conversion(item) for item in presumed_dict]
+
+    else:
+        return presumed_dict
 
 def __get_local_path(file_path: str) -> str:
         try:
             url_parsed = urllib.parse.urlparse(file_path)
             if url_parsed.netloc != '' and url_parsed.scheme != '':
                 if url_parsed.scheme == 's3':
-                    logging.info('Loading configuration from S3 bucket...')
-                    aws_handler = AWSHandler(os.getenv('ROLE_NAME'))
+                    logging.info(f'Loading {file_path} from S3 bucket...')
+                    aws_handler = AWSHandler()
                     file_name = '/'.join(file_path.split('/')[3:])
                     aws_handler.download_file_from_s3(os.getenv('BUCKET_NAME'), file_name)
                 else:
-                    logging.info('Loading configuration from public URL...')
+                    logging.info(f'Loading {file_path} from public URL...')
                     response = urllib.request.urlopen(file_path)
                     response.raise_for_status()
                     local_file = open(file_path.split('/')[-1], 'wb')
                     local_file.write(response.read())
                 local_path = os.getcwd() + '/' + file_path.split('/')[-1]
             else:
-                logging.info('Loading configuration from local file...')
+                logging.info(f'Loading {file_path} from local...')
                 local_path = file_path
         except Exception as e:
-            logging.error(f'Failed to get local path for {file_path}!')
+            logging.error(f'Failed to localize {file_path}!')
             logging.error(e)
             raise e
 
@@ -55,20 +75,21 @@ def __get_local_path(file_path: str) -> str:
 
 def main(config_path: str, invoked_inside_gradient: bool = False) -> None:
     try:
+        DynamicFromStringConverter().register_packages(['source',  'typing', 'imblearn', 'sklearn', 'tensorflow'])
+
         config_local_path = __get_local_path(config_path)
         config = json.load(open(config_local_path, 'r'))
         for key, value in config['training_config'].items():
-            if isinstance(value, dict):
-                config['training_config'][key] = __apply_string_converter(value, CONVERTER_TYPE_MAP[key])
+            config['training_config'][key] = __attempt_from_string_conversion(value)
 
-        s3_data_set_name = config['data_set_name']
-        config['training_config']['data_path'] = __get_local_path(s3_data_set_name)
+        data_set_name = config['data_set_name']
+        config['training_config']['data_path'] = __get_local_path(data_set_name)
 
         callbacks = []
-        callback_dict = config.get('callbacks', None)
-        if callback_dict is not None:
-            for key, value in callback_dict.items():
-                callbacks += CallbackFromStringConverter(**value).convert_from_string(key)
+        callback_dicts_list = config.get('callbacks', None)
+        if callback_dicts_list is not None:
+            for callback_dict in callback_dicts_list:
+                callbacks.append(__attempt_from_string_conversion(callback_dict))
 
         weights_load_path = None
         weights_file_name = config.get('weights_file_name', None)
@@ -78,10 +99,10 @@ def main(config_path: str, invoked_inside_gradient: bool = False) -> None:
         training_handler = TrainingHandler(TrainingConfig(**config['training_config']))
         training_handler.run_training(callbacks = callbacks, weights_load_path = weights_load_path)
 
-        report_name = f"Report from {datetime.now().__format__('%Y-%m-%d_%H_%M_%S')}.pdf"
+        report_name = f"Report_{datetime.now().__format__('%Y-%m-%d_%H_%M_%S')}.pdf"
         report_path = os.getcwd() + '\\' + report_name
         training_handler.generate_report(report_path)
-        aws_handler = AWSHandler(os.getenv('ROLE_NAME'))
+        aws_handler = AWSHandler()
         aws_handler.upload_file_to_s3(os.getenv('BUCKET_NAME'), report_path, report_name)
 
     except Exception as e:

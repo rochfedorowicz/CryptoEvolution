@@ -1,17 +1,16 @@
 # tests/agent/test_agent_handler.py
 
+# global imports
 import logging
-from unittest import TestCase
-from unittest.mock import Mock, patch
-from ddt import ddt, data, unpack
-from tensorflow.keras import Model
-from tensorflow.keras.optimizers import Optimizer
-from rl.policy import Policy
-from rl.agents import DQNAgent
+from ddt import ddt
 from types import SimpleNamespace
+from unittest import TestCase
+from unittest.mock import Mock
 
-from source.agent import AgentHandler
+# local imports
+from source.agent import AgentBase, AgentHandler, LearningStrategyHandlerBase, TestingStrategyHandlerBase
 from source.environment import TradingEnvironment
+from source.model import BluePrintBase
 
 @ddt
 class AgentHandlerTestCase(TestCase):
@@ -20,23 +19,22 @@ class AgentHandlerTestCase(TestCase):
     and allows for convenient test case execution.
     """
 
-    @patch('rl.agents.DQNAgent', new_callable = Mock)
-    def setUp(self, mock_dqn_agent) -> None:
+    def setUp(self) -> None:
         """
         Setup function responsible for creation of system under
         test (sut) for this class.
         """
 
         logging.info("Setting up test environment.")
-        mock_dqn_agent.return_value = Mock(spec = DQNAgent)
-        model = Model()
-        policy = Policy()
-        nr_of_actions = 5
-        optimizer = Optimizer(name = 'adam')
+        self.__mocked_environment: TradingEnvironment = Mock(spec = TradingEnvironment)
+        self.__mocked_agent: AgentBase = Mock(spec = AgentBase)
+        self.__mocked_learning_strategy_handler: LearningStrategyHandlerBase = Mock(spec = LearningStrategyHandlerBase)
+        self.__mocked_learning_strategy_handler.create_agent.return_value = self.__mocked_agent
+        self.__mocked_testing_strategy_handler: TestingStrategyHandlerBase = Mock(spec = TestingStrategyHandlerBase)
 
-        self.__sut: AgentHandler = AgentHandler(model, policy, nr_of_actions, optimizer)
-        self.__mocked_dqn_agent = mock_dqn_agent.return_value
-        self.__mocked_dqn_agent.compile.assert_called_once_with(optimizer)
+        self.__sut: AgentHandler = AgentHandler(Mock(spec = BluePrintBase), self.__mocked_environment,
+                                                self.__mocked_learning_strategy_handler,
+                                                self.__mocked_testing_strategy_handler)
 
     def tearDown(self) -> None:
         """
@@ -63,90 +61,101 @@ class AgentHandlerTestCase(TestCase):
         """
         Tests AgentHandler's train_agent functionality.
 
-        Verifies that the train_agent method correctly loads weights, fits
-        the model to the environment, and saves the model weights after training.
-        Mocks are used to isolate the test from actual model training.
+        Verifies that the train_agent method correctly loads model, fits
+        the underlying agent to the environment using learning strategy,
+        and saves the model afterwards.
 
         Asserts:
-            The appropriate methods on the DQNAgent are called with correct parameters.
+            The agent's load_model method is called with the correct path.
+            The environment's set_mode is called with TRAIN_MODE.
+            The learning strategy handler's fit method is called with the correct parameters.
+            The agent's save_model method is called with the correct path.
+            The returned keys and report_data match the mocked values.
         """
 
-        logging.info("Attempt to train agent with loading weights.")
-        mock_environment = Mock(spec = TradingEnvironment)
+        logging.info("Attempt to train agent.")
+        mocked_keys = ['mocked_key1', 'mocked_key2']
+        mocked_report_data = [{'mocked_metric1': 0.1}, {'mocked_metric2': 0.2}]
+        self.__mocked_learning_strategy_handler.fit.return_value = (mocked_keys, mocked_report_data)
         nr_of_steps = 1000
-        steps_per_episode = 50
-        weights_load_path = "mock/path/to/load/weights.h5"
-        weights_save_path = "mock/path/to/save/weights.h5"
+        nr_of_episodes = 10
+        model_load_path = "mock/path/to/load/model.ext"
+        model_save_path = "mock/path/to/save/model.ext"
         callbacks = []
 
-        self.__sut.train_agent(mock_environment, nr_of_steps, steps_per_episode,
-                                callbacks = callbacks,
-                                weights_load_path = weights_load_path,
-                                weights_save_path = weights_save_path)
+        logging.info("Invoking train_agent.")
+        keys, report_data = self.__sut.train_agent(nr_of_steps, nr_of_episodes, callbacks = callbacks,
+                                                   model_load_path = model_load_path,
+                                                   model_save_path = model_save_path)
 
-        logging.info("Validating expected calls.")
-        self.__mocked_dqn_agent.load_weights.assert_called_once_with(weights_load_path)
-        self.__mocked_dqn_agent.fit.assert_called_once_with(mock_environment, nr_of_steps,
-                                                            callbacks = callbacks,
-                                                            log_interval = steps_per_episode,
-                                                            nb_max_episode_steps = steps_per_episode)
-        self.__mocked_dqn_agent.save_weights.assert_called_once_with(weights_save_path)
+        logging.info("Validating expected calls and results.")
+        self.__mocked_agent.load_model.assert_called_once_with(model_load_path)
+        self.__mocked_environment.set_mode.assert_called_once_with(TradingEnvironment.TRAIN_MODE)
+        self.__mocked_learning_strategy_handler.fit. \
+            assert_called_once_with(self.__mocked_agent, self.__mocked_environment, nr_of_steps,
+                                    nr_of_episodes, callbacks)
+        self.__mocked_agent.save_model.assert_called_once_with(model_save_path)
+        self.assertEqual(keys, mocked_keys)
+        self.assertEqual(report_data, mocked_report_data)
 
     def test_agent_handler_test_agent__agent_not_fitted(self) -> None:
         """
         Tests AgentHandler's test_agent functionality when agent is not trained.
 
-        Verifies that the test_agent method correctly handles the case where the
-        agent has not been trained yet. In this case, no actions should be taken
-        and the forward method should not be called.
+        Verifies that the test_agent method properly handles the case when an untrained
+        agent attempts to run testing. It should detect that the agent is not trained
+        and return empty results without calling the testing strategy.
 
         Asserts:
-            The DQNAgent's forward method is not called when the agent is untrained.
+            The testing strategy handler's evaluate method is not called.
+            Empty dictionaries are returned for both keys and report_data.
         """
 
         logging.info("Attempt to test agent without training.")
         self.__update_sut(_AgentHandler__trained = False)
-        mock_environment = Mock(spec = TradingEnvironment)
-        repeat = 1
+        repeat = 2
 
-        self.__sut.test_agent(mock_environment, repeat)
+        logging.info("Invoking test_agent.")
+        keys, report_data = self.__sut.test_agent(repeat)
 
-        logging.info("Validating expected calls.")
-        self.__mocked_dqn_agent.forward.assert_not_called()
+        logging.info("Validating expected calls and results.")
+        self.__mocked_testing_strategy_handler.evaluate.assert_not_called()
+        self.assertEqual(keys, {})
+        self.assertEqual(report_data, {})
 
     def test_agent_handler_test_agent__agent_fitted_properly(self) -> None:
         """
         Tests AgentHandler's test_agent functionality when agent is properly trained.
 
         Verifies that the test_agent method correctly interacts with the environment
-        when the agent has been trained. It should set up the environment, call the
-        agent's forward method to get actions, and process state transitions until
-        the episode is complete.
+        when the agent has been trained. It should reset the environment, call the
+        testing strategy evaluate method to get the results, and return the collected data.
 
         Asserts:
-            The DQNAgent's forward method is called with the correct state.
+            The environment's set_mode is called with TEST_MODE.
+            The environment's reset method is called exactly 'repeat' times.
+            The testing strategy handler's evaluate method is called with correct parameters and exactly 'repeat' times.
+            The returned keys dictionary contains the mocked keys for each repeat iteration.
+            The returned report_data dictionary contains the mocked report data for each repeat iteration.
         """
 
         logging.info("Attempt to test agent without training.")
         self.__update_sut(_AgentHandler__trained = True)
-        current_state = [0] * 48
-        current_budget = 1000
-        currently_invested = 0
+        mocked_keys = ['mocked_key1', 'mocked_key2']
+        mocked_report_data = [{'mocked_metric1': 0.11}, {'mocked_metric2': 0.21}]
+        self.__mocked_testing_strategy_handler.evaluate.return_value = (mocked_keys, mocked_report_data)
+        self.__mocked_environment.get_environment_length.return_value = 10000
+        self.__mocked_environment.get_trading_consts.return_value = SimpleNamespace(WINDOW_SIZE = 48)
+        repeat = 2
 
-        mock_environment = Mock(spec = TradingEnvironment)
-        mock_environment.state = current_state
-        mock_environment.current_iteration = 1
-        mock_environment.get_environment_length.return_value = 100
-        mock_environment.get_trading_consts.return_value = SimpleNamespace(WINDOW_SIZE = 48)
-        mock_environment.get_trading_data.return_value = SimpleNamespace(current_budget = current_budget,
-                                                                         currently_invested = currently_invested)
-        mock_environment.step.return_value = (current_state, 0, True, {'current_budget': current_budget,
-                                                                       'currently_invested': currently_invested})
-        mock_environment.get_data_for_iteration.return_value = [80000, 80000]
-        repeat = 1
+        logging.info("Invoking test_agent.")
+        keys, report_data = self.__sut.test_agent(repeat)
 
-        self.__mocked_dqn_agent.forward.return_value = 1
-        self.__sut.test_agent(mock_environment, repeat)
-
-        logging.info("Validating expected calls.")
-        self.__mocked_dqn_agent.forward.assert_called_with(current_state)
+        logging.info("Validating expected calls and results.")
+        self.__mocked_environment.set_mode.assert_called_once_with(TradingEnvironment.TEST_MODE)
+        self.assertEqual(self.__mocked_environment.reset.call_count, repeat)
+        self.__mocked_testing_strategy_handler.evaluate.assert_called_with(self.__mocked_agent,
+                                                                           self.__mocked_environment)
+        self.assertEqual(self.__mocked_testing_strategy_handler.evaluate.call_count, repeat)
+        self.assertEqual(keys, {0: mocked_keys, 1: mocked_keys})
+        self.assertEqual(report_data, {0: mocked_report_data, 1: mocked_report_data})
