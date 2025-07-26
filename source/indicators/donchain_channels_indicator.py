@@ -40,3 +40,13 @@ class DonchainChannelsIndicatorHandler(IndicatorHandlerBase):
         donchian_df['middle_channel'] = (donchian_df['upper_channel'] + donchian_df['lower_channel']) / 2
 
         return donchian_df
+
+    def can_be_normalized(self) -> bool:
+        """
+        Checks if the indicator can be normalized.
+
+        Returns:
+            (bool): True if the indicator can be normalized, False otherwise.
+        """
+
+        return True

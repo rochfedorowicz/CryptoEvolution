@@ -47,7 +47,7 @@ class CoinBaseHandlerTestCase(TestCase):
                 if name in attribute_name:
                     setattr(self.__sut, attribute_name, value)
 
-    def test_coinbase_handler_get_candles_for(self):
+    def test_coinbase_handler_get_candles_for(self) -> None:
         """
         Tests the get_candles_for method of CoinBaseHandler.
 
@@ -61,22 +61,23 @@ class CoinBaseHandlerTestCase(TestCase):
         """
 
         logging.info("Attempting to retrieve candle data for BTC-USD.")
-        expected = pd.DataFrame(data={
+        expected_data = pd.DataFrame(data = {
             'low': [8400.00, 8487.33, 8635.31],
             'high': [8752.34, 8973.45, 8927.45],
             'open': [8523.33, 8522.30, 8919.21],
             'close': [8522.31, 8915.00, 8757.84],
             'volume': [7353.139605, 10216.692545, 9152.706926]
-        }, index = pd.DatetimeIndex(['2020-03-01', '2020-03-02', '2020-03-03'], name='time'))
+        }, index = pd.DatetimeIndex(['2020-03-01', '2020-03-02', '2020-03-03'], name = 'time'))
 
         logging.info("Invoking get_candles_for method.")
-        result = asyncio.run(self.__sut.get_candles_for('BTC-USD', '2020-03-01 00:00:00', '2020-03-03 00:00:00',
-                                                        Granularity.ONE_DAY))
+        result  = asyncio.run(self.__sut.get_candles_for('BTC-USD', '2020-03-01 00:00:00',
+                                                                   '2020-03-03 00:00:00', Granularity.ONE_DAY))
 
         logging.info("Verifying the result DataFrame against expected values.")
-        pd.testing.assert_frame_equal(result, expected)
+        pd.testing.assert_frame_equal(result[0], expected_data)
+        self.assertTrue('normalization_groups' in result[1])
 
-    def test_coinbase_handler_get_possible_pairs(self):
+    def test_coinbase_handler_get_possible_pairs(self) -> None:
         """
         Tests the get_possible_pairs method of CoinBaseHandler.
 

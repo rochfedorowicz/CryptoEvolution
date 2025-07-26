@@ -2,6 +2,7 @@
 
 # global imports
 import asyncio
+import io
 import logging
 import pandas as pd
 from ddt import ddt
@@ -32,6 +33,9 @@ class DataHandlerTestCase(TestCase):
         'close': [8522.31, 8915.00, 8757.84],
         'volume': [7353.139605, 10216.692545, 9152.706926]
     }, index = pd.DatetimeIndex(['2020-03-01', '2020-03-02', '2020-03-03'], name = 'time'))
+    __MOCKED_COINBASE_HANDLER_META_DATA = {
+        'normalization_groups': [ ['some_column_1', 'some_column_2'] ]
+    }
 
     def setUp(self) -> None:
         """
@@ -63,7 +67,7 @@ class DataHandlerTestCase(TestCase):
                     setattr(self.__sut, attribute_name, value)
 
     @patch('source.data_handling.CoinBaseHandler.get_candles_for', new_callable = AsyncMock)
-    def test_data_handler_prepare_data__no_indicators(self, mocked_get_candles_for):
+    def test_data_handler_prepare_data__no_indicators(self, mocked_get_candles_for) -> None:
         """
         Tests the prepare_data method of DataHandler without indicators.
 
@@ -80,19 +84,21 @@ class DataHandlerTestCase(TestCase):
         """
 
         logging.info("Attempting to retrieve data for BTC-USD.")
-        mocked_get_candles_for.return_value = self.__MOCKED_COINBASE_HANDLER_DATA
-        expected = self.__MOCKED_COINBASE_HANDLER_DATA
+        mocked_get_candles_for.return_value = (self.__MOCKED_COINBASE_HANDLER_DATA,
+                                               self.__MOCKED_COINBASE_HANDLER_META_DATA)
+        expected_data = self.__MOCKED_COINBASE_HANDLER_DATA
 
         logging.info("Invoking prepare_data method without indicators.")
         result = asyncio.run(self.__sut.prepare_data('BTC-USD', '2020-03-01 00:00:00', '2020-03-03 00:00:00',
                                                      Granularity.ONE_DAY))
 
         logging.info("Validating the results.")
-        pd.testing.assert_frame_equal(result, expected)
-        mocked_get_candles_for.assert_called()
+        pd.testing.assert_frame_equal(result[0], expected_data)
+        self.assertTrue('normalization_groups' in result[1])
+        mocked_get_candles_for.assert_called_once()
 
     @patch('source.data_handling.CoinBaseHandler.get_candles_for', new_callable = AsyncMock)
-    def test_data_handler_prepare_data__with_indicators(self, mocked_get_candles_for):
+    def test_data_handler_prepare_data__with_indicators(self, mocked_get_candles_for) -> None:
         """
         Tests the prepare_data method of DataHandler with indicators.
 
@@ -109,7 +115,8 @@ class DataHandlerTestCase(TestCase):
         """
 
         logging.info("Attempting to retrieve data for BTC-USD with indicators.")
-        mocked_get_candles_for.return_value = self.__MOCKED_COINBASE_HANDLER_DATA
+        mocked_get_candles_for.return_value = (self.__MOCKED_COINBASE_HANDLER_DATA,
+                                               self.__MOCKED_COINBASE_HANDLER_META_DATA)
         mean_high_mock_indicator = Mock(spec = TestIndicatorHandler)
         mean_high_mock_indicator.calculate = lambda data: \
             data['high'].rolling(window = 2).mean().to_frame(name = 'mean_high')
@@ -117,16 +124,53 @@ class DataHandlerTestCase(TestCase):
         std_low_mock_indicator.calculate = lambda data: \
             data['low'].rolling(window = 2).std().to_frame(name = 'std_low')
 
-        expected = pd.concat([self.__MOCKED_COINBASE_HANDLER_DATA,
-                              mean_high_mock_indicator.calculate(self.__MOCKED_COINBASE_HANDLER_DATA),
-                              std_low_mock_indicator.calculate(self.__MOCKED_COINBASE_HANDLER_DATA)], axis=1)
+        expected_data = pd.concat([self.__MOCKED_COINBASE_HANDLER_DATA,
+                                  mean_high_mock_indicator.calculate(self.__MOCKED_COINBASE_HANDLER_DATA),
+                                  std_low_mock_indicator.calculate(self.__MOCKED_COINBASE_HANDLER_DATA)], axis = 1)
         indicators = [mean_high_mock_indicator, std_low_mock_indicator]
-        self.__update_sut(indicators = indicators)
 
         logging.info("Invoking prepare_data method with indicators.")
         result = asyncio.run(self.__sut.prepare_data('BTC-USD', '2020-03-01 00:00:00', '2020-03-03 00:00:00',
-                                                     Granularity.ONE_DAY))
+                                                     Granularity.ONE_DAY, indicators))
 
         logging.info("Validating the results with indicators.")
-        pd.testing.assert_frame_equal(result, expected)
-        mocked_get_candles_for.assert_called()
+        pd.testing.assert_frame_equal(result[0], expected_data)
+        self.assertTrue('normalization_groups' in result[1])
+        mocked_get_candles_for.assert_called_once()
+
+    def test_data_handler_save_extended_data_into_csv_formatted_string_buffer(self) -> None:
+        """
+        Tests the save_extended_data_into_csv_formatted_string_buffer method of DataHandler.
+
+        Verifies that the method correctly saves the extended data and metadata into a CSV formatted string buffer.
+
+        Asserts:
+            The CSV formatted string buffer matches the expected format.
+        """
+
+        logging.info("Attempting to save data into CSV formatted string buffer.")
+        expected_result = f"# {self.__MOCKED_COINBASE_HANDLER_META_DATA} \n" + \
+                          self.__MOCKED_COINBASE_HANDLER_DATA.to_csv(index = True, header = True)
+
+        logging.info("Invoking save_extended_data_into_csv_formatted_string_buffer.")
+        result = self.__sut.save_extended_data_into_csv_formatted_string_buffer(self.__MOCKED_COINBASE_HANDLER_DATA,
+                                                                                self.__MOCKED_COINBASE_HANDLER_META_DATA)
+
+        logging.info("Validating the CSV formatted string buffer.")
+        self.assertEqual(result.getvalue(), expected_result)
+
+    def test_data_handler_read_extended_data_from_csv_formatted_string_buffer(self) -> None:
+        """"""
+
+        logging.info("Attempting to read data from CSV formatted string buffer.")
+        mocked_input = io.StringIO(f"# {self.__MOCKED_COINBASE_HANDLER_META_DATA} \n" +
+                                  self.__MOCKED_COINBASE_HANDLER_DATA.to_csv(index = True, header = True))
+
+        logging.info("Invoking read_extended_data_from_csv_formatted_string_buffer.")
+        result = self.__sut.read_extended_data_from_csv_formatted_string_buffer(mocked_input)
+        result[0]['time'] = pd.to_datetime(result[0]['time'])
+        result[0].set_index('time', inplace = True)
+
+        logging.info("Validating the read data and metadata.")
+        pd.testing.assert_frame_equal(result[0], self.__MOCKED_COINBASE_HANDLER_DATA)
+        self.assertEqual(result[1], self.__MOCKED_COINBASE_HANDLER_META_DATA)

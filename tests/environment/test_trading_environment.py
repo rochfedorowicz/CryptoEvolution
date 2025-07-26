@@ -28,8 +28,7 @@ class TradingEnvironmentTestCase(TestCase):
     }, index = pd.DatetimeIndex(['2020-03-01', '2020-03-02', '2020-03-03',
                                  '2020-03-04', '2020-03-05'], name = 'time'))
 
-    @patch('pandas.read_csv', new_callable = Mock)
-    def setUp(self, mocked_pd_read_csv: Mock) -> None:
+    def setUp(self) -> None:
         """
         Setup function responsible for creation of system under
         test (sut) for this class.
@@ -40,9 +39,8 @@ class TradingEnvironmentTestCase(TestCase):
         """
 
         logging.info("Setting up test environment.")
-        mocked_pd_read_csv.return_value = self.__MOCKED_CSV_DATA
 
-        data_path = 'PATH_TO_MOCKED_CSV_DATA'
+        data = self.__MOCKED_CSV_DATA
         initial_budget = 1000.0
         max_amount_of_trades = 5
         window_size = 2
@@ -60,7 +58,7 @@ class TradingEnvironmentTestCase(TestCase):
             np.sum([order.current_value - order.initial_value for order in orders])
         self.__mocked_label_annotator: LabelAnnotatorBase = Mock(spec = LabelAnnotatorBase)
         self.__mocked_data_balancer: LabeledDataBalancer = Mock(spec = LabeledDataBalancer)
-        self.__sut: TradingEnvironment = TradingEnvironment(data_path, initial_budget, max_amount_of_trades,
+        self.__sut: TradingEnvironment = TradingEnvironment(data, initial_budget, max_amount_of_trades,
                                                             window_size, self.__mocked_reward_validator,
                                                             self.__mocked_label_annotator, sell_stop_loss,
                                                             sell_take_profit, buy_stop_loss, buy_take_profit,

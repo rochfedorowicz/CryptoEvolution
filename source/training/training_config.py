@@ -1,7 +1,8 @@
 # training/training_config.py
 
 # global imports
-from typing import Optional
+import pandas as pd
+from typing import Any, Optional
 
 # local imports
 from source.agent import AgentHandler, LearningStrategyHandlerBase, TestingStrategyHandlerBase
@@ -18,14 +19,15 @@ class TrainingConfig():
     """
 
     def __init__(self, nr_of_steps: int, nr_of_episodes: int, model_blue_print: BluePrintBase,
-                 data_path: str, initial_budget: float, max_amount_of_trades: int, window_size: int,
+                 data: pd.DataFrame, initial_budget: float, max_amount_of_trades: int, window_size: int,
                  learning_strategy_handler: LearningStrategyHandlerBase,
                  testing_strategy_handler: TestingStrategyHandlerBase, sell_stop_loss: float = 0.8,
                  sell_take_profit: float = 1.2, buy_stop_loss: float = 0.8, buy_take_profit: float = 1.2,
                  penalty_starts: int = 0, penalty_stops: int = 10, static_reward_adjustment: float = 1,
                  repeat_test: int = 10, test_ratio: float = 0.2, validator: Optional[RewardValidatorBase] = None,
                  label_annotator: Optional[LabelAnnotatorBase] = None,
-                 labeled_data_balancer: Optional[LabeledDataBalancer] = None) -> None:
+                 labeled_data_balancer: Optional[LabeledDataBalancer] = None,
+                 meta_data: Optional[dict[str, Any]] = None) -> None:
         """
         Class constructor. Initializes the training configuration with the provided parameters.
 
@@ -33,7 +35,7 @@ class TrainingConfig():
             nr_of_steps (int): The number of training steps to perform.
             nr_of_episodes (int): The number of training episodes to perform.
             model_blue_print (BluePrintBase): The blueprint for the model to be trained.
-            data_path (str): The path to the training data.
+            data (pd.DataFrame): The training data.
             initial_budget (float): The initial budget for the trading agent.
             max_amount_of_trades (int): The maximum number of trades to perform.
             window_size (int): The size of the observation window.
@@ -51,6 +53,7 @@ class TrainingConfig():
             validator (Optional[RewardValidatorBase]): The reward validator to use. Defaults to PriceRewardValidator.
             label_annotator (Optional[LabelAnnotatorBase]): The label annotator to use. Defaults to SimpleLabelAnnotator.
             labeled_data_balancer (Optional[LabeledDataBalancer]): The labeled data balancer to use. Defaults to None.
+            meta_data (Optional[dict[str, Any]]): Optional metadata for the training configuration.
         """
 
         if validator is None:
@@ -65,8 +68,9 @@ class TrainingConfig():
         self.repeat_test: int = repeat_test
 
         # Environment config
-        self.__data_path: str = data_path
-        self.__test_ratio = test_ratio
+        self.__data: pd.DataFrame = data
+        self.__meta_data: Optional[dict[str, Any]] = meta_data
+        self.__test_ratio: float = test_ratio
         self.__initial_budget: float = initial_budget
         self.__max_amount_of_trades: int = max_amount_of_trades
         self.__window_size: int = window_size
@@ -141,12 +145,12 @@ class TrainingConfig():
             trading environment, learning strategy handler and testing strategy handler.
         """
 
-        environment = TradingEnvironment(self.__data_path, self.__initial_budget, self.__max_amount_of_trades,
+        environment = TradingEnvironment(self.__data, self.__initial_budget, self.__max_amount_of_trades,
                                          self.__window_size, self.__validator, self.__label_annotator,
                                          self.__sell_stop_loss, self.__sell_take_profit, self.__buy_stop_loss,
                                          self.__buy_take_profit, self.__test_ratio, self.__penalty_starts,
                                          self.__penalty_stops, self.__static_reward_adjustment,
-                                         self.__labeled_data_balancer)
+                                         self.__labeled_data_balancer, self.__meta_data)
 
         return AgentHandler(self.__model_blue_print, environment, self.__learning_strategy_handler,
                             self.__testing_strategy_handler)

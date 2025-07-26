@@ -46,3 +46,13 @@ class MovingVolumeProfileIndicatorHandler(VolumeProfileIndicatorHandler):
             moving_volume_price_df.loc[index, 'moving_volume_profile'] = volume_profiles_data[volume_profiles_connected_to_lower_prices]['volume'].iloc[-1]
 
         return moving_volume_price_df
+
+    def can_be_normalized(self) -> bool:
+        """
+        Checks if the indicator can be normalized.
+
+        Returns:
+            (bool): True if the indicator can be normalized, False otherwise.
+        """
+
+        return True

@@ -71,7 +71,8 @@ class CoinBaseHandler:
             await asyncio.sleep(5)
             return await self.__send_request_to_coinbase(session, url, pid)
 
-    async def get_candles_for(self, trading_pair: str, start_date: str, end_date: str, granularity: Granularity) -> pd.DataFrame:
+    async def get_candles_for(self, trading_pair: str, start_date: str, end_date: str, granularity: Granularity) \
+        -> tuple[pd.DataFrame, dict[str, str]]:
         """
         Collects data from Coinbase API given starting date, ending date, granularity and trainding pair. Dependent on amount of
         data segments to fetch, might take some time. Especially, if request exceeds public rates.
@@ -87,7 +88,7 @@ class CoinBaseHandler:
             ValueError: If given granularity is not member if Granularity enum.
 
         Returns:
-            (pd.DataFrame): Collected data frame.
+            (tuple[pd.DataFrame, dict[str, str]]): Tuple containing data frame with collected data and meta data.
         """
 
         if granularity not in Granularity:
@@ -110,10 +111,10 @@ class CoinBaseHandler:
             responses = await asyncio.gather(*tasks)
             candles = [item for sublist in responses if sublist for item in sublist]
             df = pd.DataFrame(candles, columns=['time', 'low', 'high', 'open', 'close', 'volume'])
-            df['time'] = pd.to_datetime(df['time'], unit='s')
-            df.set_index('time', inplace=True)
-            df.sort_values(by='time', inplace=True)
-            return df
+            df['time'] = pd.to_datetime(df['time'], unit = 's')
+            df.set_index('time', inplace = True)
+            df.sort_values(by = 'time', inplace = True)
+            return df, { 'normalization_groups': [['low', 'high', 'open', 'close'], ['volume']] }
 
     async def get_possible_pairs(self) -> pd.DataFrame:
         """
@@ -126,6 +127,6 @@ class CoinBaseHandler:
         async with aiohttp.ClientSession() as session:
             response = await asyncio.gather(self.__send_request_to_coinbase(session, self.__PRODUCTS_URL, 0))
             data = [[product['id'], product['base_currency'], product['quote_currency']] for product in response[0]]
-            df = pd.DataFrame(sorted(data), columns=['id', 'base_currency', 'quote_currency'])
-            df.set_index('id', inplace=True)
+            df = pd.DataFrame(sorted(data), columns = ['id', 'base_currency', 'quote_currency'])
+            df.set_index('id', inplace = True)
             return df

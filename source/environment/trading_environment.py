@@ -13,7 +13,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from tensorflow.keras.utils import to_categorical
 from types import SimpleNamespace
-from typing import Optional
+from typing import Any, Optional
 
 # local imports
 from source.environment import Broker, LabelAnnotatorBase, LabeledDataBalancer, RewardValidatorBase
@@ -29,17 +29,18 @@ class TradingEnvironment(Env):
     TRAIN_MODE = 'train'
     TEST_MODE = 'test'
 
-    def __init__(self, data_path: str, initial_budget: float, max_amount_of_trades: int, window_size: int,
-                 validator: RewardValidatorBase, label_annotator: LabelAnnotatorBase, sell_stop_loss: float,
-                 sell_take_profit: float, buy_stop_loss: float, buy_take_profit: float, test_ratio: float = 0.2,
-                 penalty_starts: int = 0, penalty_stops: int = 10, static_reward_adjustment: float = 1,
-                 labeled_data_balancer: Optional[LabeledDataBalancer] = None) -> None:
+    def __init__(self, data: pd.DataFrame, initial_budget: float, max_amount_of_trades: int,
+                 window_size: int, validator: RewardValidatorBase, label_annotator: LabelAnnotatorBase,
+                 sell_stop_loss: float, sell_take_profit: float, buy_stop_loss: float, buy_take_profit: float,
+                 test_ratio: float = 0.2, penalty_starts: int = 0, penalty_stops: int = 10,
+                 static_reward_adjustment: float = 1, labeled_data_balancer: Optional[LabeledDataBalancer] = None,
+                 meta_data: Optional[dict[str, Any]] = None) -> None:
         """
         Class constructor. Allows to define all crucial constans, reward validation methods,
         environmental penalty policies, etc.
 
         Parameters:
-            data_path (str): Path to CSV data that should be used as enivronmental stock market.
+            data (pd.DataFrame): DataFrame containing historical market data.
             initial_budget (float): Initial budget constant for trader to start from.
             max_amount_of_trades (int): Max amount of trades that can be ongoing at the same time.
                 Seting this constant prevents traders from placing orders randomly and defines
@@ -69,12 +70,14 @@ class TradingEnvironment(Env):
                 reward it for good one.
             labeled_data_balancer (Optional[LabeledDataBalancer]): Balancer used to balance
                 labeled data. If None, no balancing will be performed.
+            meta_data (dict[str, Any]): Dictionary containing metadata about the dataset.
         """
 
         if test_ratio < 0.0 or test_ratio >= 1.0:
             raise ValueError(f"Invalid test_ratio: {test_ratio}. It should be in range [0, 1).")
 
-        self.__data: dict[pd.DataFrame, pd.DataFrame] = self.__load_data(data_path, test_ratio)
+        self.__data: dict[pd.DataFrame, pd.DataFrame] = self.__split_data(data, test_ratio)
+        self.__meta_data: Optional[dict[str, Any]] = meta_data
         self.__mode = TradingEnvironment.TRAIN_MODE
         self.__broker: Broker = Broker()
         self.__validator: RewardValidatorBase = validator
@@ -110,25 +113,23 @@ class TradingEnvironment(Env):
                                           high = np.ones(len(self.state)) * 3,
                                           dtype=np.float64)
 
-    def __load_data(self, data_path: str, test_size: float) -> dict[pd.DataFrame, pd.DataFrame]:
+    def __split_data(self, data: pd.DataFrame, test_size: float) -> dict[pd.DataFrame, pd.DataFrame]:
         """
-        Loads data from CSV file and splits it into training and testing sets based on the
-        specified test size ratio.
+        Splits the given DataFrame into training and testing sets based on the specified test size ratio.
 
         Parameters:
-            data_path (str): Path to the CSV file containing the stock market data.
+            data (pd.DataFrame): DataFrame containing the stock market data.
             test_size (float): Ratio of the data to be used for testing.
 
         Returns:
             (dict[pd.DataFrame, pd.DataFrame]): Dictionary containing training and testing data frames.
         """
 
-        data_frame = pd.read_csv(data_path)
-        dividing_index = int(len(data_frame) * (1 - test_size))
+        dividing_index = int(len(data) * (1 - test_size))
 
         return {
-            TradingEnvironment.TRAIN_MODE: data_frame.iloc[:dividing_index].reset_index(drop=True),
-            TradingEnvironment.TEST_MODE: data_frame.iloc[dividing_index:].reset_index(drop=True)
+            TradingEnvironment.TRAIN_MODE: data.iloc[:dividing_index].reset_index(drop=True),
+            TradingEnvironment.TEST_MODE: data.iloc[dividing_index:].reset_index(drop=True)
         }
 
     def __prepare_labeled_data(self) -> pd.DataFrame:
@@ -165,8 +166,18 @@ class TradingEnvironment(Env):
 
         current_market_data = self.__data[self.__mode].iloc[index]
         current_market_data_no_index = current_market_data.select_dtypes(include = [np.number])
-        normalized_current_market_data_values = pd.DataFrame(StandardScaler().fit_transform(current_market_data_no_index),
-                                                             columns = current_market_data_no_index.columns).values
+
+        if self.__meta_data is not None and \
+            self.__meta_data.get('normalization_groups', None) is not None:
+            normalization_groups = self.__meta_data['normalization_groups']
+            normalized_data_pieces = []
+            for normalization_group in normalization_groups:
+                columns_to_normalize = current_market_data_no_index[normalization_group]
+                normalized_columns = StandardScaler().fit_transform(columns_to_normalize.values.reshape(-1, 1))
+                normalized_data_pieces.append(normalized_columns.reshape(*columns_to_normalize.shape))
+            normalized_current_market_data_values = np.hstack(normalized_data_pieces)
+        else:
+            normalized_current_market_data_values = StandardScaler().fit_transform(current_market_data_no_index)
         current_marked_data_list = normalized_current_market_data_values.ravel().tolist()
 
         if include_trading_data:
