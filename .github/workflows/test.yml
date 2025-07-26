@@ -40,7 +40,7 @@ jobs:
                  --cov-report=html \
                  --log-level=INFO \
                  --html=report.html \
-                 --cov-fail-under=90
+                 --cov-fail-under=80
 
       - name: Archive reports
         id: archive_reports

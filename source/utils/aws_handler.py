@@ -69,7 +69,7 @@ class AWSHandler(metaclass = SingletonMeta):
         except Exception as e:
             raise RuntimeError(f"Did not managed to upload file! Original error: {e}")
 
-    def upload_buffer_to_s3(self, bucket_name: str, buffer: io.StringIO, desired_name: str = "") -> None:
+    def upload_buffer_to_s3(self, bucket_name: str, buffer: io.StringIO, desired_name: str) -> None:
         """
         Attempts to upload buffer as file body directly to S3 Amazon bucket.
 

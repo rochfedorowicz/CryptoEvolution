@@ -53,6 +53,6 @@ class VolumeProfileIndicatorHandler(IndicatorHandlerBase):
                 volume_profile[price] += volume_per_step
 
         profile_df = pd.DataFrame(list(volume_profile.items()), columns = ['price', 'volume'])
-        profile_df.sort_values(by='price', inplace=True)
+        profile_df.sort_values(by = 'price', inplace=True)
 
         return profile_df

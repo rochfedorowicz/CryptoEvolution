@@ -54,7 +54,7 @@ class VolumeProfileIndicatorHandlerTestCase(TestCase):
                 if name in attribute_name:
                     setattr(self.__sut, attribute_name, value)
 
-    def test_volume_profile_indicator_calculate(self):
+    def test_volume_profile_indicator_calculate(self) -> None:
         """
         Tests the VolumeProfileIndicatorHandler.
 

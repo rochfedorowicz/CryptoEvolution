@@ -25,3 +25,13 @@ class IndicatorHandlerBase(ABC):
         """
 
         pass
+
+    def can_be_normalized(self) -> bool:
+        """
+        Checks if the indicator can be normalized.
+
+        Returns:
+            (bool): True if the indicator can be normalized, False otherwise.
+        """
+
+        return False

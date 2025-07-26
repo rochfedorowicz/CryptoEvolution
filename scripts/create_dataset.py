@@ -3,15 +3,14 @@
 # global imports
 import argparse
 import asyncio
-import io
 import logging
 import os
 import sys
 
 # local imports
 from source.data_handling import DataHandler
-from source.indicators import DonchainChannelsIndicatorHandler, \
-    MovingVolumeProfileIndicatorHandler, StochasticOscillatorIndicatorHandler
+from source.indicators import DonchainChannelsIndicatorHandler, MovingVolumeProfileIndicatorHandler, \
+    StochasticOscillatorIndicatorHandler, VolatilityIndicatorHandler
 from source.utils import AWSHandler, Granularity
 
 def str_to_granularity(granularity_str):
@@ -44,25 +43,30 @@ def str_to_list_of_indicators(list_of_indicators_str):
 
 async def main(trading_pair, start_date, end_date, granularity_str, list_of_indicators_str) -> bool:
     try:
-        data_handler = DataHandler(str_to_list_of_indicators(list_of_indicators_str))
-        data = await data_handler.prepare_data(trading_pair, start_date, end_date, str_to_granularity(granularity_str))
-        csv_data_buffer = io.StringIO()
-        data.to_csv(csv_data_buffer, index = True)
+        data_handler = DataHandler()
+        list_of_indicators = str_to_list_of_indicators(list_of_indicators_str) + [VolatilityIndicatorHandler()]
+        data, meta_data = await data_handler.prepare_data(trading_pair, start_date, end_date,
+                                                          str_to_granularity(granularity_str), list_of_indicators)
+        csv_data_buffer = data_handler.save_extended_data_into_csv_formatted_string_buffer(data, meta_data)
 
         file_name = f'DS_{trading_pair}_{start_date}_{end_date}_{granularity_str}_{list_of_indicators_str}.csv'
         for char_to_replace in [':', ' ', ',']:
             file_name = file_name.replace(char_to_replace, '_')
-        aws_handler = AWSHandler(os.getenv('ROLE_NAME'))
+
+        aws_handler = AWSHandler()
         aws_handler.upload_buffer_to_s3(os.getenv('BUCKET_NAME'), csv_data_buffer, file_name)
         logging.info('Successfully uploaded data to S3 bucket! File name: %s', file_name)
         return True
 
-    except Exception as e:
-        logging.error('Encounter problem during script execution!')
-        logging.error(e)
+    except Exception:
+        logging.error('Encounter problem during script execution!', exc_info=True)
+        logging.error('Script execution failed!')
         return False
 
 if __name__ == "__main__":
+    logging.basicConfig(level = logging.INFO, format = "{asctime} | {levelname} | {funcName}:{lineno} | {message}",
+                        style = "{", datefmt = "%Y-%m-%d %H:%M:%S")
+
     parser = argparse.ArgumentParser(description = 'Prepare data with given parameters and save it into AWS S3 bucket.')
     parser.add_argument('--trading_pair', type = str, required = True, help = 'Trading pair symbol.')
     parser.add_argument('--start_date', type = str, required = True, help = 'Start date in YYYY-MM-DD format.')
@@ -83,5 +87,6 @@ if __name__ == "__main__":
     success = asyncio.run(main(args.trading_pair, args.start_date, args.end_date, args.granularity, args.list_of_indicators))
 
     if not success:
-        logging.error('Script execution failed!')
         sys.exit(1)
+    else:
+        sys.exit(0)

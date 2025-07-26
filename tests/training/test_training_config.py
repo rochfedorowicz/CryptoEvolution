@@ -2,6 +2,7 @@
 
 # global imports
 import logging
+import pandas as pd
 from ddt import data, ddt, unpack
 from typing import Any
 from unittest import TestCase
@@ -36,12 +37,11 @@ class TrainingConfigTestCase(TestCase):
         nr_of_episodes = 100
         self.__mocked_model_blue_print = Mock(spec = BluePrintBase)
         self.__mocked_learning_strategy_handler = Mock(spec = LearningStrategyHandlerBase)
-        data_path = "mock/path/to/data/set"
 
         self.__sut: TrainingConfig = TrainingConfig(nr_of_steps = nr_of_steps,
                                                     nr_of_episodes = nr_of_episodes,
                                                     model_blue_print = self.__mocked_model_blue_print,
-                                                    data_path = data_path,
+                                                    data = Mock(spec = pd.DataFrame),
                                                     initial_budget = INITIAL_BUDGET,
                                                     max_amount_of_trades = MAX_AMOUNT_OF_TRADES,
                                                     window_size = WINDOW_SIZE,

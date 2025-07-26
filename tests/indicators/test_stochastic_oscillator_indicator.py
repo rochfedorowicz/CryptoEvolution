@@ -54,7 +54,7 @@ class StochasticOscillatorIndicatorHandlerTestCase(TestCase):
                 if name in attribute_name:
                     setattr(self.__sut, attribute_name, value)
 
-    def test_stochastic_oscillator_indicator_calculate(self):
+    def test_stochastic_oscillator_indicator_calculate(self) -> None:
         """
         Tests the StochasticOscillatorIndicatorHandler.
 

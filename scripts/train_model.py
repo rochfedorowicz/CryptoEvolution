@@ -2,15 +2,18 @@
 
 # global imports
 import argparse
+import io
 import json
 import logging
 import os
+import sys
 import urllib.parse
 import warnings
 from datetime import datetime
 from typing import Any
 
 # local imports
+from source.data_handling import DataHandler
 from source.training import TrainingConfig, TrainingHandler
 from source.utils import AWSHandler, DynamicFromStringConverter, GradientHandler
 
@@ -73,7 +76,7 @@ def __get_local_path(file_path: str) -> str:
 
         return local_path
 
-def main(config_path: str, invoked_inside_gradient: bool = False) -> None:
+def main(config_path: str, invoked_inside_gradient: bool = False) -> bool:
     try:
         DynamicFromStringConverter().register_packages(['source',  'typing', 'imblearn', 'sklearn', 'tensorflow'])
 
@@ -82,8 +85,19 @@ def main(config_path: str, invoked_inside_gradient: bool = False) -> None:
         for key, value in config['training_config'].items():
             config['training_config'][key] = __attempt_from_string_conversion(value)
 
-        data_set_name = config['data_set_name']
-        config['training_config']['data_path'] = __get_local_path(data_set_name)
+        local_dataset_path = __get_local_path(config['data_set_name'])
+        file_content = None
+        with open(local_dataset_path, 'r') as file:
+            file_content = file.read().strip()
+
+        if file_content is None or file_content == '':
+            logging.error(f"Failed to correctly load dataset!")
+            raise ValueError(f"File {local_dataset_path} is empty or not found!")
+
+        data_handler = DataHandler()
+        data, meta_data = data_handler.read_extended_data_from_csv_formatted_string_buffer(io.StringIO(file_content))
+        config['training_config']['data'] = data
+        config['training_config']['meta_data'] = meta_data
 
         callbacks = []
         callback_dicts_list = config.get('callbacks', None)
@@ -105,21 +119,26 @@ def main(config_path: str, invoked_inside_gradient: bool = False) -> None:
         aws_handler = AWSHandler()
         aws_handler.upload_file_to_s3(os.getenv('BUCKET_NAME'), report_path, report_name)
 
-    except Exception as e:
-        logging.error('Encounter problem during script execution!')
-        logging.error(e)
+    except Exception:
+        logging.error('Encounter problem during script execution!', exc_info = True)
+        logging.error('Script execution failed!')
+        return False
 
     if invoked_inside_gradient:
         gradient_handler = GradientHandler()
         try:
             gradient_handler.delete_notebook(os.getenv('HOSTNAME'))
-        except Exception as e:
-            logging.error('Notebook was not deleted!')
-            logging.error(e)
+        except Exception:
+            logging.error('Notebook was not deleted!', exc_info = True)
+            logging.error('Script execution failed!')
+            return False
+
+    logging.info('Training completed successfully!')
+    return True
 
 if __name__ == "__main__":
-    logging.basicConfig(level = logging.INFO, format = "{asctime} | {levelname} | {message}",
-                        style="{", datefmt="%Y-%m-%d %H:%M:%S")
+    logging.basicConfig(level = logging.INFO, format = "{asctime} | {levelname} | {funcName}:{lineno} | {message}",
+                        style = "{", datefmt = "%Y-%m-%d %H:%M:%S")
 
     parser = argparse.ArgumentParser(description = 'Runs training described by configuration file.')
     parser.add_argument('--config_path', type = str, required = True,
@@ -128,4 +147,9 @@ if __name__ == "__main__":
                         help = 'Indicates if it was run on a gradient notebook that should be closed at the end.')
 
     args = parser.parse_args()
-    main(args.config_path, args.gradient)
+    success = main(args.config_path, args.gradient)
+
+    if not success:
+        sys.exit(1)
+    else:
+        sys.exit(0)

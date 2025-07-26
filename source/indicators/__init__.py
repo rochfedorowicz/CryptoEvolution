@@ -3,5 +3,6 @@
 from .indicator_base import IndicatorHandlerBase
 from .donchain_channels_indicator import DonchainChannelsIndicatorHandler
 from .stochastic_oscillator_indicator import StochasticOscillatorIndicatorHandler
+from .volatility_indicator import VolatilityIndicatorHandler
 from .volume_profile_indicator import VolumeProfileIndicatorHandler
 from .moving_volume_profile_indicator import MovingVolumeProfileIndicatorHandler
