@@ -1,4 +1,4 @@
-# environment/simple_label_annotator.py
+# environment/volatility_included_simple_label_annotator.py
 
 # global imports
 import pandas as pd
@@ -7,15 +7,19 @@ from types import SimpleNamespace
 # local imports
 from source.environment import LabelAnnotatorBase
 
-class SimpleLabelAnnotator(LabelAnnotatorBase):
+class VolatilityIncludedSimpleLabelAnnotator(LabelAnnotatorBase):
     """
     Implements a simple label annotator that classifies price movements into three classes:
     - Up trend
     - Down trend
     - No trend
+    This annotator also includes volatility in the classification process.
     """
 
-    def __init__(self, threshold: float = 0.01) -> None:
+    # local constants
+    __VOLATILITY_COLUMN_NAME: str = "volatility"
+
+    def __init__(self, threshold: float = 0.1) -> None:
         """
         Class constructor. Initializes the SimpleLabelAnnotator with a specified threshold for trend classification.
 
@@ -29,6 +33,8 @@ class SimpleLabelAnnotator(LabelAnnotatorBase):
         self._output_classes.DOWN_TREND = 1
         self._output_classes.NO_TREND = 2
         self.__threshold = threshold
+        self._requested_columns = [self._CLOSE_PRICE_CHANGE_COLUMN_NAME,
+                                   self.__VOLATILITY_COLUMN_NAME]
 
     def _classify_trend(self, row: pd.Series) -> int:
         """
@@ -42,9 +48,11 @@ class SimpleLabelAnnotator(LabelAnnotatorBase):
         """
 
         price_diff = row[self._CLOSE_PRICE_CHANGE_COLUMN_NAME]
-        if price_diff > self.__threshold:
+        volatility = row[self.__VOLATILITY_COLUMN_NAME]
+
+        if price_diff > self.__threshold * volatility:
                 return self._output_classes.UP_TREND
-        elif price_diff < -self.__threshold:
+        elif price_diff < -self.__threshold * volatility:
             return self._output_classes.DOWN_TREND
         else:
             return self._output_classes.NO_TREND

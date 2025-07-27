@@ -134,7 +134,7 @@ class TrainingHandler():
 
             logging.info(f"Training finished!")
         except Exception as e:
-            logging.error(f"Training failed! Original error: {e}")
+            logging.error(f"Training failed! Original error: {e}", exc_info = True)
         finally:
             root_logger.removeHandler(log_streamer)
             log_streamer.close()

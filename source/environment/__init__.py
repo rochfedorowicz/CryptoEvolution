@@ -8,4 +8,5 @@ from .reward_validator_base import RewardValidatorBase
 from .points_reward_validator import PointsRewardValidator
 from .price_reward_validator import PriceRewardValidator
 from .simple_label_annotator import SimpleLabelAnnotator
+from .volatility_included_simple_label_annotator import VolatilityIncludedSimpleLabelAnnotator
 from .trading_environment import TradingEnvironment
