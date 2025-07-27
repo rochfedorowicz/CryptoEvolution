@@ -94,7 +94,7 @@ class TrainingConfigTestCase(TestCase):
             "\tvalidator: PriceRewardValidator\n"
             "\t\t{'_PriceRewardValidator__coefficient': 1.0, '_PriceRewardValidator__normalizable': False}\n"
             "\tlabel_annotator: SimpleLabelAnnotator\n"
-            "\t\t{'_output_classes': namespace(UP_TREND=0, DOWN_TREND=1, NO_TREND=2), '_SimpleLabelAnnotator__threshold': 0.01}\n"
+            "\t\t{'_output_classes': namespace(UP_TREND=0, DOWN_TREND=1, NO_TREND=2), '_requested_columns': None, '_SimpleLabelAnnotator__threshold': 0.01}\n"
             "\tlabeled_data_balancer: None\n"
             "\tmodel_blue_print: BluePrintBase\n"
             "\t\t{}\n"
