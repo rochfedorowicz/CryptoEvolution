@@ -1,4 +1,4 @@
-# indicators/volume_profile_indicator.py
+# indicators/volume_profile_indicator_handler.py
 
 # global imports
 import numpy as np
@@ -24,7 +24,7 @@ class VolumeProfileIndicatorHandler(IndicatorHandlerBase):
                 while creating volume profile.
         """
 
-        self.number_of_steps = number_of_steps
+        self.__number_of_steps = number_of_steps
 
     def calculate(self, data: pd.DataFrame) -> pd.DataFrame:
         """
@@ -40,7 +40,7 @@ class VolumeProfileIndicatorHandler(IndicatorHandlerBase):
         volume_profile = defaultdict(float)
         data_min = data['low'].min()
         data_max = data['high'].max()
-        step = (data_max - data_min) / (self.number_of_steps - 1)
+        step = (data_max - data_min) / (self.__number_of_steps - 1)
 
         for _, row in data.iterrows():
             equalized_low = row['low'] // step * step
@@ -53,6 +53,6 @@ class VolumeProfileIndicatorHandler(IndicatorHandlerBase):
                 volume_profile[price] += volume_per_step
 
         profile_df = pd.DataFrame(list(volume_profile.items()), columns = ['price', 'volume'])
-        profile_df.sort_values(by = 'price', inplace=True)
+        profile_df.sort_values(by = 'price', inplace = True)
 
         return profile_df

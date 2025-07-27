@@ -1,4 +1,4 @@
-# indicators/donchain_channels_indicator.py
+# indicators/donchain_channels_indicator_handler.py
 
 # global imports
 import pandas as pd
@@ -21,7 +21,7 @@ class DonchainChannelsIndicatorHandler(IndicatorHandlerBase):
             window_size (int): Length of window that indicator should be applied over.
         """
 
-        self.window_size = window_size
+        self.__window_size = window_size
 
     def calculate(self, data: pd.DataFrame) -> pd.DataFrame:
         """
@@ -35,9 +35,9 @@ class DonchainChannelsIndicatorHandler(IndicatorHandlerBase):
         """
 
         donchian_df = pd.DataFrame(index = data.index)
-        donchian_df['upper_channel'] = data['high'].rolling(window = self.window_size, min_periods = 1).max()
-        donchian_df['lower_channel'] = data['low'].rolling(window = self.window_size, min_periods = 1).min()
-        donchian_df['middle_channel'] = (donchian_df['upper_channel'] + donchian_df['lower_channel']) / 2
+        donchian_df['dc_up'] = data['high'].rolling(window = self.__window_size, min_periods = 1).max()
+        donchian_df['dc_low'] = data['low'].rolling(window = self.__window_size, min_periods = 1).min()
+        donchian_df['dc_mid'] = (donchian_df['dc_up'] + donchian_df['dc_low']) / 2
 
         return donchian_df
 

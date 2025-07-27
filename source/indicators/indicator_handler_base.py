@@ -1,4 +1,4 @@
-# indicators/indicator_base.py
+# indicators/indicator_handler_base.py
 
 # global imports
 import pandas as pd

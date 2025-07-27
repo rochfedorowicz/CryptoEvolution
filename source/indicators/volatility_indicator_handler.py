@@ -1,4 +1,4 @@
-# indicators/volatility_indicator.py
+# indicators/volatility_indicator_handler.py
 
 # global imports
 import pandas as pd
@@ -9,8 +9,7 @@ from source.indicators import IndicatorHandlerBase
 class VolatilityIndicatorHandler(IndicatorHandlerBase):
     """
     Implements volatility indicator. It measures the price fluctuations over a
-    certain period of time. Calculated data can not be directly mapped to input
-    data and should be treated as the separate chart.
+    certain period of time.
     """
 
     def __init__(self, window_size: int = 10) -> None:

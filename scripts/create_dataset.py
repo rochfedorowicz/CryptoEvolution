@@ -9,8 +9,12 @@ import sys
 
 # local imports
 from source.data_handling import DataHandler
-from source.indicators import DonchainChannelsIndicatorHandler, MovingVolumeProfileIndicatorHandler, \
-    StochasticOscillatorIndicatorHandler, VolatilityIndicatorHandler
+from source.indicators import AverageTrueRangeIndicatorHandler, BollingerBandsDeviatorIndicatorHandler, \
+    DonchainChannelsIndicatorHandler, ExponentialMovingAverageIndicatorHandler, \
+    MovingAverageConvergenceDivergenceIndicatorHandler, MoneyFlowIndexIndicatorHandler, \
+    MovingVolumeProfileIndicatorHandler, OnBalanceVolumeIndicatorHandler, \
+    RelativeStrengthIndexIndicatorHandler, StochasticOscillatorIndicatorHandler, \
+    VolatilityIndicatorHandler
 from source.utils import AWSHandler, Granularity
 
 def str_to_granularity(granularity_str):
@@ -31,9 +35,16 @@ def str_to_list_of_indicators(list_of_indicators_str):
         return []
 
     indicators_map = {
-        'donchain_channels': DonchainChannelsIndicatorHandler(),
-        'moving_volume_profile': MovingVolumeProfileIndicatorHandler(),
-        'stochastic_oscillator': StochasticOscillatorIndicatorHandler()
+        'atr': AverageTrueRangeIndicatorHandler(),
+        'bb': BollingerBandsDeviatorIndicatorHandler(),
+        'dc': DonchainChannelsIndicatorHandler(),
+        'ema': ExponentialMovingAverageIndicatorHandler(),
+        'macd': MovingAverageConvergenceDivergenceIndicatorHandler(),
+        'mfi': MoneyFlowIndexIndicatorHandler(),
+        'mvp': MovingVolumeProfileIndicatorHandler(),
+        'obv': OnBalanceVolumeIndicatorHandler(),
+        'rsi': RelativeStrengthIndexIndicatorHandler(),
+        'so': StochasticOscillatorIndicatorHandler()
     }
     list_of_indicators = []
     for indicator_str in list_of_indicators_str.split(','):
@@ -45,8 +56,15 @@ async def main(trading_pair, start_date, end_date, granularity_str, list_of_indi
     try:
         data_handler = DataHandler()
         list_of_indicators = str_to_list_of_indicators(list_of_indicators_str) + [VolatilityIndicatorHandler()]
+        if None in list_of_indicators:
+            index_of_none = list_of_indicators.index(None)
+            invalid_name = list_of_indicators_str.split(',')[index_of_none]
+            logging.error(f'Invalid indicator name: {invalid_name}')
+            raise ValueError(f"Invalid indicator in list!")
+
         data, meta_data = await data_handler.prepare_data(trading_pair, start_date, end_date,
-                                                          str_to_granularity(granularity_str), list_of_indicators)
+                                                          str_to_granularity(granularity_str),
+                                                          list_of_indicators)
         csv_data_buffer = data_handler.save_extended_data_into_csv_formatted_string_buffer(data, meta_data)
 
         file_name = f'DS_{trading_pair}_{start_date}_{end_date}_{granularity_str}_{list_of_indicators_str}.csv'
@@ -75,7 +93,9 @@ if __name__ == "__main__":
                         help = 'Granularity of the fetched data.')
     parser.add_argument('--list_of_indicators', type = str, required = False,
                         help = '''List of indicators, that looks like: indicator_1,indicator_2,...,indicator_N.
-                        Possible indicators are: donchain_channels, moving_volume_profile, stochastic_oscillator.''')
+                        Possible indicators are: average_true_range=atr, bollinger_bands=bb, donchain_channels=dc,
+                        exponential_moving_average=ema, macd=macd, money_flow_index=mfi, moving_volume_profile=mvp,
+                        on_balance_volume=obv, relative_strength_index=rsi, stochastic_oscillator=so.''')
 
     if sys.platform.startswith('win'):
         policy = asyncio.WindowsSelectorEventLoopPolicy()

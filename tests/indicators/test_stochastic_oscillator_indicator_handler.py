@@ -1,4 +1,4 @@
-# tests/indicators/test_stochastic_oscillator_indicator.py
+# tests/indicators/test_stochastic_oscillator_indicator_handler.py
 
 # global imports
 import logging
@@ -71,13 +71,13 @@ class StochasticOscillatorIndicatorHandlerTestCase(TestCase):
 
         logging.info("Attempting to calculate stochastic oscillator indicator.")
         expected = pd.DataFrame(data = {
-            'K%': [6.0/9 * 100 , 4.0/9 * 100, 8.0/10 * 100, 1.0/9 * 100, 9.0/17 * 100],
-            'D%': [
-                    6.0/9 * 100,
-                    (6.0/9 + 4.0/9) / 2 * 100,
-                    (4.0/9 + 8.0/10) / 2 * 100,
-                    (8.0/10 + 1.0/9) / 2 * 100,
-                    (1.0/9 + 9.0/17) / 2 * 100
+            'so_k': [6.0/9, 4.0/9, 8.0/10, 1.0/9, 9.0/17],
+            'so_d': [
+                    6.0/9,
+                    (6.0/9 + 4.0/9) / 2,
+                    (4.0/9 + 8.0/10) / 2,
+                    (8.0/10 + 1.0/9) / 2,
+                    (1.0/9 + 9.0/17) / 2
             ]
         })
 
