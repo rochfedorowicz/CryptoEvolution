@@ -45,22 +45,27 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Indicators Module</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#source.indicators.donchain_channels_indicator.DonchainChannelsIndicatorHandler"><code class="docutils literal notranslate"><span class="pre">DonchainChannelsIndicatorHandler</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#source.indicators.donchain_channels_indicator.DonchainChannelsIndicatorHandler.calculate"><code class="docutils literal notranslate"><span class="pre">DonchainChannelsIndicatorHandler.calculate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.indicators.donchain_channels_indicator.DonchainChannelsIndicatorHandler.can_be_normalized"><code class="docutils literal notranslate"><span class="pre">DonchainChannelsIndicatorHandler.can_be_normalized()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#source.indicators.moving_volume_profile_indicator.MovingVolumeProfileIndicatorHandler"><code class="docutils literal notranslate"><span class="pre">MovingVolumeProfileIndicatorHandler</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#source.indicators.moving_volume_profile_indicator.MovingVolumeProfileIndicatorHandler.calculate"><code class="docutils literal notranslate"><span class="pre">MovingVolumeProfileIndicatorHandler.calculate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.indicators.moving_volume_profile_indicator.MovingVolumeProfileIndicatorHandler.can_be_normalized"><code class="docutils literal notranslate"><span class="pre">MovingVolumeProfileIndicatorHandler.can_be_normalized()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#source.indicators.volume_profile_indicator.VolumeProfileIndicatorHandler"><code class="docutils literal notranslate"><span class="pre">VolumeProfileIndicatorHandler</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#source.indicators.volume_profile_indicator.VolumeProfileIndicatorHandler.calculate"><code class="docutils literal notranslate"><span class="pre">VolumeProfileIndicatorHandler.calculate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.indicators.volume_profile_indicator.VolumeProfileIndicatorHandler.can_be_normalized"><code class="docutils literal notranslate"><span class="pre">VolumeProfileIndicatorHandler.can_be_normalized()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#source.indicators.stochastic_oscillator_indicator.StochasticOscillatorIndicatorHandler"><code class="docutils literal notranslate"><span class="pre">StochasticOscillatorIndicatorHandler</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#source.indicators.stochastic_oscillator_indicator.StochasticOscillatorIndicatorHandler.calculate"><code class="docutils literal notranslate"><span class="pre">StochasticOscillatorIndicatorHandler.calculate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.indicators.stochastic_oscillator_indicator.StochasticOscillatorIndicatorHandler.can_be_normalized"><code class="docutils literal notranslate"><span class="pre">StochasticOscillatorIndicatorHandler.can_be_normalized()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#source.indicators.indicator_base.IndicatorHandlerBase"><code class="docutils literal notranslate"><span class="pre">IndicatorHandlerBase</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#source.indicators.indicator_base.IndicatorHandlerBase.calculate"><code class="docutils literal notranslate"><span class="pre">IndicatorHandlerBase.calculate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#source.indicators.indicator_base.IndicatorHandlerBase.can_be_normalized"><code class="docutils literal notranslate"><span class="pre">IndicatorHandlerBase.can_be_normalized()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -132,6 +137,20 @@ calculates average price as the average of the lowest and the highest price.</p>
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="source.indicators.donchain_channels_indicator.DonchainChannelsIndicatorHandler.can_be_normalized">
+<span class="sig-name descname"><span class="pre">can_be_normalized</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#source.indicators.donchain_channels_indicator.DonchainChannelsIndicatorHandler.can_be_normalized" title="Link to this definition">¶</a></dt>
+<dd><p>Checks if the indicator can be normalized.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if the indicator can be normalized, False otherwise.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>(bool)</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class" id="module-source.indicators.moving_volume_profile_indicator">
@@ -154,6 +173,20 @@ at certain price over the period given by window size.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>(pd.DataFrame)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="source.indicators.moving_volume_profile_indicator.MovingVolumeProfileIndicatorHandler.can_be_normalized">
+<span class="sig-name descname"><span class="pre">can_be_normalized</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#source.indicators.moving_volume_profile_indicator.MovingVolumeProfileIndicatorHandler.can_be_normalized" title="Link to this definition">¶</a></dt>
+<dd><p>Checks if the indicator can be normalized.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if the indicator can be normalized, False otherwise.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>(bool)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -184,6 +217,20 @@ data and should be treated as the separate chart.</p>
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="source.indicators.volume_profile_indicator.VolumeProfileIndicatorHandler.can_be_normalized">
+<span class="sig-name descname"><span class="pre">can_be_normalized</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#source.indicators.volume_profile_indicator.VolumeProfileIndicatorHandler.can_be_normalized" title="Link to this definition">¶</a></dt>
+<dd><p>Checks if the indicator can be normalized.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if the indicator can be normalized, False otherwise.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>(bool)</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class" id="module-source.indicators.stochastic_oscillator_indicator">
@@ -210,6 +257,20 @@ assuming values over 80% for expensive and under 20% for cheap price.</p>
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="source.indicators.stochastic_oscillator_indicator.StochasticOscillatorIndicatorHandler.can_be_normalized">
+<span class="sig-name descname"><span class="pre">can_be_normalized</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#source.indicators.stochastic_oscillator_indicator.StochasticOscillatorIndicatorHandler.can_be_normalized" title="Link to this definition">¶</a></dt>
+<dd><p>Checks if the indicator can be normalized.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if the indicator can be normalized, False otherwise.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>(bool)</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class" id="module-source.indicators.indicator_base">
@@ -231,6 +292,20 @@ in derivative classes.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>(pd.DataFrame)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="source.indicators.indicator_base.IndicatorHandlerBase.can_be_normalized">
+<span class="sig-name descname"><span class="pre">can_be_normalized</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#source.indicators.indicator_base.IndicatorHandlerBase.can_be_normalized" title="Link to this definition">¶</a></dt>
+<dd><p>Checks if the indicator can be normalized.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if the indicator can be normalized, False otherwise.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>(bool)</p>
 </dd>
 </dl>
 </dd></dl>
