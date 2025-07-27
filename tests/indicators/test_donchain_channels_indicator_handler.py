@@ -1,4 +1,4 @@
-# tests/indicators/test_moving_volume_profile_indicator.py
+# tests/indicators/test_donchain_channels_indicator_handler.py
 
 # global imports
 import logging
@@ -7,12 +7,12 @@ from ddt import ddt
 from unittest import TestCase
 
 # local imports
-from source.indicators import MovingVolumeProfileIndicatorHandler
+from source.indicators import DonchainChannelsIndicatorHandler
 
 @ddt
-class MovingVolumeProfileIndicatorHandlerTestCase(TestCase):
+class DonchainChannelsIndicatorHandlerTestCase(TestCase):
     """
-    Test case for MovingVolumeProfileIndicatorHandler class. Stores all the test cases
+    Test case for DonchainChannelsIndicatorHandler class. Stores all the test cases
     and allows for convenient test case execution.
     """
 
@@ -32,7 +32,7 @@ class MovingVolumeProfileIndicatorHandlerTestCase(TestCase):
         """
 
         logging.info("Setting up test environment.")
-        self.__sut: MovingVolumeProfileIndicatorHandler = MovingVolumeProfileIndicatorHandler(3, 5)
+        self.__sut: DonchainChannelsIndicatorHandler = DonchainChannelsIndicatorHandler(3)
 
     def tearDown(self) -> None:
         """
@@ -54,20 +54,22 @@ class MovingVolumeProfileIndicatorHandlerTestCase(TestCase):
                 if name in attribute_name:
                     setattr(self.__sut, attribute_name, value)
 
-    def test_moving_volume_profile_indicator_calculate(self) -> None:
+    def test_donchain_channels_indicator_calculate(self) -> None:
         """
-        Test the MovingVolumeProfileIndicatorHandler.
+        Tests the DonchainChannelsIndicatorHandler.
 
-        This test verifies that the MovingVolumeProfileIndicatorHandler calculates the moving
-        volume profile for given input data with a specified window size and number of steps.
+        Verifies that the DonchainChannelsIndicatorHandler calculates the upper,
+        lower, and middle Donchian channels for given input data with a specified window size.
 
         Asserts:
             The result DataFrame matches the expected DataFrame.
         """
 
-        logging.info("Attempting to calculate moving volume profile indicator.")
+        logging.info("Attempting to calculate Donchain channels indicator.")
         expected = pd.DataFrame(data = {
-            'moving_volume_profile': [200.0, 800.0, 1070.0, 1395.0, 1580.0]
+            'dc_up': [20900.0, 20900.0, 21000.0, 21000.0, 21700.0],
+            'dc_low': [20000.0, 20000.0, 20000.0, 20100.0, 20000.0],
+            'dc_mid': [20450.0, 20450.0, 20500.0, 20550.0, 20850.0]
         })
 
         logging.info("Invoking calculate method.")

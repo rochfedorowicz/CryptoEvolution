@@ -1,4 +1,4 @@
-# indicators/stochastic_oscillator_indicator.py
+# indicators/stochastic_oscillator_indicator_handler.py
 
 # global imports
 import pandas as pd
@@ -22,8 +22,8 @@ class StochasticOscillatorIndicatorHandler(IndicatorHandlerBase):
             d_period (int): Length of smoothing window that should be applied over indicator data.
         """
 
-        self.window_size = window_size
-        self.d_period = d_period
+        self.__window_size = window_size
+        self.__d_period = d_period
 
     def calculate(self, data: pd.DataFrame) -> pd.DataFrame:
         """
@@ -40,11 +40,12 @@ class StochasticOscillatorIndicatorHandler(IndicatorHandlerBase):
         low_series = data['low']
         close_series = data['close']
 
-        highest_high = high_series.rolling(window = self.window_size, min_periods = 1).max()
-        lowest_low = low_series.rolling(window = self.window_size, min_periods = 1).min()
+        highest_high = high_series.rolling(window = self.__window_size, min_periods = 1).max()
+        lowest_low = low_series.rolling(window = self.__window_size, min_periods = 1).min()
 
         stochastic_data_df = pd.DataFrame(index = data.index)
-        stochastic_data_df['K%'] = 100 * ((close_series - lowest_low) / (highest_high - lowest_low))
-        stochastic_data_df['D%'] = stochastic_data_df['K%'].rolling(window = self.d_period, min_periods = 1).mean()
+        stochastic_data_df['so_k'] = (close_series - lowest_low) / (highest_high - lowest_low)
+        stochastic_data_df['so_d'] = stochastic_data_df['so_k']. \
+            rolling(window = self.__d_period, min_periods = 1).mean()
 
         return stochastic_data_df
