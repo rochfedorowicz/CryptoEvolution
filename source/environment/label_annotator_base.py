@@ -18,7 +18,6 @@ class LabelAnnotatorBase(ABC):
     _CLOSE_PRICE_COLUMN_NAME: str = "close"
     _CLOSE_PRICE_CHANGE_COLUMN_NAME: str = "future_normalized_diff"
 
-    @abstractmethod
     def __init__(self) -> None:
         """
         Class constructor. Initializes the output classes for classification.

@@ -2,11 +2,12 @@
 
 # global imports
 import io
+import logging
 import pandas as pd
 from typing import Any, Optional
 
 # local imports
-from source.data_handling import CoinBaseHandler
+from source.data_handling import ApiDataCollectorBase
 from source.indicators import IndicatorHandlerBase
 from source.utils import Granularity, SingletonMeta
 
@@ -17,10 +18,24 @@ class DataHandler(metaclass = SingletonMeta):
 
     def __init__(self) -> None:
         """
-        Class constructor. Initializes needed components for data handling.
+        Class constructor. Initializes components needed for data handling.
         """
 
-        self.__coinbase: CoinBaseHandler = CoinBaseHandler()
+        self.__api_data_collectors: list[ApiDataCollectorBase] = []
+
+    def register_api_data_collectors(self, api_data_collectors: list[ApiDataCollectorBase]) -> None:
+        """
+        Registers API data collectors for data collection.
+
+        Parameters:
+            api_data_collectors (list[ApiDataCollectorBase]): A list of instances of ApiDataCollectorBase or its subclasses.
+        """
+
+        for api_data_collector in api_data_collectors:
+            if not isinstance(api_data_collector, ApiDataCollectorBase):
+                raise TypeError("Parameter api_data_collector must be an instance of ApiDataCollectorBase or its subclass.")
+
+        self.__api_data_collectors = api_data_collectors
 
     async def prepare_data(self, trading_pair: str, start_date: str, end_date: str,
         granularity: Granularity, list_of_indicators: Optional[list[IndicatorHandlerBase]] = None) \
@@ -48,11 +63,21 @@ class DataHandler(metaclass = SingletonMeta):
         if list_of_indicators is None:
             list_of_indicators = []
 
-        possible_trading_pairs = await self.__coinbase.get_possible_pairs()
-        if trading_pair not in possible_trading_pairs.index:
+        data, meta_data = None, None
+        for api_data_collector in self.__api_data_collectors:
+            try:
+                data, meta_data = await api_data_collector._collect_data_for_ticker(trading_pair, start_date, end_date, granularity)
+                break
+            except Exception:
+                logging.info(f"Did not manage to collect data for {trading_pair} using "
+                             f"{api_data_collector.__class__.__name__}... trying next one.")
+
+        if data is None or meta_data is None:
             raise RuntimeError('Trading pair not recognized!')
 
-        data, meta_data = await self.__coinbase.get_candles_for(trading_pair, start_date, end_date, granularity)
+        if data.empty:
+            raise RuntimeError(f'No data collected for {trading_pair} between {start_date} and {end_date} with granularity {granularity}.')
+
         if len(list_of_indicators) > 0:
             indicators_data = []
             for indicator in list_of_indicators:
