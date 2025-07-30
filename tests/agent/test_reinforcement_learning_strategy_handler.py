@@ -6,6 +6,7 @@ import numpy as np
 import rl
 from ddt import ddt
 from tensorflow.keras.models import Model
+from tensorflow.keras.optimizers import Optimizer
 from types import SimpleNamespace
 from unittest import TestCase
 from unittest.mock import Mock, patch
@@ -67,6 +68,9 @@ class ReinforcementLearningStrategyHandlerTestCase(TestCase):
 
         logging.info("Attempting to create agent.")
         mocked_dqn_agent_constructor.return_value = Mock(spec = rl.agents.DQNAgent)
+        mocked_dqn_agent_constructor.return_value.model = Mock(spec = Model)
+        mocked_dqn_agent_constructor.return_value.model.optimizer = Mock(spec = Optimizer)
+
         mocked_model_blue_print = Mock(spec = BluePrintBase)
         mocked_model_blue_print.report_parameters_needed_for_instantiation.return_value = \
             ['input_shape', 'output_length', 'spatial_data_shape']

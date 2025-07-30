@@ -10,7 +10,7 @@ from unittest import TestCase
 from unittest.mock import Mock, AsyncMock, patch
 
 # local imports
-from source.data_handling import DataHandler
+from source.data_handling import ApiDataCollectorBase, DataHandler
 from source.indicators import IndicatorHandlerBase
 from source.utils import Granularity
 
@@ -66,26 +66,25 @@ class DataHandlerTestCase(TestCase):
                 if name in attribute_name:
                     setattr(self.__sut, attribute_name, value)
 
-    @patch('source.data_handling.CoinBaseHandler.get_candles_for', new_callable = AsyncMock)
-    def test_data_handler_prepare_data__no_indicators(self, mocked_get_candles_for) -> None:
+    def test_data_handler_prepare_data__no_indicators(self) -> None:
         """
         Tests the prepare_data method of DataHandler without indicators.
 
         Verifies that the prepare_data method do not modify data when there is no specified
-        indicators to the data. The get_candles_for method of CoinBaseHandler is mocked to
-        return predefined data.
-
-        Expected Result:
-            Same as mocked data.
+        indicators applied. The api data collectors are mocked to return predefined data.
 
         Asserts:
             The result DataFrame matches the expected DataFrame.
-            The get_candles_for method was called once.
+            The _collect_data_for_ticker method was called.
         """
 
         logging.info("Attempting to retrieve data for BTC-USD.")
-        mocked_get_candles_for.return_value = (self.__MOCKED_COINBASE_HANDLER_DATA,
-                                               self.__MOCKED_COINBASE_HANDLER_META_DATA)
+        list_of_mocked_api_data_collectors = [Mock(spec = ApiDataCollectorBase), Mock(spec = ApiDataCollectorBase)]
+        self.__update_sut(api_data_collectors = list_of_mocked_api_data_collectors)
+
+        list_of_mocked_api_data_collectors[0]._validate_ticker = AsyncMock(return_value = True)
+        list_of_mocked_api_data_collectors[0]._collect_data_for_ticker.return_value = (self.__MOCKED_COINBASE_HANDLER_DATA,
+                                                                                       self.__MOCKED_COINBASE_HANDLER_META_DATA)
         expected_data = self.__MOCKED_COINBASE_HANDLER_DATA
 
         logging.info("Invoking prepare_data method without indicators.")
@@ -95,28 +94,30 @@ class DataHandlerTestCase(TestCase):
         logging.info("Validating the results.")
         pd.testing.assert_frame_equal(result[0], expected_data)
         self.assertTrue('normalization_groups' in result[1])
-        mocked_get_candles_for.assert_called_once()
+        list_of_mocked_api_data_collectors[0]._collect_data_for_ticker.assert_called_once()
+        list_of_mocked_api_data_collectors[1]._collect_data_for_ticker.assert_not_called()
 
-    @patch('source.data_handling.CoinBaseHandler.get_candles_for', new_callable = AsyncMock)
-    def test_data_handler_prepare_data__with_indicators(self, mocked_get_candles_for) -> None:
+    def test_data_handler_prepare_data__with_indicators(self) -> None:
         """
         Tests the prepare_data method of DataHandler with indicators.
 
         Verifies that the prepare_data method applies the specified indicators to the data.
-        The get_candles_for method of CoinBaseHandler is mocked to return predefined data,
-        and two indicators are applied.
-
-        Expected Result:
-            Original data combined with the results of the mean_high and std_low indicators.
+        The api data collectors are mocked to return predefined data, and two indicators are
+        applied.
 
         Asserts:
             The result DataFrame is extended.
-            The get_candles_for method was called once.
+            The _collect_data_for_ticker method was called.
         """
 
         logging.info("Attempting to retrieve data for BTC-USD with indicators.")
-        mocked_get_candles_for.return_value = (self.__MOCKED_COINBASE_HANDLER_DATA,
-                                               self.__MOCKED_COINBASE_HANDLER_META_DATA)
+        list_of_mocked_api_data_collectors = [Mock(spec = ApiDataCollectorBase), Mock(spec = ApiDataCollectorBase)]
+        self.__update_sut(api_data_collectors = list_of_mocked_api_data_collectors)
+
+        list_of_mocked_api_data_collectors[0]._validate_ticker = AsyncMock(return_value = True)
+        list_of_mocked_api_data_collectors[0]._collect_data_for_ticker.return_value = (self.__MOCKED_COINBASE_HANDLER_DATA,
+                                                                                       self.__MOCKED_COINBASE_HANDLER_META_DATA)
+
         mean_high_mock_indicator = Mock(spec = TestIndicatorHandler)
         mean_high_mock_indicator.calculate = lambda data: \
             data['high'].rolling(window = 2).mean().to_frame(name = 'mean_high')
@@ -136,7 +137,8 @@ class DataHandlerTestCase(TestCase):
         logging.info("Validating the results with indicators.")
         pd.testing.assert_frame_equal(result[0], expected_data)
         self.assertTrue('normalization_groups' in result[1])
-        mocked_get_candles_for.assert_called_once()
+        list_of_mocked_api_data_collectors[0]._collect_data_for_ticker.assert_called_once()
+        list_of_mocked_api_data_collectors[1]._collect_data_for_ticker.assert_not_called()
 
     def test_data_handler_save_extended_data_into_csv_formatted_string_buffer(self) -> None:
         """
@@ -160,7 +162,14 @@ class DataHandlerTestCase(TestCase):
         self.assertEqual(result.getvalue(), expected_result)
 
     def test_data_handler_read_extended_data_from_csv_formatted_string_buffer(self) -> None:
-        """"""
+        """
+        Tests the read_extended_data_from_csv_formatted_string_buffer method of DataHandler.
+
+        Verifies that the method correctly reads the extended data and metadata from a CSV formatted string buffer.
+
+        Asserts:
+            The read data and metadata match the expected values.
+        """
 
         logging.info("Attempting to read data from CSV formatted string buffer.")
         mocked_input = io.StringIO(f"# {self.__MOCKED_COINBASE_HANDLER_META_DATA} \n" +

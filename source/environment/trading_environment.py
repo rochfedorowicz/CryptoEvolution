@@ -147,7 +147,7 @@ class TradingEnvironment(Env):
             new_rows.append(data_row)
 
         new_data = pd.DataFrame(new_rows, columns=[f"feature_{i}" for i in range(len(new_rows[0]))])
-        labels = self.__label_annotator.annotate(self.__data[self.__mode]).shift(-self.current_iteration)
+        labels = self.__label_annotator.annotate(self.__data[self.__mode].copy()).shift(-self.current_iteration)
 
         return new_data, labels.dropna()
 
@@ -169,13 +169,17 @@ class TradingEnvironment(Env):
 
         if self.__meta_data is not None and \
             self.__meta_data.get('normalization_groups', None) is not None:
-            normalization_groups = self.__meta_data['normalization_groups']
-            normalized_data_pieces = []
-            for normalization_group in normalization_groups:
-                columns_to_normalize = current_market_data_no_index[normalization_group]
-                normalized_columns = StandardScaler().fit_transform(columns_to_normalize.values.reshape(-1, 1))
-                normalized_data_pieces.append(normalized_columns.reshape(*columns_to_normalize.shape))
-            normalized_current_market_data_values = np.hstack(normalized_data_pieces)
+            grouped_columns_names = self.__meta_data['normalization_groups']
+            preprocessed_data_pieces = []
+            left_over_columns_names = set(current_market_data_no_index.columns)
+            for columns_names_to_normalize in grouped_columns_names:
+                left_over_columns_names -= set(columns_names_to_normalize)
+                data_frame_piece_to_normalize = current_market_data_no_index[columns_names_to_normalize]
+                normalized_data_frame_piece = StandardScaler().fit_transform(data_frame_piece_to_normalize.values.reshape(-1, 1))
+                preprocessed_data_pieces.append(normalized_data_frame_piece.reshape(*data_frame_piece_to_normalize.shape))
+            for column in left_over_columns_names:
+                preprocessed_data_pieces.append(current_market_data_no_index[column].values.reshape(-1, 1))
+            normalized_current_market_data_values = np.hstack(preprocessed_data_pieces)
         else:
             normalized_current_market_data_values = StandardScaler().fit_transform(current_market_data_no_index)
         current_marked_data_list = normalized_current_market_data_values.ravel().tolist()

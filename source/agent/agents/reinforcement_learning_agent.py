@@ -37,6 +37,7 @@ class ReinforcementLearningAgent(AgentBase, PerformanceTestable):
                                                        nb_actions = model.output_shape[-1],
                                                        target_model_update = 1e-2)
         self.__DQNAgent.compile(optimizer)
+        self.__DQNAgent.optimizer = self.__DQNAgent.model.optimizer  # For compatibility with callbacks
 
     def load_model(self, model_path: str) -> None:
         """

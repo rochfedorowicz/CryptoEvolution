@@ -1,4 +1,4 @@
-# scripts/create_data.py
+# scripts/create_dataset.py
 
 # global imports
 import argparse
@@ -8,29 +8,16 @@ import os
 import sys
 
 # local imports
-from source.data_handling import DataHandler
+from source.data_handling import DataHandler, CoinbaseApiDataCollector, YahooFinanceApiDataCollector
 from source.indicators import AverageTrueRangeIndicatorHandler, BollingerBandsDeviatorIndicatorHandler, \
-    DonchainChannelsIndicatorHandler, ExponentialMovingAverageIndicatorHandler, \
+    DonchainChannelsIndicatorHandler, ExponentialMovingAverageIndicatorHandler, IndicatorHandlerBase, \
     MovingAverageConvergenceDivergenceIndicatorHandler, MoneyFlowIndexIndicatorHandler, \
     MovingVolumeProfileIndicatorHandler, OnBalanceVolumeIndicatorHandler, \
     RelativeStrengthIndexIndicatorHandler, StochasticOscillatorIndicatorHandler, \
     VolatilityIndicatorHandler
 from source.utils import AWSHandler, Granularity
 
-def str_to_granularity(granularity_str):
-    granularity_map = {
-        '1m': Granularity.ONE_MINUTE,
-        '5m': Granularity.FIVE_MINUTES,
-        '15m': Granularity.FIFTEEN_MINUTES,
-        '30m': Granularity.THIRTY_MINUTES,
-        '1h': Granularity.ONE_HOUR,
-        '6h': Granularity.SIX_HOURS,
-        '1d': Granularity.ONE_DAY
-    }
-
-    return granularity_map.get(granularity_str)
-
-def str_to_list_of_indicators(list_of_indicators_str):
+def str_to_list_of_indicators(list_of_indicators_str: str) -> list[IndicatorHandlerBase]:
     if not list_of_indicators_str:
         return []
 
@@ -52,9 +39,10 @@ def str_to_list_of_indicators(list_of_indicators_str):
 
     return list_of_indicators
 
-async def main(trading_pair, start_date, end_date, granularity_str, list_of_indicators_str) -> bool:
+async def main(ticker: str, start_date: str, end_date: str, granularity_str: str, list_of_indicators_str: str) -> bool:
     try:
         data_handler = DataHandler()
+        data_handler.register_api_data_collectors([CoinbaseApiDataCollector(), YahooFinanceApiDataCollector()])
         list_of_indicators = str_to_list_of_indicators(list_of_indicators_str) + [VolatilityIndicatorHandler()]
         if None in list_of_indicators:
             index_of_none = list_of_indicators.index(None)
@@ -62,12 +50,12 @@ async def main(trading_pair, start_date, end_date, granularity_str, list_of_indi
             logging.error(f'Invalid indicator name: {invalid_name}')
             raise ValueError(f"Invalid indicator in list!")
 
-        data, meta_data = await data_handler.prepare_data(trading_pair, start_date, end_date,
-                                                          str_to_granularity(granularity_str),
+        data, meta_data = await data_handler.prepare_data(ticker, start_date, end_date,
+                                                          Granularity.from_string(granularity_str),
                                                           list_of_indicators)
         csv_data_buffer = data_handler.save_extended_data_into_csv_formatted_string_buffer(data, meta_data)
 
-        file_name = f'DS_{trading_pair}_{start_date}_{end_date}_{granularity_str}_{list_of_indicators_str}.csv'
+        file_name = f'DS_{ticker}_{start_date}_{end_date}_{granularity_str}_{list_of_indicators_str}.csv'
         for char_to_replace in [':', ' ', ',']:
             file_name = file_name.replace(char_to_replace, '_')
 
@@ -86,7 +74,7 @@ if __name__ == "__main__":
                         style = "{", datefmt = "%Y-%m-%d %H:%M:%S")
 
     parser = argparse.ArgumentParser(description = 'Prepare data with given parameters and save it into AWS S3 bucket.')
-    parser.add_argument('--trading_pair', type = str, required = True, help = 'Trading pair symbol.')
+    parser.add_argument('--ticker', type = str, required = True, help = 'Asset unique identifier.')
     parser.add_argument('--start_date', type = str, required = True, help = 'Start date in YYYY-MM-DD format.')
     parser.add_argument('--end_date', type = str, required = True, help = 'End date in YYYY-MM-DD format.')
     parser.add_argument('--granularity', type = str, required = True, choices = ['1m', '5m', '15m', '30m', '1h', '6h', '1d'],
@@ -104,7 +92,7 @@ if __name__ == "__main__":
     asyncio.set_event_loop_policy(policy)
 
     args = parser.parse_args()
-    success = asyncio.run(main(args.trading_pair, args.start_date, args.end_date, args.granularity, args.list_of_indicators))
+    success = asyncio.run(main(args.ticker, args.start_date, args.end_date, args.granularity, args.list_of_indicators))
 
     if not success:
         sys.exit(1)
