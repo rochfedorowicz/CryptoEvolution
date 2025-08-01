@@ -20,13 +20,13 @@ class YahooFinanceApiDataCollector(ApiDataCollectorBase):
 
     # local constants
     __MAX_NUMBER_OF_PAST_DAYS_PER_GRANULARITY = {
-        Granularity.ONE_MINUTE: 8,
-        Granularity.FIVE_MINUTES: 60,
-        Granularity.FIFTEEN_MINUTES: 60,
-        Granularity.THIRTY_MINUTES: 60,
-        Granularity.ONE_HOUR: 730,
-        Granularity.SIX_HOURS: 730,
-        Granularity.ONE_DAY: math.inf  # No limit for daily data
+        Granularity.ONE_MINUTE: 8,       # 60 x 24 x 8 = 11520 data points
+        Granularity.FIVE_MINUTES: 60,    # 12 x 24 x 60 = 17280 data points
+        Granularity.FIFTEEN_MINUTES: 60, # 4 x 24 x 60 = 5760 data points
+        Granularity.THIRTY_MINUTES: 60,  # 2 x 24 x 60 = 2880 data points
+        Granularity.ONE_HOUR: 730,       # 1 x 24 x 730 = 17520 data points
+        Granularity.SIX_HOURS: 730,      # 1 / 4 x 24 x 730 = 4380 data points
+        Granularity.ONE_DAY: math.inf    # No limit for daily data
     }
 
     async def _validate_ticker(self, ticker: str) -> bool:

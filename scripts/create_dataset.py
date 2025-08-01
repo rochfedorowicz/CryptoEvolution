@@ -41,6 +41,7 @@ def str_to_list_of_indicators(list_of_indicators_str: str) -> list[IndicatorHand
 
 async def main(ticker: str, start_date: str, end_date: str, granularity_str: str, list_of_indicators_str: str) -> bool:
     try:
+        aws_handler = AWSHandler()
         data_handler = DataHandler()
         data_handler.register_api_data_collectors([CoinbaseApiDataCollector(), YahooFinanceApiDataCollector()])
         list_of_indicators = str_to_list_of_indicators(list_of_indicators_str) + [VolatilityIndicatorHandler()]
@@ -59,7 +60,6 @@ async def main(ticker: str, start_date: str, end_date: str, granularity_str: str
         for char_to_replace in [':', ' ', ',']:
             file_name = file_name.replace(char_to_replace, '_')
 
-        aws_handler = AWSHandler()
         aws_handler.upload_buffer_to_s3(os.getenv('BUCKET_NAME'), csv_data_buffer, file_name)
         logging.info('Successfully uploaded data to S3 bucket! File name: %s', file_name)
         return True
@@ -82,8 +82,8 @@ if __name__ == "__main__":
     parser.add_argument('--list_of_indicators', type = str, required = False,
                         help = '''List of indicators, that looks like: indicator_1,indicator_2,...,indicator_N.
                         Possible indicators are: average_true_range=atr, bollinger_bands=bb, donchain_channels=dc,
-                        exponential_moving_average=ema, macd=macd, money_flow_index=mfi, moving_volume_profile=mvp,
-                        on_balance_volume=obv, relative_strength_index=rsi, stochastic_oscillator=so.''')
+                        exponential_moving_average=ema, moving_average_convergence_divergence=macd, money_flow_index=mfi,
+                        moving_volume_profile=mvp, on_balance_volume=obv, relative_strength_index=rsi, stochastic_oscillator=so.''')
 
     if sys.platform.startswith('win'):
         policy = asyncio.WindowsSelectorEventLoopPolicy()

@@ -23,7 +23,6 @@ class Broker():
 
         self.__leverage: int = leverage
         self.__current_orders: list[Order] = []
-        self.__recently_closed_orders: list[Order] = []
 
     def get_leverage(self) -> int:
         """
@@ -61,6 +60,19 @@ class Broker():
 
         self.__current_orders.append(Order(amount, is_buy_order, stop_loss, take_profit))
 
+    def force_close_orders(self) -> list[Order]:
+        """
+        Closes all currently ongoing orders and returns them.
+
+        Returns:
+            (list[Order]): List of closed trades.
+        """
+
+        current_orders_copy = copy.copy(self.__current_orders)
+        self.__current_orders.clear()
+
+        return current_orders_copy
+
     def update_orders(self, coefficient: float) -> list[Order]:
         """
         Updates and closes orders. The current value of the order is multiplied by
@@ -74,7 +86,7 @@ class Broker():
             (list[Order]): List of closed trades.
         """
 
-        self.__recently_closed_orders.clear()
+        recently_closed_orders = []
         buy_trade_coefficient = ((coefficient - 1) * self.__leverage) + 1
         sell_trade_coefficient = 2 - buy_trade_coefficient
 
@@ -86,12 +98,12 @@ class Broker():
 
             order_ratio = order.current_value / order.initial_value
             if order_ratio >= order.take_profit or order_ratio <= order.stop_loss:
-                self.__recently_closed_orders.append(order)
+                recently_closed_orders.append(order)
 
-        for order in self.__recently_closed_orders:
+        for order in recently_closed_orders:
             self.__current_orders.remove(order)
 
-        return self.__recently_closed_orders
+        return recently_closed_orders
 
     def reset(self) -> None:
         """
@@ -100,4 +112,3 @@ class Broker():
         """
 
         self.__current_orders.clear()
-        self.__recently_closed_orders.clear()

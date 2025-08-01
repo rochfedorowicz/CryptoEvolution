@@ -21,13 +21,14 @@ class TrainingConfig():
     def __init__(self, nr_of_steps: int, nr_of_episodes: int, model_blue_print: BluePrintBase,
                  data: pd.DataFrame, initial_budget: float, max_amount_of_trades: int, window_size: int,
                  learning_strategy_handler: LearningStrategyHandlerBase,
-                 testing_strategy_handler: TestingStrategyHandlerBase, sell_stop_loss: float = 0.8,
+                 testing_strategy_handlers: list[TestingStrategyHandlerBase], sell_stop_loss: float = 0.8,
                  sell_take_profit: float = 1.2, buy_stop_loss: float = 0.8, buy_take_profit: float = 1.2,
                  penalty_starts: int = 0, penalty_stops: int = 10, static_reward_adjustment: float = 1,
                  repeat_test: int = 10, test_ratio: float = 0.2, validator: Optional[RewardValidatorBase] = None,
                  label_annotator: Optional[LabelAnnotatorBase] = None,
                  labeled_data_balancer: Optional[LabeledDataBalancer] = None,
-                 meta_data: Optional[dict[str, Any]] = None) -> None:
+                 meta_data: Optional[dict[str, Any]] = None,
+                 trading_mode: Optional[TradingEnvironment.TradingMode] = None) -> None:
         """
         Class constructor. Initializes the training configuration with the provided parameters.
 
@@ -40,7 +41,7 @@ class TrainingConfig():
             max_amount_of_trades (int): The maximum number of trades to perform.
             window_size (int): The size of the observation window.
             learning_strategy_handler (LearningStrategyHandlerBase): The handler for the learning strategy.
-            testing_strategy_handler (TestingStrategyHandlerBase): The handler for the testing strategy.
+            testing_strategy_handlers (list[TestingStrategyHandlerBase]): The handlers for the testing strategy.
             sell_stop_loss (float): The stop loss threshold for selling.
             sell_take_profit (float): The take profit threshold for selling.
             buy_stop_loss (float): The stop loss threshold for buying.
@@ -54,6 +55,7 @@ class TrainingConfig():
             label_annotator (Optional[LabelAnnotatorBase]): The label annotator to use. Defaults to SimpleLabelAnnotator.
             labeled_data_balancer (Optional[LabeledDataBalancer]): The labeled data balancer to use. Defaults to None.
             meta_data (Optional[dict[str, Any]]): Optional metadata for the training configuration.
+            trading_mode (Optional[TradingEnvironment.TradingMode]): The trading mode to use. Defaults to None.
         """
 
         if validator is None:
@@ -70,6 +72,7 @@ class TrainingConfig():
         # Environment config
         self.__data: pd.DataFrame = data
         self.__meta_data: Optional[dict[str, Any]] = meta_data
+        self.__trading_mode: Optional[TradingEnvironment.TradingMode] = trading_mode
         self.__test_ratio: float = test_ratio
         self.__initial_budget: float = initial_budget
         self.__max_amount_of_trades: int = max_amount_of_trades
@@ -88,7 +91,7 @@ class TrainingConfig():
         # Agent config
         self.__model_blue_print: BluePrintBase = model_blue_print
         self.__learning_strategy_handler: LearningStrategyHandlerBase = learning_strategy_handler
-        self.__testing_strategy_handler: TestingStrategyHandlerBase = testing_strategy_handler
+        self.__testing_strategy_handlers: list[TestingStrategyHandlerBase] = testing_strategy_handlers
 
     def __str__(self) -> str:
         """
@@ -114,6 +117,7 @@ class TrainingConfig():
                 f"\tnr_of_episodes: {self.nr_of_episodes}\n" \
                 f"\trepeat_test: {self.repeat_test}\n" \
                 f"\ttest_ratio: {self.__test_ratio}\n" \
+                f"\ttrading_mode: {self.__trading_mode}\n" \
                 f"\tinitial_budget: {self.__initial_budget}\n" \
                 f"\tmax_amount_of_trades: {self.__max_amount_of_trades}\n" \
                 f"\twindow_size: {self.__window_size}\n" \
@@ -133,8 +137,8 @@ class TrainingConfig():
                 f"\t\t{vars(self.__model_blue_print)}\n" \
                 f"\tlearning_strategy_handler: {self.__learning_strategy_handler.__class__.__name__}\n" \
                 f"\t\t{vars(self.__learning_strategy_handler)}\n" \
-                f"\ttesting_strategy_handler: {self.__testing_strategy_handler.__class__.__name__}\n" \
-                f"\t\t{vars(self.__testing_strategy_handler)}\n"
+                f"\ttesting_strategy_handlers: {[handler.__class__.__name__ for handler in self.__testing_strategy_handlers]}\n" \
+                f"\t\t{[vars(handler) for handler in self.__testing_strategy_handlers]}\n"
 
     def instantiate_agent_handler(self) -> AgentHandler:
         """
@@ -142,7 +146,7 @@ class TrainingConfig():
 
         Returns:
             (AgentHandler): An instance of the agent handler configured with the model blueprint,
-            trading environment, learning strategy handler and testing strategy handler.
+            trading environment, learning strategy handler and testing strategy handlers.
         """
 
         environment = TradingEnvironment(self.__data, self.__initial_budget, self.__max_amount_of_trades,
@@ -150,7 +154,8 @@ class TrainingConfig():
                                          self.__sell_stop_loss, self.__sell_take_profit, self.__buy_stop_loss,
                                          self.__buy_take_profit, self.__test_ratio, self.__penalty_starts,
                                          self.__penalty_stops, self.__static_reward_adjustment,
-                                         self.__labeled_data_balancer, self.__meta_data)
+                                         self.__labeled_data_balancer, self.__meta_data,
+                                         self.__trading_mode)
 
         return AgentHandler(self.__model_blue_print, environment, self.__learning_strategy_handler,
-                            self.__testing_strategy_handler)
+                            self.__testing_strategy_handlers)

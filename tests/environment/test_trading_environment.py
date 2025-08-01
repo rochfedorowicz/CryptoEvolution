@@ -63,7 +63,8 @@ class TradingEnvironmentTestCase(TestCase):
                                                             self.__mocked_label_annotator, sell_stop_loss,
                                                             sell_take_profit, buy_stop_loss, buy_take_profit,
                                                             test_ratio, penalty_starts, penalty_stops,
-                                                            static_reward_adjustment, self.__mocked_data_balancer)
+                                                            static_reward_adjustment, self.__mocked_data_balancer,
+                                                            should_prefetch = False)
 
     def tearDown(self) -> None:
         """

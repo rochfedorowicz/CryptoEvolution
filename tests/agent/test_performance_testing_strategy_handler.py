@@ -65,32 +65,30 @@ class PerformanceTestingStrategyHandlerTestCase(TestCase):
         mocked_testable_agent = Mock(spec = PerformanceTestable)
         mocked_environment = Mock(spec = TradingEnvironment)
         mocked_environment.state = SimpleNamespace()
-        type(mocked_environment).current_iteration = PropertyMock(side_effect = [0, 2, 3, 4])
+        type(mocked_environment).current_iteration = PropertyMock(side_effect = [0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5])
         mocked_environment.get_trading_data.return_value = SimpleNamespace(current_budget = 1000,
                                                                            currently_invested = 0)
+        mocked_environment.get_number_of_trading_points_per_year.return_value = 252
         mocked_environment.step.side_effect = [
             [mocked_environment.state, 0, False, {'current_budget': 1000, 'currently_invested': 0}], # First step
             [mocked_environment.state, 0, False, {'current_budget': 800, 'currently_invested': 200}], # Second step
             [mocked_environment.state, 0, False, {'current_budget': 800, 'currently_invested': 220}], # Third step
             [mocked_environment.state, 0, False, {'current_budget': 800, 'currently_invested': 225}], # Fourth step
-            [mocked_environment.state, 1, True, {'current_budget': 1230, 'currently_invested': 0}]  # Last step
+            [mocked_environment.state, 1, True, {'current_budget': 1030, 'currently_invested': 0}]  # Last step
         ]
-        mocked_environment.get_data_for_iteration.return_value = [80000.0, 80000.0, 88000.0, 90000.0, 92000.0]
+        mocked_environment.get_data_for_iteration.return_value = [80000.0, 80000.0, 88000.0, 90000.0, 92000.0, 94000.0]
         expected_keys = [PerformanceTestingStrategyHandler.PLOTTING_KEY]
         expected_report_data = [{
-            'assets_values': [1.0, 1.02, 1.025, 1.23],
-            'reward_values': [0, 0, 0, 1],
-            'currency_prices': [1.0, 1.0, 1.1, 1.125, 1.15],
-            'infos': [{},
-                      {'current_budget': 800, 'currently_invested': 220},
-                      {'current_budget': 800, 'currently_invested': 225},
-                      {'current_budget': 1230, 'currently_invested': 0}],
-            'iterations': [0, 2, 3, 4],
-            'solvency_coefficient': 57.5
+            'assets_values': [1.0, 1.0, 1.0, 1.02, 1.025, 1.03],
+            'reward_values': [0, 0, 0, 0, 0, 1],
+            'currency_prices': [1.0, 1.0, 1.1, 1.125, 1.15, 1.175],
+            'iterations': [0, 1, 2, 3, 4, 5],
+            'solvency_coefficient': 6,
+            'trading_points_per_year': 252
         }]
 
         logging.info("Invoking evaluate.")
-        keys, report_data = self.__sut.evaluate(mocked_testable_agent, mocked_environment)
+        keys, report_data = self.__sut.evaluate(mocked_testable_agent, mocked_environment, (0, 5))
 
         logging.info("Validating expected calls and results.")
         self.assertEqual(keys, expected_keys)

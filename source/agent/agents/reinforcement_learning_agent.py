@@ -1,4 +1,4 @@
-# agent/strategies/reinforcement_learning_agent.py
+# agent/agents/reinforcement_learning_agent.py
 
 # global imports
 import rl

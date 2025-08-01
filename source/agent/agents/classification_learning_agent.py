@@ -1,8 +1,7 @@
-# agent/strategies/classification_learning_agent.py
+# agent/agents/classification_learning_agent.py
 
 # global imports
 import numpy as np
-import pandas as pd
 from tensorflow.keras.callbacks import Callback
 from typing import Any
 
@@ -50,12 +49,12 @@ class ClassificationLearningAgent(AgentBase, ClassificationTestable):
 
         return self._model_adapter.fit(**kwargs)
 
-    def classify(self, data: pd.DataFrame) -> list[list[float]]:
+    def classify(self, data: np.ndarray) -> list[list[float]]:
         """
         Classifies the input data using the trained model.
 
         Parameters:
-            data (pd.DataFrame): The input data to be classified.
+            data (np.ndarray): The input data to be classified.
 
         Returns:
             (list[list[float]]): The predicted class probabilities for each input sample.

@@ -46,7 +46,7 @@ class TrainingConfigTestCase(TestCase):
                                                     max_amount_of_trades = MAX_AMOUNT_OF_TRADES,
                                                     window_size = WINDOW_SIZE,
                                                     learning_strategy_handler = self.__mocked_learning_strategy_handler,
-                                                    testing_strategy_handler = Mock(spec = TestingStrategyHandlerBase))
+                                                    testing_strategy_handlers = [Mock(spec = TestingStrategyHandlerBase)])
 
     def tearDown(self) -> None:
         """
@@ -81,6 +81,7 @@ class TrainingConfigTestCase(TestCase):
             "\tnr_of_episodes: 200\n"
             "\trepeat_test: 10\n"
             "\ttest_ratio: 0.2\n"
+            "\ttrading_mode: None\n"
             "\tinitial_budget: 1500.0\n"
             "\tmax_amount_of_trades: 10\n"
             "\twindow_size: 72\n"
@@ -94,14 +95,14 @@ class TrainingConfigTestCase(TestCase):
             "\tvalidator: PriceRewardValidator\n"
             "\t\t{'_PriceRewardValidator__coefficient': 1.0, '_PriceRewardValidator__normalizable': False}\n"
             "\tlabel_annotator: SimpleLabelAnnotator\n"
-            "\t\t{'_output_classes': namespace(UP_TREND=0, DOWN_TREND=1, NO_TREND=2), '_requested_columns': None, '_SimpleLabelAnnotator__threshold': 0.01}\n"
+            "\t\t{'_output_classes': namespace(UP_TREND=0, NO_TREND=1, DOWN_TREND=2), '_requested_columns': None, '_SimpleLabelAnnotator__threshold': 0.01}\n"
             "\tlabeled_data_balancer: None\n"
             "\tmodel_blue_print: BluePrintBase\n"
             "\t\t{}\n"
             "\tlearning_strategy_handler: LearningStrategyHandlerBase\n"
             "\t\t{}\n"
-            "\ttesting_strategy_handler: TestingStrategyHandlerBase\n"
-            "\t\t{}\n")
+            "\ttesting_strategy_handlers: ['TestingStrategyHandlerBase']\n"
+            "\t\t[{}]\n")
     )
     @unpack
     def test_training_config___str__(self, params_to_update: dict[str, Any], expected_serialization_str: str) -> None:

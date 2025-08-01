@@ -1,7 +1,7 @@
 # agent/strategies/classification_testable.py
 
 # global imports
-import pandas as pd
+import numpy as np
 from abc import ABC, abstractmethod
 
 # local imports
@@ -12,12 +12,12 @@ class ClassificationTestable(ABC):
     """
 
     @abstractmethod
-    def classify(self, data: pd.DataFrame) -> list[list[float]]:
+    def classify(self, data: np.ndarray) -> list[list[float]]:
         """
         Classifies the input data using the trained model.
 
         Parameters:
-            data (pd.DataFrame): The input data to be classified.
+            data (np.ndarray): The input data to be classified.
 
         Returns:
             (list[list[float]]): The predicted class probabilities for each input sample.

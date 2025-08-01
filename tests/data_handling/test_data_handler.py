@@ -82,9 +82,8 @@ class DataHandlerTestCase(TestCase):
         list_of_mocked_api_data_collectors = [Mock(spec = ApiDataCollectorBase), Mock(spec = ApiDataCollectorBase)]
         self.__update_sut(api_data_collectors = list_of_mocked_api_data_collectors)
 
-        list_of_mocked_api_data_collectors[0]._validate_ticker = AsyncMock(return_value = True)
-        list_of_mocked_api_data_collectors[0]._collect_data_for_ticker.return_value = (self.__MOCKED_COINBASE_HANDLER_DATA,
-                                                                                       self.__MOCKED_COINBASE_HANDLER_META_DATA)
+        list_of_mocked_api_data_collectors[0].collect_data.return_value = (self.__MOCKED_COINBASE_HANDLER_DATA,
+                                                                           self.__MOCKED_COINBASE_HANDLER_META_DATA)
         expected_data = self.__MOCKED_COINBASE_HANDLER_DATA
 
         logging.info("Invoking prepare_data method without indicators.")
@@ -94,8 +93,8 @@ class DataHandlerTestCase(TestCase):
         logging.info("Validating the results.")
         pd.testing.assert_frame_equal(result[0], expected_data)
         self.assertTrue('normalization_groups' in result[1])
-        list_of_mocked_api_data_collectors[0]._collect_data_for_ticker.assert_called_once()
-        list_of_mocked_api_data_collectors[1]._collect_data_for_ticker.assert_not_called()
+        list_of_mocked_api_data_collectors[0].collect_data.assert_called_once()
+        list_of_mocked_api_data_collectors[1].collect_data.assert_not_called()
 
     def test_data_handler_prepare_data__with_indicators(self) -> None:
         """
@@ -115,8 +114,8 @@ class DataHandlerTestCase(TestCase):
         self.__update_sut(api_data_collectors = list_of_mocked_api_data_collectors)
 
         list_of_mocked_api_data_collectors[0]._validate_ticker = AsyncMock(return_value = True)
-        list_of_mocked_api_data_collectors[0]._collect_data_for_ticker.return_value = (self.__MOCKED_COINBASE_HANDLER_DATA,
-                                                                                       self.__MOCKED_COINBASE_HANDLER_META_DATA)
+        list_of_mocked_api_data_collectors[0].collect_data.return_value = (self.__MOCKED_COINBASE_HANDLER_DATA,
+                                                                           self.__MOCKED_COINBASE_HANDLER_META_DATA)
 
         mean_high_mock_indicator = Mock(spec = TestIndicatorHandler)
         mean_high_mock_indicator.calculate = lambda data: \
@@ -137,8 +136,8 @@ class DataHandlerTestCase(TestCase):
         logging.info("Validating the results with indicators.")
         pd.testing.assert_frame_equal(result[0], expected_data)
         self.assertTrue('normalization_groups' in result[1])
-        list_of_mocked_api_data_collectors[0]._collect_data_for_ticker.assert_called_once()
-        list_of_mocked_api_data_collectors[1]._collect_data_for_ticker.assert_not_called()
+        list_of_mocked_api_data_collectors[0].collect_data.assert_called_once()
+        list_of_mocked_api_data_collectors[1].collect_data.assert_not_called()
 
     def test_data_handler_save_extended_data_into_csv_formatted_string_buffer(self) -> None:
         """

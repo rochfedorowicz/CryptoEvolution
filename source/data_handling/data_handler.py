@@ -66,7 +66,7 @@ class DataHandler(metaclass = SingletonMeta):
         data, meta_data = None, None
         for api_data_collector in self.__api_data_collectors:
             try:
-                data, meta_data = await api_data_collector._collect_data_for_ticker(trading_pair, start_date, end_date, granularity)
+                data, meta_data = await api_data_collector.collect_data(trading_pair, start_date, end_date, granularity)
                 break
             except Exception:
                 logging.info(f"Did not manage to collect data for {trading_pair} using "
