@@ -1,6 +1,7 @@
 # agent/strategies/reinforcement_learning_strategy_handler.py
 
 # global imports
+import tensorflow as tf
 from rl.policy import BoltzmannQPolicy, Policy
 from tensorflow.keras.callbacks import Callback
 from tensorflow.keras.optimizers import Adam, Optimizer
@@ -51,6 +52,15 @@ class ReinforcementLearningStrategyHandler(LearningStrategyHandlerBase):
         Returns:
             (AgentBase): An instance of the agent created using the model blueprint and trading environment.
         """
+
+        # Configure TensorFlow settings to be compatible with the rl library
+        if hasattr(tf, 'compat'):
+            tf.compat.v1.disable_eager_execution()
+            tf.compat.v1.experimental.output_all_intermediates(True)
+            config = tf.compat.v1.ConfigProto()
+            config.gpu_options.allow_growth = True
+            config.allow_soft_placement = True
+            tf.compat.v1.keras.backend.set_session(tf.compat.v1.Session(config = config))
 
         parameters_needed_for_instantiation = model_blue_print.report_parameters_needed_for_instantiation()
         kwargs = {}

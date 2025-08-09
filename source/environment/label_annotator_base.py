@@ -70,7 +70,7 @@ class LabelAnnotatorBase(ABC):
         if missing_columns := set(self._requested_columns) - set(data.columns):
             raise ValueError(f"Data is missing required columns: {missing_columns}")
 
-        return data[self._requested_columns].apply(self._classify_trend, axis = 1)[:-1]
+        return data[self._requested_columns].apply(self._classify_trend, axis = 1)
 
     def get_output_classes(self) -> SimpleNamespace:
         """

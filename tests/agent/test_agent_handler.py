@@ -5,7 +5,7 @@ import logging
 from ddt import ddt
 from types import SimpleNamespace
 from unittest import TestCase
-from unittest.mock import Mock
+from unittest.mock import ANY, Mock
 
 # local imports
 from source.agent import AgentBase, AgentHandler, LearningStrategyHandlerBase, TestingStrategyHandlerBase
@@ -30,11 +30,11 @@ class AgentHandlerTestCase(TestCase):
         self.__mocked_agent: AgentBase = Mock(spec = AgentBase)
         self.__mocked_learning_strategy_handler: LearningStrategyHandlerBase = Mock(spec = LearningStrategyHandlerBase)
         self.__mocked_learning_strategy_handler.create_agent.return_value = self.__mocked_agent
-        self.__mocked_testing_strategy_handler: TestingStrategyHandlerBase = Mock(spec = TestingStrategyHandlerBase)
+        self.__mocked_testing_strategy_handlers: list[TestingStrategyHandlerBase] = [Mock(spec = TestingStrategyHandlerBase)]
 
         self.__sut: AgentHandler = AgentHandler(Mock(spec = BluePrintBase), self.__mocked_environment,
                                                 self.__mocked_learning_strategy_handler,
-                                                self.__mocked_testing_strategy_handler)
+                                                self.__mocked_testing_strategy_handlers)
 
     def tearDown(self) -> None:
         """
@@ -119,7 +119,8 @@ class AgentHandlerTestCase(TestCase):
         keys, report_data = self.__sut.test_agent(repeat)
 
         logging.info("Validating expected calls and results.")
-        self.__mocked_testing_strategy_handler.evaluate.assert_not_called()
+        for mocked_testing_strategy_handler in self.__mocked_testing_strategy_handlers:
+            mocked_testing_strategy_handler.evaluate.assert_not_called()
         self.assertEqual(keys, {})
         self.assertEqual(report_data, {})
 
@@ -143,7 +144,7 @@ class AgentHandlerTestCase(TestCase):
         self.__update_sut(_AgentHandler__trained = True)
         mocked_keys = ['mocked_key1', 'mocked_key2']
         mocked_report_data = [{'mocked_metric1': 0.11}, {'mocked_metric2': 0.21}]
-        self.__mocked_testing_strategy_handler.evaluate.return_value = (mocked_keys, mocked_report_data)
+        self.__mocked_testing_strategy_handlers[0].evaluate.return_value = (mocked_keys, mocked_report_data)
         self.__mocked_environment.get_environment_length.return_value = 10000
         self.__mocked_environment.get_trading_consts.return_value = SimpleNamespace(WINDOW_SIZE = 48)
         repeat = 2
@@ -153,9 +154,8 @@ class AgentHandlerTestCase(TestCase):
 
         logging.info("Validating expected calls and results.")
         self.__mocked_environment.set_mode.assert_called_once_with(TradingEnvironment.TEST_MODE)
-        self.assertEqual(self.__mocked_environment.reset.call_count, repeat)
-        self.__mocked_testing_strategy_handler.evaluate.assert_called_with(self.__mocked_agent,
-                                                                           self.__mocked_environment)
-        self.assertEqual(self.__mocked_testing_strategy_handler.evaluate.call_count, repeat)
+        for mocked_testing_strategy_handler in self.__mocked_testing_strategy_handlers:
+            mocked_testing_strategy_handler.evaluate.assert_called_with(self.__mocked_agent, self.__mocked_environment, ANY)
+        self.assertEqual(self.__mocked_testing_strategy_handlers[0].evaluate.call_count, repeat)
         self.assertEqual(keys, {0: mocked_keys, 1: mocked_keys})
         self.assertEqual(report_data, {0: mocked_report_data, 1: mocked_report_data})

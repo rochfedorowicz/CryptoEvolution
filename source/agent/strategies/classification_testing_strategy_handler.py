@@ -17,21 +17,22 @@ class ClassificationTestingStrategyHandler(TestingStrategyHandlerBase):
     # global class constants
     PLOTTING_KEY: str = 'classification_testing'
 
-    def evaluate(self, testable_agent: ClassificationTestable, environment: TradingEnvironment) -> \
-        tuple[list[str], list[dict[str, Any]]]:
+    def evaluate(self, testable_agent: ClassificationTestable, environment: TradingEnvironment,
+        env_length_range: tuple[int, int]) -> tuple[list[str], list[dict[str, Any]]]:
         """
         Evaluates the classification model using the given testable agent and trading environment.
 
         Parameters:
             testable_agent (ClassificationTestable): The agent to be tested.
             environment (TradingEnvironment): The trading environment containing the test data.
+            env_length_range (tuple[int, int]): A tuple specifying the range of environment lengths to consider.
 
         Returns:
             (tuple[list[str], list[dict[str, Any]]]): A tuple containing the keys and data collected during evaluation.
         """
 
         classes = list(environment.get_trading_consts().OUTPUT_CLASSES.keys())
-        input_data, output_data, _, _ = environment.get_labeled_data()
+        input_data, output_data, _, _ = environment.get_labeled_data(env_length_range = env_length_range)
         prediction_probabilities = testable_agent.classify(input_data)
         y_pred = np.argmax(prediction_probabilities, axis = 1)
 

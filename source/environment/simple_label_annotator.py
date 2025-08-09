@@ -26,8 +26,8 @@ class SimpleLabelAnnotator(LabelAnnotatorBase):
         super().__init__()
         self._output_classes = SimpleNamespace()
         self._output_classes.UP_TREND = 0
-        self._output_classes.DOWN_TREND = 1
-        self._output_classes.NO_TREND = 2
+        self._output_classes.NO_TREND = 1
+        self._output_classes.DOWN_TREND = 2
         self.__threshold = threshold
 
     def _classify_trend(self, row: pd.Series) -> int:

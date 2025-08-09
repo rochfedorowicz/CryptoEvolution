@@ -60,8 +60,8 @@ class PriceMovementTrendClassSummaryPlotResponsibilityChain(PlotResponsibilityCh
         plt.title("Price changes by trend classification")
 
         # Temporarily assume there is only one way to classify trends
-        trend_colors = ['green', 'red', (0.5, 0.5, 0.5, 0.2)]
-        class_names = ['UP Trend', 'DOWN Trend', 'NO Trend']
+        trend_colors = ['green', (0.5, 0.5, 0.5, 0.2), 'red']
+        class_names = ['UP Trend', 'NO Trend', 'DOWN Trend']
 
         train_x = range(len(train_part_labels))
         test_x = range(len(train_part_labels), len(train_part_labels) + len(test_part_labels))
@@ -80,8 +80,8 @@ class PriceMovementTrendClassSummaryPlotResponsibilityChain(PlotResponsibilityCh
 
         legend_elements = [
             Line2D([0], [0], color = 'green', lw = 2, label = class_names[0]),
-            Line2D([0], [0], color = 'red', lw = 2, label = class_names[1]),
-            Line2D([0], [0], color = 'gray', lw = 2, label = class_names[2])
+            Line2D([0], [0], color = 'gray', lw = 2, label = class_names[1]),
+            Line2D([0], [0], color = 'red', lw = 2, label = class_names[2])
         ]
         plt.legend(handles = legend_elements, loc = 'upper left')
 

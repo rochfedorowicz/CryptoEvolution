@@ -15,14 +15,15 @@ class TestingStrategyHandlerBase(ABC):
     """
 
     @abstractmethod
-    def evaluate(self, agent: AgentBase, environment: TradingEnvironment) -> \
-        tuple[list[str], list[dict[str, Any]]]:
+    def evaluate(self, agent: AgentBase, environment: TradingEnvironment,
+        env_length_range: tuple[int, int]) -> tuple[list[str], list[dict[str, Any]]]:
         """
         Evaluates the performance of the given agent in the specified trading environment.
 
         Parameters:
             agent (AgentBase): The agent to evaluate.
             environment (TradingEnvironment): The trading environment to use for evaluation.
+            env_length_range (tuple[int, int]): A tuple specifying the range of environment lengths to consider.
 
         Returns:
             (tuple[list[str], list[dict[str, Any]]]): A tuple containing the keys and data collected during evaluation.

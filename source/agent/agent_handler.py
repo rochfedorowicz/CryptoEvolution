@@ -2,7 +2,7 @@
 
 # global imports
 import logging
-import random
+import numpy as np
 from tensorflow.keras.callbacks import Callback
 from typing import Any, Callable, Optional
 
@@ -23,7 +23,7 @@ class AgentHandler():
     def __init__(self, model_blue_print: BluePrintBase,
                  trading_environment: TradingEnvironment,
                  learning_strategy_handler: LearningStrategyHandlerBase,
-                 testing_strategy_handler: TestingStrategyHandlerBase) -> None:
+                 testing_strategy_handlers: list[TestingStrategyHandlerBase]) -> None:
         """
         Class constructor. Initializes the agent handler with the given model blueprint,
         trading environment, learning strategy handler, and testing strategy handler.
@@ -32,12 +32,12 @@ class AgentHandler():
             model_blue_print (BluePrintBase): The model blueprint to be used for the agent.
             trading_environment (TradingEnvironment): The trading environment in which the agent will operate.
             learning_strategy_handler (LearningStrategyHandlerBase): The learning strategy handler to be used for training.
-            testing_strategy_handler (TestingStrategyHandlerBase): The testing strategy handler to be used for evaluation.
+            testing_strategy_handlers (list[TestingStrategyHandlerBase]): The testing strategy handlers to be used for evaluation.
         """
 
         self.__trained: bool = False
         self.__learning_strategy_handler: LearningStrategyHandlerBase = learning_strategy_handler
-        self.__testing_strategy_handler: TestingStrategyHandlerBase = testing_strategy_handler
+        self.__testing_strategy_handlers: list[TestingStrategyHandlerBase] = testing_strategy_handlers
         self.__trading_environment: TradingEnvironment = trading_environment
         self.__agent: AgentBase = learning_strategy_handler.create_agent(model_blue_print, trading_environment)
 
@@ -100,15 +100,31 @@ class AgentHandler():
 
         self.__trading_environment.set_mode(TradingEnvironment.TEST_MODE)
 
-        report_data = {}
-        keys = {}
-        for i in range(repeat):
-            env_length = self.__trading_environment.get_environment_length()
-            window_size = self.__trading_environment.get_trading_consts().WINDOW_SIZE
-            current_iteration = random.randint(window_size, int(env_length/2))
-            self.__trading_environment.reset(current_iteration)
-            keys[i], report_data[i] = self.__testing_strategy_handler.evaluate(self.__agent,
-                                                                               self.__trading_environment)
+        if repeat < 1:
+            # Adding 1 to repeat to ensure that any value above 1 will give
+            # full evaluation and cross-validation on the n-split part
+            # equal to number of repeats
+            repeat += 1
+
+        report_data = {x: [] for x in range(repeat)}
+        keys = {x: [] for x in range(repeat)}
+        window_size = self.__trading_environment.get_trading_consts().WINDOW_SIZE
+        max_env_length = self.__trading_environment.get_environment_length() - 1
+        for strategy_handler in self.__testing_strategy_handlers:
+            last_env_length_index = window_size
+            full_eval_key, full_eval_data = \
+                strategy_handler.evaluate(self.__agent, self.__trading_environment,
+                                          (last_env_length_index, max_env_length))
+            keys[0] += full_eval_key
+            report_data[0] += full_eval_data
+
+            for i, env_length_index in enumerate(np.linspace(window_size, max_env_length, repeat, dtype = int)[1:], start = 1):
+                eval_key, eval_data = \
+                    strategy_handler.evaluate(self.__agent, self.__trading_environment,
+                                              (last_env_length_index, env_length_index))
+                keys[i] += eval_key
+                report_data[i] += eval_data
+                last_env_length_index = env_length_index
 
         return keys, report_data
 

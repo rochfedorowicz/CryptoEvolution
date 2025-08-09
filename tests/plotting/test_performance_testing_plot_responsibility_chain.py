@@ -55,29 +55,31 @@ class PerformanceTestingPlotResponsibilityChainTestCase(TestCase):
                 'assets_values': [80.0, 82.0, 82.0, 84.0, 88.0, 94.0, 102.0, 120.0, 112.0, 108.0],
                 'currency_prices': [1000.0, 1005.0, 1005.0, 1010.0, 1020.0, 1035.0, 1055.0, 1100.0, 1080.0, 1070.0],
                 'iterations': [13, 14, 15, 16, 17, 18, 19, 20, 21, 22],
-                'solvency_coefficient': 1.4
+                'solvency_coefficient': 1.4,
+                'trading_points_per_year': 252
             }
         }
 
         expected_title = f"Testing history with solvency {mocked_input_data['plot_data']['solvency_coefficient']}"
         expected_xlabel = "Number of steps"
-        expected_ylabel = "Currency price and assets value growth"
+        expected_ylabel = "Normalized asset growth"
         expected_number_of_plotted_lines = 3
         expected_xydata_first_line = [list(tup) for tup in list(zip(mocked_input_data['plot_data']['iterations'], mocked_input_data['plot_data']['currency_prices']))]
         expected_xydata_second_line = [list(tup) for tup in list(zip(mocked_input_data['plot_data']['iterations'], mocked_input_data['plot_data']['assets_values']))]
 
         logging.info("Plotting using provided data.")
-        result = self.__sut.plot(mocked_input_data)
-        plotted_lines = result.get_lines()
+        _ = self.__sut.plot(mocked_input_data)
+        fig = plt.gcf()
+        testing_history_ax = fig.axes[0]
+        plotted_lines = testing_history_ax.get_lines()
 
         logging.info("Checking expected plot.")
-        self.assertEqual(result.get_title(), expected_title)
-        self.assertEqual(result.get_xlabel(), expected_xlabel)
-        self.assertEqual(result.get_ylabel(), expected_ylabel)
+        self.assertEqual(testing_history_ax.get_title(), expected_title)
+        self.assertEqual(testing_history_ax.get_xlabel(), expected_xlabel)
+        self.assertEqual(testing_history_ax.get_ylabel(), expected_ylabel)
         self.assertEqual(len(plotted_lines), expected_number_of_plotted_lines)
         self.assertEqual(plotted_lines[0].get_xydata().tolist(), expected_xydata_first_line)
         self.assertEqual(plotted_lines[1].get_xydata().tolist(), expected_xydata_second_line)
-
 
     def test_performance_testing_plot_responsibility_chain_plot__unable_to_handle(self) -> None:
         """

@@ -6,7 +6,8 @@ from tensorflow.keras.callbacks import Callback
 from typing import Any
 
 # local imports
-from source.agent import AgentBase, ClassificationLearningAgent, LearningStrategyHandlerBase
+from source.agent import AgentBase, ClassificationLearningAgent, LearningStrategyHandlerBase, \
+    PerformanceTestableClassificationLearningAgent
 from source.environment import TradingEnvironment
 from source.model import BluePrintBase
 
@@ -38,7 +39,7 @@ class ClassificationLearningStrategyHandler(LearningStrategyHandlerBase):
         for parameter in parameters_needed_for_instantiation:
             kwargs[parameter] = self._provide_required_parameter(parameter, trading_environment)
 
-        return ClassificationLearningAgent(model_blue_print.instantiate_model(**kwargs))
+        return PerformanceTestableClassificationLearningAgent(model_blue_print.instantiate_model(**kwargs))
 
     def fit(self, agent: ClassificationLearningAgent, trading_environment: TradingEnvironment,
             nr_of_steps: int, nr_of_episodes: int, callbacks: list[Callback]) -> tuple[list[str], list[dict[str, Any]]]:
@@ -137,15 +138,15 @@ class ClassificationLearningStrategyHandler(LearningStrategyHandlerBase):
         trading_environment.set_mode(TradingEnvironment.TEST_MODE)
         data['test_part_price_movement'] = trading_environment.get_data_for_iteration(['close'])
         _, test_part_labels, _, _ = trading_environment.get_labeled_data(should_split = False,
-                                                                 should_balance = False,
-                                                                 verbose = False)
+                                                                         should_balance = False,
+                                                                         verbose = False)
         data['test_part_labels'] = test_part_labels.astype('int')
 
         trading_environment.set_mode(TradingEnvironment.TRAIN_MODE)
         data['train_part_price_movement'] = trading_environment.get_data_for_iteration(['close'])
         _, train_part_labels, _, _ = trading_environment.get_labeled_data(should_split = False,
-                                                                       should_balance = False,
-                                                                       verbose = False)
+                                                                          should_balance = False,
+                                                                          verbose = False)
         data['train_part_labels'] = train_part_labels.astype('int')
 
         return data
