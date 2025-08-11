@@ -61,7 +61,7 @@ class AssetPriceMovementSummaryPlotResponsibilityChainTestCase(TestCase):
 
         # Plot 1: Currency prices
         expected_currency_prices_ax_title = 'Currency Prices'
-        expected_currency_prices_ax_xlabel = 'Time'
+        expected_currency_prices_ax_xlabel = 'Trading points'
         expected_currency_prices_ax_ylabel = 'Log scale of price'
         expected_currency_prices_ax_number_of_lines = 3
         train_part_price_movement = mocked_input_data['plot_data']['train_part_price_movement']
@@ -74,7 +74,7 @@ class AssetPriceMovementSummaryPlotResponsibilityChainTestCase(TestCase):
 
         # Plot 2: Volatility
         expected_volatility_ax_title = 'Volatility'
-        expected_volatility_ax_xlabel = 'Time'
+        expected_volatility_ax_xlabel = 'Trading points'
         expected_volatility_ax_ylabel = 'Volatility'
         expected_volatility_ax_number_of_lines = 2
         train_part_volatility = mocked_input_data['plot_data']['train_part_volatility']
@@ -87,7 +87,7 @@ class AssetPriceMovementSummaryPlotResponsibilityChainTestCase(TestCase):
 
         # Plot 3: Price changes with volatility
         expected_currency_prices_with_volatility_ax_title = 'Price with Volatility-Colored Line'
-        expected_currency_prices_with_volatility_ax_xlabel = 'Time'
+        expected_currency_prices_with_volatility_ax_xlabel = 'Trading points'
         expected_currency_prices_with_volatility_ax_ylabel = 'Log scale of price'
         expected_currency_prices_with_volatility_ax_number_of_lines = \
             len(train_part_price_movement) - 1 + len(test_part_price_movement) - 1

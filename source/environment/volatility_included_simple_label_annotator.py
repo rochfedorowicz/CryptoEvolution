@@ -51,7 +51,7 @@ class VolatilityIncludedSimpleLabelAnnotator(LabelAnnotatorBase):
         volatility = row[self.__VOLATILITY_COLUMN_NAME]
 
         if price_diff > self.__threshold * volatility:
-                return self._output_classes.UP_TREND
+            return self._output_classes.UP_TREND
         elif price_diff < -self.__threshold * volatility:
             return self._output_classes.DOWN_TREND
         else:

@@ -130,8 +130,8 @@ class ClassificationTestingPlotResponsibilityChainTestCase(TestCase):
         drawn_matrix_ground_truth = np.zeros((2, 2), dtype = int)
         for text in confusion_matrix_ax.texts:
             if text.get_text().isdigit():
-                col, row = map(int, text.get_position())
-                drawn_matrix_ground_truth[row, col] = int(text.get_text())
+                col, row = map(float, text.get_position())
+                drawn_matrix_ground_truth[int(np.ceil(row)), int(np.ceil(col))] = int(text.get_text())
 
         # Plot 2: Precision, Recall, F1 Score Bar Chart
         classification_metrics_ax = fig.axes[1]

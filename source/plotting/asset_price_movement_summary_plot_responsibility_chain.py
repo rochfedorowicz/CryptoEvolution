@@ -73,7 +73,7 @@ class AssetPriceMovementSummaryPlotResponsibilityChain(PlotResponsibilityChainBa
                     linestyle = '--', alpha = 0.7, label = 'Train/Test Split')
 
         plt.yscale('log')
-        plt.xlabel('Time')
+        plt.xlabel('Trading points')
         plt.ylabel('Log scale of price')
         plt.legend(loc = 'upper left')
 
@@ -83,7 +83,7 @@ class AssetPriceMovementSummaryPlotResponsibilityChain(PlotResponsibilityChainBa
 
         plt.plot(train_x, train_part_volatility, label='Train Volatility')
         plt.plot(test_x, test_part_volatility, label='Test Volatility')
-        plt.xlabel('Time')
+        plt.xlabel('Trading points')
         plt.ylabel('Volatility')
         plt.legend(loc='upper left')
 
@@ -113,7 +113,7 @@ class AssetPriceMovementSummaryPlotResponsibilityChain(PlotResponsibilityChainBa
 
         plt.colorbar(sm, ax = plt.gca())
         plt.yscale('log')
-        plt.xlabel('Time')
+        plt.xlabel('Trading points')
         plt.ylabel('Log scale of price')
         plt.title('Price with Volatility-Colored Line')
         plt.tight_layout()

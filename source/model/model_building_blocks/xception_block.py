@@ -77,7 +77,7 @@ class XceptionBlock:
                               padding = 'same', use_bias = False)(x_1)
         x_1 = BatchNormalization()(x_1)
         x_1 = Activation('relu')(x_1)
-        x_1 = MaxPooling2D(self.__max_pooling_2d_kernel_size, strides=self.__max_pooling_2d_step, padding = 'same')(x_1)
+        x_1 = MaxPooling2D(self.__max_pooling_2d_kernel_size, strides = self.__max_pooling_2d_step, padding = 'same')(x_1)
 
         # Residual connection
         x_2 = Conv2D(self.__conv_2d_nr_of_filters, self.__conv_2d_kernel_size, strides = self.__conv_2d_step,

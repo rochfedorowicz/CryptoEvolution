@@ -62,21 +62,19 @@ class PriceMovementTrendClassSummaryPlotResponsibilityChain(PlotResponsibilityCh
         # Temporarily assume there is only one way to classify trends
         trend_colors = ['green', (0.5, 0.5, 0.5, 0.2), 'red']
         class_names = ['UP Trend', 'NO Trend', 'DOWN Trend']
+        price_movement_to_label_diff = len(train_part_price_movement) - len(train_part_labels) - 1
 
-        train_x = range(len(train_part_labels))
-        test_x = range(len(train_part_labels), len(train_part_labels) + len(test_part_labels))
-
-        for i in range(1, len(train_x)):
-            color = trend_colors[train_part_labels[i]]
-            plt.plot([train_x[i - 1], train_x[i]],
-                    [train_part_price_movement[i - 1], train_part_price_movement[i]],
-                    color = color, linewidth = 1)
-
-        for i in range(1, len(test_x)):
-            color = trend_colors[test_part_labels[i]]
-            plt.plot([test_x[i - 1], test_x[i]],
-                    [test_part_price_movement[i - 1], test_part_price_movement[i]],
-                    color = color, linewidth = 1)
+        for i in range(price_movement_to_label_diff + 1, len(train_part_labels)):
+            color = trend_colors[train_part_labels[i - 1 - price_movement_to_label_diff]]
+            plt.plot([i - 1, i], [train_part_price_movement[i - 1], train_part_price_movement[i]],
+                     color = color, linewidth = 1)
+        plt.axvline(x = len(train_part_labels) + price_movement_to_label_diff / 2,
+                    color = 'black', linestyle = '--', linewidth = 2)
+        for i in range(price_movement_to_label_diff + 1, len(test_part_labels)):
+            color = trend_colors[test_part_labels[i - 1 - price_movement_to_label_diff]]
+            plt.plot([i - 1 + len(train_part_labels), i + len(train_part_labels)],
+                     [test_part_price_movement[i - 1], test_part_price_movement[i]],
+                     color = color, linewidth = 1)
 
         legend_elements = [
             Line2D([0], [0], color = 'green', lw = 2, label = class_names[0]),
@@ -86,7 +84,7 @@ class PriceMovementTrendClassSummaryPlotResponsibilityChain(PlotResponsibilityCh
         plt.legend(handles = legend_elements, loc = 'upper left')
 
         plt.yscale('log')
-        plt.xlabel('Time')
+        plt.xlabel('Trading points')
         plt.ylabel('Log scale of price')
 
         # Plot 2: Class distribution

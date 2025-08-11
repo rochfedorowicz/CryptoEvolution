@@ -28,7 +28,7 @@ class VGGceptionCnnBluePrintTestCase(TestCase):
         """
 
         logging.info("Setting up test environment.")
-        self.__sut: VGGceptionCnnBluePrint = VGGceptionCnnBluePrint()
+        self.__sut: VGGceptionCnnBluePrint = VGGceptionCnnBluePrint(should_apply_2d_convolution = False)
 
     def tearDown(self) -> None:
         """
