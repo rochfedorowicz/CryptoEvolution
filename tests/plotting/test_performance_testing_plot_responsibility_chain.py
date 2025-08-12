@@ -61,7 +61,7 @@ class PerformanceTestingPlotResponsibilityChainTestCase(TestCase):
         }
 
         expected_title = f"Testing history with solvency {mocked_input_data['plot_data']['solvency_coefficient']}"
-        expected_xlabel = "Number of steps"
+        expected_xlabel = "Trading points"
         expected_ylabel = "Normalized asset growth"
         expected_number_of_plotted_lines = 3
         expected_xydata_first_line = [list(tup) for tup in list(zip(mocked_input_data['plot_data']['iterations'], mocked_input_data['plot_data']['currency_prices']))]

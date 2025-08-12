@@ -246,7 +246,7 @@ class TradingEnvironment(Env):
 
         return pd.DataFrame(new_rows, columns = [f"feature_{i}" for i in range(len(new_rows[0]))])
 
-    def __prepare_labeled_data(self, env_length_range: tuple[int, int]) -> pd.DataFrame:
+    def __prepare_labeled_data(self, env_length_range: tuple[int, int]) -> tuple[pd.DataFrame, pd.Series]:
         """
         Prepares labeled data for training the model with classification approach.
         It extracts the relevant features and labels from the environment's data.
@@ -255,7 +255,7 @@ class TradingEnvironment(Env):
             env_length_range (tuple[int, int]): Range to limit the length
 
         Returns:
-            (pd.DataFrame): A DataFrame containing the features and labels for training.
+            (tuple[pd.DataFrame, pd.Series]): A tuple containing the input data and output labels.
         """
 
         prefetched_data = self.__prefetch_state_data(env_length_range, include_trading_data = False)

@@ -59,7 +59,7 @@ class ReinforcementTrainingPlotResponsibilityChain(PlotResponsibilityChainBase):
         plt.plot(steps, avg_reward,
                  label = f'{adjusted_window_size}-step moving average of episode reward', color = 'red')
         plt.title('Training history')
-        plt.xlabel('Number of steps')
+        plt.xlabel('Trading points')
         plt.ylabel('Reward')
         plt.legend()
 

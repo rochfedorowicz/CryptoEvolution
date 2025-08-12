@@ -68,8 +68,11 @@ class ClassificationTestingPlotResponsibilityChain(PlotResponsibilityChainBase):
 
         # Plot 1: Confusion Matrix as a heatmap
         ax1 = plt.subplot(gs[0, 0])
-        ax1.imshow(conf_matrix, interpolation = 'nearest', cmap = plt.cm.YlOrRd)
         ax1.set_title(f"Confusion Matrix (Accuracy: {additional_report['accuracy']:.2%})")
+
+        normalized_conf_matrix = conf_matrix.astype('float') / conf_matrix.sum(axis = 1, keepdims = True)
+        normalized_conf_matrix = np.round(np.nan_to_num(normalized_conf_matrix, nan = 0.0), 2)
+        ax1.imshow(normalized_conf_matrix, interpolation = 'nearest', cmap = plt.cm.GnBu)
 
         tick_marks = np.arange(len(classes))
         ax1.set_xticks(tick_marks)
@@ -79,12 +82,15 @@ class ClassificationTestingPlotResponsibilityChain(PlotResponsibilityChainBase):
         ax1.set_xlabel('Predicted label')
         ax1.set_ylabel('True label')
 
-        thresh = conf_matrix.max() / 2.0
+        thresh = np.max(conf_matrix, axis = 1) / 2.0
         for i in range(conf_matrix.shape[0]):
             for j in range(conf_matrix.shape[1]):
-                ax1.text(j, i, format(conf_matrix[i, j], 'd'),
-                        ha="center", va="center",
-                        color="white" if conf_matrix[i, j] > thresh else "black")
+                ax1.text(j, i - 0.1, format(conf_matrix[i, j], 'd'),
+                        ha = "center", va = "center", fontsize = 10, weight = 'bold',
+                        color = "white" if conf_matrix[i, j] > thresh[i] else "black")
+                ax1.text(j, i + 0.15, f'{normalized_conf_matrix[i, j]:.2f}',
+                        ha = "center", va = "center", fontsize = 8,
+                        color = "white" if conf_matrix[i, j] > thresh[i] else "black")
 
         # Plot 2: Precision, Recall, F1 Score Bar Chart
         ax2 = plt.subplot(gs[1, 0])
@@ -98,9 +104,26 @@ class ClassificationTestingPlotResponsibilityChain(PlotResponsibilityChainBase):
             f1_scores.append(metrics_dict["f1-score"])
 
         shift = 0.2
-        ax2.bar(tick_marks - shift, precision_scores, shift, label = 'Precision')
-        ax2.bar(tick_marks, recall_scores, shift, label = 'Recall')
-        ax2.bar(tick_marks + shift, f1_scores, shift, label = 'F1-score')
+        precision_bars = ax2.bar(tick_marks - shift, precision_scores, shift, label = 'Precision')
+        recall_bars = ax2.bar(tick_marks, recall_scores, shift, label = 'Recall')
+        f1_bars = ax2.bar(tick_marks + shift, f1_scores, shift, label = 'F1-score')
+
+        for i, (precision_bar, recall_bar, f1_bar) in enumerate(zip(precision_bars, recall_bars, f1_bars)):
+            ax2.text(precision_bar.get_x() + (precision_bar.get_width() / 2),
+                     precision_bar.get_height() + 0.01 if precision_bar.get_height() < 0.9 else \
+                        precision_bar.get_height() - 0.01, f'{precision_scores[i]:.3f}',
+                    ha = 'center', va = 'bottom' if precision_bar.get_height() < 0.9 else 'top', rotation = 90,
+                    fontsize = 8, weight = 'bold')
+            ax2.text(recall_bar.get_x() + (recall_bar.get_width() / 2),
+                     recall_bar.get_height() + 0.01 if recall_bar.get_height() < 0.9 else \
+                        recall_bar.get_height() - 0.01, f'{recall_scores[i]:.3f}',
+                    ha = 'center', va = 'bottom' if recall_bar.get_height() < 0.9 else 'top', rotation = 90,
+                    fontsize = 8, weight = 'bold')
+            ax2.text(f1_bar.get_x() + (f1_bar.get_width() / 2),
+                     f1_bar.get_height() + 0.01 if f1_bar.get_height() < 0.9 else \
+                        f1_bar.get_height() - 0.01, f'{f1_scores[i]:.3f}',
+                    ha = 'center', va = 'bottom' if f1_bar.get_height() < 0.9 else 'top', rotation = 90,
+                    fontsize = 8, weight = 'bold')
 
         ax2.set_title('Classification metrics by class')
         ax2.set_xticks(tick_marks)
@@ -108,7 +131,7 @@ class ClassificationTestingPlotResponsibilityChain(PlotResponsibilityChainBase):
         ax2.set_xlabel('Classes')
         ax2.set_ylabel('Score')
         ax2.set_ylim([0, 1])
-        ax2.legend()
+        ax2.legend(fontsize = 'x-small')
 
         # Plot 3: OvR-ROC curves
         ax3 = plt.subplot(gs[0, 1])
@@ -123,7 +146,7 @@ class ClassificationTestingPlotResponsibilityChain(PlotResponsibilityChainBase):
         ax3.set_xlabel('False positive rate')
         ax3.set_ylabel('True positive rate')
         ax3.grid(alpha = 0.3)
-        ax3.legend(loc = "lower right", fontsize = 'small')
+        ax3.legend(loc = "lower right", fontsize = 'x-small')
         plt.tight_layout()
 
         # Plot 4: Macro avg and weighted avg
@@ -140,9 +163,26 @@ class ClassificationTestingPlotResponsibilityChain(PlotResponsibilityChainBase):
                 f1_scores.append(metrics['f1-score'])
 
         x = np.arange(len(additional_labels))
-        ax4.bar(x - shift, precision_scores, shift, label = 'Precision')
-        ax4.bar(x, recall_scores, shift, label = 'Recall')
-        ax4.bar(x + shift, f1_scores, shift, label = 'F1-score')
+        precision_bars = ax4.bar(x - shift, precision_scores, shift, label = 'Precision')
+        recall_bars = ax4.bar(x, recall_scores, shift, label = 'Recall')
+        f1_bars = ax4.bar(x + shift, f1_scores, shift, label = 'F1-score')
+
+        for i, (precision_bar, recall_bar, f1_bar) in enumerate(zip(precision_bars, recall_bars, f1_bars)):
+            ax4.text(precision_bar.get_x() + (precision_bar.get_width() / 2),
+                     precision_bar.get_height() + 0.01 if precision_bar.get_height() < 0.9 else \
+                        precision_bar.get_height() - 0.01, f'{precision_scores[i]:.3f}',
+                    ha = 'center', va = 'bottom' if precision_bar.get_height() < 0.9 else 'top', rotation = 90,
+                    fontsize = 8, weight = 'bold')
+            ax4.text(recall_bar.get_x() + (recall_bar.get_width() / 2),
+                     recall_bar.get_height() + 0.01 if recall_bar.get_height() < 0.9 else \
+                        recall_bar.get_height() - 0.01, f'{recall_scores[i]:.3f}',
+                    ha = 'center', va = 'bottom' if recall_bar.get_height() < 0.9 else 'top', rotation = 90,
+                    fontsize = 8, weight = 'bold')
+            ax4.text(f1_bar.get_x() + (f1_bar.get_width() / 2),
+                     f1_bar.get_height() + 0.01 if f1_bar.get_height() < 0.9 else \
+                        f1_bar.get_height() - 0.01, f'{f1_scores[i]:.3f}',
+                    ha = 'center', va = 'bottom' if f1_bar.get_height() < 0.9 else 'top', rotation = 90,
+                    fontsize = 8, weight = 'bold')
 
         ax4.set_title('Macro avg and weighted avg')
         ax4.set_xticks(x)
@@ -150,7 +190,7 @@ class ClassificationTestingPlotResponsibilityChain(PlotResponsibilityChainBase):
         ax4.set_xlabel('Metrics')
         ax4.set_ylabel('Score')
         ax4.set_ylim([0, 1])
-        ax4.legend()
+        ax4.legend(fontsize = 'x-small')
         plt.tight_layout()
 
         return plt.gca()

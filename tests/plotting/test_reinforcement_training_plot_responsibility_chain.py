@@ -58,7 +58,7 @@ class ReinforcementTrainingPlotResponsibilityChainTestCase(TestCase):
         }
 
         expected_title = "Training history"
-        expected_xlabel = "Number of steps"
+        expected_xlabel = "Trading points"
         expected_ylabel = "Reward"
         expected_number_of_plotted_lines = 2
         expected_xydata_first_line = [list(tup) for tup in list(zip([0] + mocked_input_data['plot_data']['nb_steps'],

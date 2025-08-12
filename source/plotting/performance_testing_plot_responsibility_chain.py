@@ -158,9 +158,9 @@ class PerformanceTestingPlotResponsibilityChain(PlotResponsibilityChainBase):
         ).mean().values
 
         ax1.plot(iterations, avg_assets_values, label = f'{adjusted_window_size}-step moving average of assets value growth', color = 'red')
-        ax1.set_xlabel('Number of steps')
+        ax1.set_xlabel('Trading points')
         ax1.set_ylabel('Normalized asset growth')
-        ax1.legend(loc = 'upper left')
+        ax1.legend(loc = 'upper left', fontsize = 'x-small')
 
         # Plot 2: Rolling Sharpe Ratio
         ax2 = plt.subplot(gs[1, 0])
@@ -184,11 +184,11 @@ class PerformanceTestingPlotResponsibilityChain(PlotResponsibilityChainBase):
 
         ax2.plot(iterations, asset_rolling_sharpe_ratio, label = asset_label, color = 'purple', linewidth = 3)
         ax2.plot(iterations, price_rolling_sharpe_ratio, label = price_label, color = 'red')
-        ax2.set_xlabel('Number of steps')
+        ax2.set_xlabel('Trading points')
         ax2.set_ylabel('Sharpe Ratio value')
         ax2.set_ylim(max(-2.0, min(min(asset_rolling_sharpe_ratio), min(price_rolling_sharpe_ratio))) - 0.1,
                      max(2.0, max(asset_rolling_sharpe_ratio), max(price_rolling_sharpe_ratio)) + 2)
-        ax2.legend(loc = 'upper left')
+        ax2.legend(loc = 'upper left', fontsize = 'x-small')
 
         # Plot 3: Rolling Annual Return
         ax3 = plt.subplot(gs[2, 0])
@@ -203,9 +203,9 @@ class PerformanceTestingPlotResponsibilityChain(PlotResponsibilityChainBase):
 
         ax3.plot(iterations, asset_rolling_annual_return, label = asset_label, color = 'orange')
         ax3.plot(iterations, price_rolling_annual_return, label = price_label, color = 'green')
-        ax3.set_xlabel('Number of steps')
+        ax3.set_xlabel('Trading points')
         ax3.set_ylabel('Annual Return (%)')
-        ax3.legend(loc = 'upper left')
+        ax3.legend(loc = 'upper left', fontsize = 'x-small')
         plt.tight_layout()
 
         return plt.gca()

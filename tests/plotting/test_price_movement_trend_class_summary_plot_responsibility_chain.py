@@ -62,12 +62,12 @@ class PriceMovementTrendClassSummaryPlotResponsibilityChainTestCase(TestCase):
 
         # Plot 1: Price movements classified by trend
         expected_price_movements_ax_title = 'Price changes by trend classification'
-        expected_price_movements_ax_xlabel = 'Time'
+        expected_price_movements_ax_xlabel = 'Trading points'
         expected_price_movements_ax_ylabel = 'Log scale of price'
         train_part_price_movement = mocked_input_data['plot_data']['train_part_price_movement']
         test_part_price_movement = mocked_input_data['plot_data']['test_part_price_movement']
         expected_price_movements_ax_number_of_lines = \
-            len(train_part_price_movement) - 1 + len(test_part_price_movement) - 1
+            len(train_part_price_movement) + len(test_part_price_movement) + 1
 
         # Plot 2: Class distribution
         expected_class_distribution_ax_title = 'Class distribution of price movements'
