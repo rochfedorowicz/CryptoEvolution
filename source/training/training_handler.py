@@ -295,7 +295,7 @@ class TrainingHandler():
                     'plot_data': data
                 })
                 if plot_buffer is not None:
-                    self.__draw_caption(pdf, f"Testing outcome, trial: {iteration + 1}")
+                    self.__draw_caption(pdf, f"Testing outcome, trial: {iteration}")
                     pdf.drawImage(plot_buffer, 0.5 * inch, 1 * inch, width = letter[0] - 1 * inch,
                                   height = letter[1] - 2 * inch)
                     pdf.showPage()

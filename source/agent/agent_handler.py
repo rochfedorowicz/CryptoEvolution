@@ -100,7 +100,7 @@ class AgentHandler():
 
         self.__trading_environment.set_mode(TradingEnvironment.TEST_MODE)
 
-        if repeat < 1:
+        if repeat > 1:
             # Adding 1 to repeat to ensure that any value above 1 will give
             # full evaluation and cross-validation on the n-split part
             # equal to number of repeats

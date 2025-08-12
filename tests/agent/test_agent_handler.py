@@ -156,6 +156,6 @@ class AgentHandlerTestCase(TestCase):
         self.__mocked_environment.set_mode.assert_called_once_with(TradingEnvironment.TEST_MODE)
         for mocked_testing_strategy_handler in self.__mocked_testing_strategy_handlers:
             mocked_testing_strategy_handler.evaluate.assert_called_with(self.__mocked_agent, self.__mocked_environment, ANY)
-        self.assertEqual(self.__mocked_testing_strategy_handlers[0].evaluate.call_count, repeat)
-        self.assertEqual(keys, {0: mocked_keys, 1: mocked_keys})
-        self.assertEqual(report_data, {0: mocked_report_data, 1: mocked_report_data})
+        self.assertEqual(self.__mocked_testing_strategy_handlers[0].evaluate.call_count, repeat + 1)
+        self.assertEqual(keys, {0: mocked_keys, 1: mocked_keys, 2: mocked_keys})
+        self.assertEqual(report_data, {0: mocked_report_data, 1: mocked_report_data, 2: mocked_report_data})
