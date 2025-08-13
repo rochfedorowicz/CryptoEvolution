@@ -106,7 +106,7 @@ class SklearnModelAdapter(ModelAdapterBase):
         """
 
         is_verbose = self.__model.get_params().get('verbose', False)
-        self.__model.set_params(verbose = False)
+        self.__model.set_params(verbose = True)
 
         cv = StratifiedKFold(n_splits = 5, shuffle = True, random_state = 42)
         train_sizes = np.linspace(0.1, 1.0, 5)
