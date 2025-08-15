@@ -42,7 +42,7 @@ jobs:
         run: |
           python scripts/run_gradient_command.py \
             --command "bash -c \"sleep 2m && \
-                                (pip freeze | egrep -v 'jdcal' | xargs pip uninstall -y && \
+                                (pip freeze | egrep -v 'jdcal|jupyter' | xargs pip uninstall -y && \
                                 python -m venv venv && \
                                 source venv/bin/activate && \
                                 git clone https://github.com/${{ github.repository }}.git && \
