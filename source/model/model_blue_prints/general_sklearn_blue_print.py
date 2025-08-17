@@ -50,4 +50,6 @@ class GeneralSklearnBluePrint(BluePrintBase):
         if len(kwargs.keys()) == 0:
             kwargs = self.__kwargs
 
-        return SklearnModelAdapter(self.__base_estimator_class(**kwargs))
+        should_compute_learning_curve = kwargs.pop("compute_learning_curve", True)
+
+        return SklearnModelAdapter(self.__base_estimator_class(**kwargs), should_compute_learning_curve)

@@ -136,9 +136,15 @@ class ClassificationTrainingPlotResponsibilityChain(PlotResponsibilityChainBase)
 
         if learning_curve_data_train_sizes is None or learning_curve_data_train_scores is None \
             or learning_curve_data_valid_scores is None or validation_data_score is None:
-            logging.warning(f"Insufficient data for plotting results under key: {ClassificationLearningStrategyHandler.PLOTTING_KEYS[1]}.")
-            plt.text(0.5, 0.5, "Insufficient data for plotting",
-                     ha = 'center', va = 'center', fontsize = 12)
+            if validation_data_score is not None:
+                plot_text = f"Validation data score: {validation_data_score:.2f}"
+                warning_text = f"Computing learning curve data skipped on purpose, displaying validation score only..."
+            else:
+                plot_text = "Insufficient data for plotting"
+                warning_text = "Insufficient data for plotting results under key: " \
+                               f"{ClassificationLearningStrategyHandler.PLOTTING_KEYS[1]}."
+            logging.warning(warning_text)
+            plt.text(0.5, 0.5, plot_text, ha = 'center', va = 'center', fontsize = 12)
             return plt.gca()
 
         fig = plt.figure(figsize = self._EXPECTED_FIGURE_SIZE)

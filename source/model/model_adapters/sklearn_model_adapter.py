@@ -24,15 +24,18 @@ class SklearnModelAdapter(ModelAdapterBase):
     # local constants
     __MODEL_FILE_EXTENSION: str = ".pkl"
 
-    def __init__(self, model: BaseEstimator) -> None:
+    def __init__(self, model: BaseEstimator, should_compute_learning_curve: bool = True) -> None:
         """
         Initializes the SklearnModelAdapter with a scikit-learn model.
 
         Parameters:
             model (BaseEstimator): The scikit-learn model to adapt.
+            should_compute_learning_curve (bool): Flag indicating whether to compute the
+                learning curve. Defaults to True.
         """
 
         self.__model: BaseEstimator = model
+        self.__should_compute_learning_curve: bool = should_compute_learning_curve
 
     def load_model(self, path: str) -> None:
         """
@@ -105,23 +108,25 @@ class SklearnModelAdapter(ModelAdapterBase):
             (dict): A dictionary containing the results of the fitting process.
         """
 
-        is_verbose = self.__model.get_params().get('verbose', False)
-        self.__model.set_params(verbose = True)
-
+        summary_data = {}
         cv = StratifiedKFold(n_splits = 5, shuffle = True, random_state = 42)
-        train_sizes = np.linspace(0.1, 1.0, 5)
-        train_sizes_abs, train_scores, valid_scores = learning_curve(
-            self.__model, input_data, output_data,
-            train_sizes = train_sizes, cv = cv,
-            scoring = 'accuracy', n_jobs = -1
-        )
+        if self.__should_compute_learning_curve:
+            is_verbose = self.__model.get_params().get('verbose', False)
+            self.__model.set_params(verbose = False)
 
-        self.__model.set_params(verbose = is_verbose)
-        summary_data = {
-            "learning_curve_data_train_sizes": train_sizes_abs,
-            "learning_curve_data_train_scores": train_scores,
-            "learning_curve_data_valid_scores": valid_scores
-        }
+            train_sizes = np.linspace(0.1, 1.0, 5)
+            train_sizes_abs, train_scores, valid_scores = learning_curve(
+                self.__model, input_data, output_data,
+                train_sizes = train_sizes, cv = cv,
+                scoring = 'accuracy', n_jobs = -1
+            )
+
+            self.__model.set_params(verbose = is_verbose)
+            summary_data = {
+                "learning_curve_data_train_sizes": train_sizes_abs,
+                "learning_curve_data_train_scores": train_scores,
+                "learning_curve_data_valid_scores": valid_scores
+            }
 
         if not hasattr(self.__model, "predict_proba"):
             self.__model = CalibratedClassifierCV(self.__model, cv = cv)
