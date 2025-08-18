@@ -41,16 +41,26 @@ jobs:
           ROLE_NAME: ${{ secrets.ROLE_NAME }}
         run: |
           python scripts/run_gradient_command.py \
-            --command "bash -c \"sleep 10m && \
-                                (pip freeze | egrep -v 'jdcal|jupyter' | xargs pip uninstall -y && \
+            --command "bash -c \"sleep 5m && \
+                                (echo -e '\\n\\n [INFO] 5-minute period for server warm-up ended! \
+                                          \\n [INFO] Starting upgrade process... \\n\\n' && \
+                                sudo apt-get update && \
+                                sudo apt-get install -y screen && \
+                                echo -e '\\n\\n [INFO] System packages upgraded! \
+                                         \\n [INFO] Upgrading pip and installing dependencies... \\n\\n' && \
+                                pip freeze | egrep -v 'jdcal|jupyter' | xargs pip uninstall -y && \
                                 pip freeze | xargs pip install && \
                                 pip install jupyter-console && \
+                                echo -e '\\n\\n [INFO] Dependencies installed! \
+                                         \\n [INFO] Downloading and setting up repository... \\n\\n' && \
                                 python -m venv venv && \
                                 source venv/bin/activate && \
                                 git clone https://github.com/${{ github.repository }}.git && \
                                 cd CryptoEvolution && \
                                 pip install -r requirements.txt && \
                                 pip install -e . && \
+                                echo -e '\\n\\n [INFO] Repository setup complete! \
+                                         \\n [INFO] Starting training process... \\n\\n' && \
                                 python scripts/train_model.py --gradient --config_path s3://$BUCKET_NAME/configs/${{ github.event.inputs.config_name }})\"" \
             --env "GRADIENT_API_KEY:$GRADIENT_API_KEY,\
                   GRADIENT_PROJECT_ID:$GRADIENT_PROJECT_ID,\
