@@ -6,7 +6,11 @@ on:
       config_name:
         description: 'Config name uploaded to AWS to be used for experiment'
         required: true
-        default: 'default_config.json'
+        default: 'my_conf.json'
+      machines:
+        description: 'Comma-separated list of machines to use for the experiment'
+        required: true
+        default: 'Free-A4000,Free-RTX5000,Free-RTX4000,Free-P5000'
 
 jobs:
   gradient:
@@ -52,6 +56,10 @@ jobs:
                                 pip freeze | xargs pip install && \
                                 pip install jupyter-console && \
                                 echo -e '\\n\\n [INFO] Dependencies installed! \
+                                         \\n [INFO] Starting kernel session to keep workbook up... \\n\\n' && \
+                                curl -s -X POST -H \\\"Authorization: token \$JUPYTER_TOKEN\\\" \
+                                                \\\"https://\$PAPERSPACE_FQDN/api/kernels\\\" && \
+                                echo -e '\\n\\n [INFO] Kernel started! \
                                          \\n [INFO] Downloading and setting up repository... \\n\\n' && \
                                 python -m venv venv && \
                                 source venv/bin/activate && \
@@ -69,4 +77,4 @@ jobs:
                   AWS_SECRET_ACCESS_KEY:$AWS_SECRET_ACCESS_KEY,\
                   ROLE_NAME:$ROLE_NAME,\
                   BUCKET_NAME:$BUCKET_NAME" \
-            --machines Free-A4000,Free-RTX5000,Free-RTX4000,Free-P5000
+            --machines ${{ github.event.inputs.machines }}
