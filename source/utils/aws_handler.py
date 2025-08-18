@@ -1,9 +1,12 @@
 # utils/aws_handler.py
 
 # global imports
+import botocore.exceptions
 import boto3
+import functools
 import io
 import os
+from typing import Any
 
 # local imports
 from source.utils import SingletonMeta
@@ -15,6 +18,22 @@ class AWSHandler(metaclass = SingletonMeta):
 
     # local constants
     __DEFAULT_REGION = "eu-central-1"
+
+    def __renew_s3_client_session(self) -> Any:
+        """
+        Assumes a role in AWS and renews S3 client session. Functionality is
+        put into a separate method to allow for easier session renewal. The
+        credentials are expired after 1 hour by default.
+        """
+
+        credentials = self.__credential_session.client('sts'). \
+            assume_role(RoleArn = self.__role_arn,
+                        RoleSessionName = 'S3_bucket_user_session')['Credentials']
+
+        return boto3.client('s3', aws_access_key_id=credentials['AccessKeyId'],
+                            aws_secret_access_key=credentials['SecretAccessKey'],
+                            aws_session_token=credentials['SessionToken'],
+                            region_name=self.__region_name)
 
     def __init__(self, region_name: str = __DEFAULT_REGION) -> None:
         """
@@ -36,18 +55,34 @@ class AWSHandler(metaclass = SingletonMeta):
             or not ROLE_NAME:
             raise RuntimeError("AWS credentials or account ID not found in environment variables!")
 
-        session = boto3.Session(aws_access_key_id = AWS_ACCESS_KEY_ID,
-                                aws_secret_access_key = AWS_SECRET_ACCESS_KEY)
-        role_arn = f'arn:aws:iam::{ACCOUNT_ID}:role/{ROLE_NAME}'
+        self.__credential_session = boto3.Session(aws_access_key_id = AWS_ACCESS_KEY_ID,
+                                                  aws_secret_access_key = AWS_SECRET_ACCESS_KEY)
+        self.__role_arn = f'arn:aws:iam::{ACCOUNT_ID}:role/{ROLE_NAME}'
+        self.__region_name = region_name
+        self.__s3_session = self.__renew_s3_client_session()
 
-        assumed_role = session.client('sts').assume_role(RoleArn = role_arn,
-                                                         RoleSessionName = 'S3_bucket_user_session')
-        credentials = assumed_role['Credentials']
-        self.aws_s3_resource = boto3.client('s3', aws_access_key_id = credentials['AccessKeyId'],
-                                            aws_secret_access_key = credentials['SecretAccessKey'],
-                                            aws_session_token = credentials['SessionToken'],
-                                            region_name = region_name)
+    def with_session_renewal(method):
+        """
+        Decorator to handle session renewal on ExpiredToken error.
+        """
+        @functools.wraps(method)
+        def wrapper(self, *args, **kwargs):
+            try:
+                return method(self, *args, **kwargs)
+            except botocore.exceptions.ClientError as e:
+                if e.response['Error']['Code'] == 'ExpiredToken':
+                    self.__s3_session = self.__renew_s3_client_session()
+                    try:
+                        return method(self, *args, **kwargs)
+                    except Exception as e2:
+                        raise RuntimeError(f"Operation failed after session renewal! Original error: {e2}")
+                else:
+                    raise # Re-raise the exception if it's not an ExpiredToken error
+            except Exception as e:
+                raise RuntimeError(f"Did not manage to perform S3 operation! Original error: {e}")
+        return wrapper
 
+    @with_session_renewal
     def upload_file_to_s3(self, bucket_name: str, file_path: str, desired_name: str = "") -> None:
         """
         Attempts to upload local file specified by path to S3 Amazon bucket.
@@ -64,11 +99,10 @@ class AWSHandler(metaclass = SingletonMeta):
 
         if desired_name == "":
             desired_name = file_path.split('/')[-1]
-        try:
-            self.aws_s3_resource.upload_file(file_path, bucket_name, desired_name)
-        except Exception as e:
-            raise RuntimeError(f"Did not managed to upload file! Original error: {e}")
 
+        self.__s3_session.upload_file(file_path, bucket_name, desired_name)
+
+    @with_session_renewal
     def upload_buffer_to_s3(self, bucket_name: str, buffer: io.StringIO, desired_name: str) -> None:
         """
         Attempts to upload buffer as file body directly to S3 Amazon bucket.
@@ -83,12 +117,9 @@ class AWSHandler(metaclass = SingletonMeta):
             RuntimeError: If approached problem during file uploading.
         """
 
-        try:
-            self.aws_s3_resource.put_object(Bucket = bucket_name, Key = desired_name,
-                                            Body = buffer.getvalue())
-        except Exception as e:
-            raise RuntimeError(f"Did not managed to upload file! Original error: {e}")
+        self.__s3_session.put_object(Bucket = bucket_name, Key = desired_name, Body = buffer.getvalue())
 
+    @with_session_renewal
     def download_file_from_s3(self, bucket_name: str, file_name: str, desired_path: str = "") -> None:
         """
         Downloads a file from an S3 bucket to a local path.
@@ -106,7 +137,5 @@ class AWSHandler(metaclass = SingletonMeta):
 
         if desired_path == "":
             desired_path = os.getcwd() + '/' + file_name.split('/')[-1]
-        try:
-            self.aws_s3_resource.download_file(bucket_name, file_name, desired_path)
-        except Exception as e:
-            raise RuntimeError(f"Did not managed to download file! Original error: {e}")
+
+        self.__s3_session.download_file(bucket_name, file_name, desired_path)
