@@ -68,4 +68,5 @@ jobs:
                   AWS_ACCESS_KEY_ID:$AWS_ACCESS_KEY_ID,\
                   AWS_SECRET_ACCESS_KEY:$AWS_SECRET_ACCESS_KEY,\
                   ROLE_NAME:$ROLE_NAME,\
-                  BUCKET_NAME:$BUCKET_NAME"
+                  BUCKET_NAME:$BUCKET_NAME" \
+            --machines Free-A4000,Free-RTX5000,Free-RTX4000,Free-P5000
