@@ -70,14 +70,11 @@ class AWSHandler(metaclass = SingletonMeta):
             try:
                 return method(self, *args, **kwargs)
             except botocore.exceptions.ClientError as e:
-                if e.response['Error']['Code'] == 'ExpiredToken':
-                    self.__s3_session = self.__renew_s3_client_session()
-                    try:
-                        return method(self, *args, **kwargs)
-                    except Exception as e2:
-                        raise RuntimeError(f"Operation failed after session renewal! Original error: {e2}")
-                else:
-                    raise # Re-raise the exception if it's not an ExpiredToken error
+                self.__s3_session = self.__renew_s3_client_session()
+                try:
+                    return method(self, *args, **kwargs)
+                except Exception as e2:
+                    raise RuntimeError(f"Operation failed after session renewal! Original error: {e2}")
             except Exception as e:
                 raise RuntimeError(f"Did not manage to perform S3 operation! Original error: {e}")
         return wrapper
