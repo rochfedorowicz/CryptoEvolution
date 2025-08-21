@@ -24,7 +24,7 @@ class OnBalanceVolumeIndicatorHandler(IndicatorHandlerBase):
 
         coeff = data['close'].diff().apply(lambda x: 1 if x > 0 else -1 if x < 0 else 0)
         obv_data_df = pd.DataFrame(index = data.index)
-        obv_data_df['OBV'] = (data['volume'] * coeff).cumsum()
+        obv_data_df['obv'] = (data['volume'] * coeff).cumsum()
 
         return obv_data_df
 
