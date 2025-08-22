@@ -38,7 +38,14 @@ class VolatilityIndicatorHandler(IndicatorHandlerBase):
             rolling(window = self.__window_size, min_periods = 1).std()
         volatility_df = volatility_df.fillna(0)
 
-        max_volatility = volatility_df['volatility'].max()
-        volatility_df['volatility'] = volatility_df['volatility'] / max_volatility
-
         return volatility_df
+
+    def can_be_normalized(self) -> bool:
+        """
+        Checks if the indicator can be normalized.
+
+        Returns:
+            (bool): True if the indicator can be normalized, False otherwise.
+        """
+
+        return True

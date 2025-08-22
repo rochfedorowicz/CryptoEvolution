@@ -3,6 +3,7 @@
 # global imports
 import io
 import logging
+import os
 import pandas as pd
 from typing import Any, Optional
 
@@ -15,6 +16,9 @@ class DataHandler(metaclass = SingletonMeta):
     """
     Responsible for data handling. Including data collection and preparation.
     """
+
+    # local constants
+    __EXPECTED_COLUMN_NAMES = ['time', 'low', 'high', 'open', 'close', 'volume']
 
     def __init__(self) -> None:
         """
@@ -37,19 +41,20 @@ class DataHandler(metaclass = SingletonMeta):
 
         self.__api_data_collectors = api_data_collectors
 
-    async def prepare_data(self, trading_pair: str, start_date: str, end_date: str,
-        granularity: Granularity, list_of_indicators: Optional[list[IndicatorHandlerBase]] = None) \
-        -> pd.DataFrame:
+    async def prepare_data(self, input_source: str, start_date: str, end_date: str, granularity: Optional[Granularity] = None,
+        list_of_indicators: Optional[list[IndicatorHandlerBase]] = None) -> pd.DataFrame:
         """
         Collects data from coinbase API and extends it with list of indicators.
 
         Parameters:
-            trading_pair (str): String representing unique trading pair symbol.
+            input_source (str): String representing unique trading symbol or path
+                to the file to be preprocessed.
             start_date (str): String representing date that collected data should start from.
             end_date (str): String representing date that collected data should finish at.
-            granularity (Granularity): Enum specifying resolution of collected data - e.g. each
-                15 minutes or 1 hour or 6 hours is treated separately
-            list_of_indicators (list[IndicatorHandlerBase]): List of indicators that should be
+            granularity (Optional[Granularity]): Enum specifying resolution of collected data - e.g. each
+                15 minutes or 1 hour or 6 hours is treated separately. It is optional when input_source is a file path,
+                but must be provided when input_source is a ticker.
+            list_of_indicators (Optional[list[IndicatorHandlerBase]]): List of indicators that should be
                 calculated and added to the data. Defaults to None, which means no indicators
                 will be added.
 
@@ -57,26 +62,55 @@ class DataHandler(metaclass = SingletonMeta):
             RuntimeError: If given trading pair symbol is not recognized.
 
         Returns:
-            (pd.DataFrame): Collected data extended with given indicators.
+            (pd.DataFrame): Preprocessed data extended with given indicators.
         """
 
+        data, meta_data = None, None
         if list_of_indicators is None:
             list_of_indicators = []
 
-        data, meta_data = None, None
-        for api_data_collector in self.__api_data_collectors:
-            try:
-                data, meta_data = await api_data_collector.collect_data(trading_pair, start_date, end_date, granularity)
-                break
-            except Exception:
-                logging.info(f"Did not manage to collect data for {trading_pair} using "
-                             f"{api_data_collector.__class__.__name__}... trying next one.")
+        # Input source is a file path
+        if os.path.isfile(input_source):
+            logging.info(f"Assuming input source '{input_source}' to be a file path.")
+            if input_source.endswith('.csv'):
+                data = pd.read_csv(input_source)
+                data.columns = data.columns.str.lower()
 
-        if data is None or meta_data is None:
-            raise RuntimeError('Trading pair not recognized!')
+                if not all(col in data.columns for col in self.__EXPECTED_COLUMN_NAMES):
+                    logging.error(f"Found columns: {data.columns.tolist()}, "
+                                  f"while expected columns are: {self.__EXPECTED_COLUMN_NAMES}")
+                    raise ValueError(f"CSV file must contain columns: {', '.join(self.__EXPECTED_COLUMN_NAMES)}")
 
-        if data.empty:
-            raise RuntimeError(f'No data collected for {trading_pair} between {start_date} and {end_date} with granularity {granularity}.')
+                data = data[self.__EXPECTED_COLUMN_NAMES]
+                data['time'] = pd.to_datetime(data['time'])
+                data.set_index('time', inplace = True)
+                data.sort_index(inplace = True)
+
+                data = data[(data.index >= pd.to_datetime(start_date)) & \
+                            (data.index < pd.to_datetime(end_date))]
+                meta_data = { 'normalization_groups': [['low', 'high', 'open', 'close'], ['volume']] }
+            else:
+                raise ValueError("Unsupported file format. Please provide a CSV file.")
+
+        # Input source is assumed to be a ticker otherwise
+        else:
+            logging.info(f"Assuming input source '{input_source}' to be a ticker.")
+            if granularity is None:
+                raise ValueError("Granularity must be provided when input source is a ticker.")
+
+            for api_data_collector in self.__api_data_collectors:
+                try:
+                    data, meta_data = await api_data_collector.collect_data(input_source, start_date, end_date, granularity)
+                    break
+                except Exception:
+                    logging.info(f"Did not manage to collect data for {input_source} using "
+                                    f"{api_data_collector.__class__.__name__}... trying next one.")
+
+            if data is None or meta_data is None:
+                raise RuntimeError('Trading pair not recognized!')
+
+            if data.empty:
+                raise RuntimeError(f'No data collected for {input_source} between {start_date} and {end_date} with granularity {granularity}.')
 
         if len(list_of_indicators) > 0:
             indicators_data = []
