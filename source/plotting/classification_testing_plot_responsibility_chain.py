@@ -72,7 +72,10 @@ class ClassificationTestingPlotResponsibilityChain(PlotResponsibilityChainBase):
 
         normalized_conf_matrix = conf_matrix.astype('float') / conf_matrix.sum(axis = 1, keepdims = True)
         normalized_conf_matrix = np.round(np.nan_to_num(normalized_conf_matrix, nan = 0.0), 2)
-        ax1.imshow(normalized_conf_matrix, interpolation = 'nearest', cmap = plt.cm.GnBu)
+        row_max = normalized_conf_matrix.max(axis = 1)
+        row_min = normalized_conf_matrix.min(axis = 1)
+        color_matrix = (normalized_conf_matrix - row_min[:, np.newaxis]) / (row_max - row_min)[:, np.newaxis]
+        ax1.imshow(color_matrix, interpolation = 'nearest', cmap = plt.cm.GnBu)
 
         tick_marks = np.arange(len(classes))
         ax1.set_xticks(tick_marks)
@@ -82,15 +85,13 @@ class ClassificationTestingPlotResponsibilityChain(PlotResponsibilityChainBase):
         ax1.set_xlabel('Predicted label')
         ax1.set_ylabel('True label')
 
-        thresh = np.max(conf_matrix, axis = 1) / 2.0
         for i in range(conf_matrix.shape[0]):
             for j in range(conf_matrix.shape[1]):
+                color = "white" if color_matrix[i, j] > 0.5 else "black"
                 ax1.text(j, i - 0.1, format(conf_matrix[i, j], 'd'),
-                        ha = "center", va = "center", fontsize = 10, weight = 'bold',
-                        color = "white" if conf_matrix[i, j] > thresh[i] else "black")
+                         ha = "center", va = "center", fontsize = 10, weight = 'bold', color = color)
                 ax1.text(j, i + 0.15, f'{normalized_conf_matrix[i, j]:.2f}',
-                        ha = "center", va = "center", fontsize = 8,
-                        color = "white" if conf_matrix[i, j] > thresh[i] else "black")
+                         ha = "center", va = "center", fontsize = 8, color = color)
 
         # Plot 2: Precision, Recall, F1 Score Bar Chart
         ax2 = plt.subplot(gs[1, 0])
