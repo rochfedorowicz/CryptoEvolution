@@ -4,6 +4,7 @@
 import logging
 import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib.colors import Normalize
 from matplotlib.gridspec import GridSpec
 from sklearn.metrics import RocCurveDisplay
 
@@ -72,10 +73,7 @@ class ClassificationTestingPlotResponsibilityChain(PlotResponsibilityChainBase):
 
         normalized_conf_matrix = conf_matrix.astype('float') / conf_matrix.sum(axis = 1, keepdims = True)
         normalized_conf_matrix = np.round(np.nan_to_num(normalized_conf_matrix, nan = 0.0), 2)
-        row_max = normalized_conf_matrix.max(axis = 1)
-        row_min = normalized_conf_matrix.min(axis = 1)
-        color_matrix = (normalized_conf_matrix - row_min[:, np.newaxis]) / (row_max - row_min)[:, np.newaxis]
-        ax1.imshow(color_matrix, interpolation = 'nearest', cmap = plt.cm.GnBu)
+        ax1.imshow(normalized_conf_matrix, interpolation = 'nearest', cmap = plt.cm.GnBu, vmin = 0, vmax = 1)
 
         tick_marks = np.arange(len(classes))
         ax1.set_xticks(tick_marks)
@@ -87,7 +85,7 @@ class ClassificationTestingPlotResponsibilityChain(PlotResponsibilityChainBase):
 
         for i in range(conf_matrix.shape[0]):
             for j in range(conf_matrix.shape[1]):
-                color = "white" if color_matrix[i, j] > 0.5 else "black"
+                color = "white" if normalized_conf_matrix[i, j] > 0.5 else "black"
                 ax1.text(j, i - 0.1, format(conf_matrix[i, j], 'd'),
                          ha = "center", va = "center", fontsize = 10, weight = 'bold', color = color)
                 ax1.text(j, i + 0.15, f'{normalized_conf_matrix[i, j]:.2f}',
