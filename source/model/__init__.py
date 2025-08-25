@@ -9,4 +9,6 @@ from .model_adapters.tf_model_adapter import TFModelAdapter
 from .model_adapters.sklearn_model_adapter import SklearnModelAdapter
 from .model_blue_prints.blue_print_base import BluePrintBase
 from .model_blue_prints.vggception_cnn_blue_print import VGGceptionCnnBluePrint
+from .model_blue_prints.dnn_blue_print import DnnBluePrint
+from .model_blue_prints.rnn_blue_print import RnnBluePrint
 from .model_blue_prints.general_sklearn_blue_print import GeneralSklearnBluePrint

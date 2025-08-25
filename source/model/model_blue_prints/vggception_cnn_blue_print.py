@@ -119,14 +119,14 @@ class VGGceptionCnnBluePrint(BluePrintBase):
         closest_smaller_power_of_coeff = int(math.pow(dense_squeezing_coeff,
                                                       int(math.log(concatenated_parts.shape[-1],
                                                                    dense_squeezing_coeff))))
-        dense = layers.Dense(closest_smaller_power_of_coeff, activation='relu')(concatenated_parts)
+        dense = layers.Dense(closest_smaller_power_of_coeff, activation = 'relu')(concatenated_parts)
         dense = layers.BatchNormalization()(dense)
 
         number_of_nodes = closest_smaller_power_of_coeff // dense_squeezing_coeff
         nr_of_dense_layers = int(math.log(closest_smaller_power_of_coeff, dense_squeezing_coeff))
         for _ in range(nr_of_dense_layers):
             for _ in range(dense_repetition_coeff):
-                dense = layers.Dense(number_of_nodes, activation='relu')(dense)
+                dense = layers.Dense(number_of_nodes, activation = 'relu')(dense)
             dense = layers.BatchNormalization()(dense)
             number_of_nodes //= dense_squeezing_coeff
             if int(math.log(number_of_nodes, 10)) == int(math.log(output_length, 10)) + 1:
@@ -134,6 +134,6 @@ class VGGceptionCnnBluePrint(BluePrintBase):
             elif int(math.log(number_of_nodes, 10)) == int(math.log(output_length, 10)):
                 break
 
-        output = layers.Dense(output_length, activation='softmax')(dense)
+        output = layers.Dense(output_length, activation = 'softmax')(dense)
 
         return TFModelAdapter(Model(inputs = input_vector, outputs = output))
