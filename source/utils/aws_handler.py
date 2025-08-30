@@ -69,14 +69,15 @@ class AWSHandler(metaclass = SingletonMeta):
         def wrapper(self, *args, **kwargs):
             try:
                 return method(self, *args, **kwargs)
-            except botocore.exceptions.ClientError as e:
+            except (botocore.exceptions.BotoCoreError,
+                    boto3.exceptions.Boto3Error) as e:
                 self.__s3_session = self.__renew_s3_client_session()
                 try:
                     return method(self, *args, **kwargs)
                 except Exception as e2:
                     raise RuntimeError(f"Operation failed after session renewal! Original error: {e2}")
             except Exception as e:
-                raise RuntimeError(f"Did not manage to perform S3 operation! Original error: {e}")
+                raise RuntimeError(f"Did not manage to perform operation for unknown reason! Original error: {e}")
         return wrapper
 
     @with_session_renewal
