@@ -66,7 +66,7 @@ class RnnBluePrint(BluePrintBase):
         non_spatial_part = layers.Lambda(lambda x: x[:, spatial_data_length:])(reshaped_input_vector)
         reshaped_spatial_part = layers.Reshape((spatial_data_rows, spatial_data_cols))(spatial_part)
 
-        rnn_part = layers.LSTM(spatial_data_cols, return_sequences = False)(reshaped_spatial_part)
+        rnn_part = layers.LSTM(2 * spatial_data_cols, return_sequences = False)(reshaped_spatial_part)
         rnn_part = layers.BatchNormalization()(rnn_part)
 
         concatenated_parts = layers.Concatenate()([rnn_part, non_spatial_part])
