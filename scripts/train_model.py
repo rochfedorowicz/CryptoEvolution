@@ -113,11 +113,11 @@ def main(config_path: str, invoked_inside_gradient: bool = False) -> bool:
         training_handler = TrainingHandler(TrainingConfig(**config['training_config']))
         training_handler.run_training(callbacks = callbacks, weights_load_path = weights_load_path)
 
-        report_name = f"Report_{datetime.now().__format__('%Y-%m-%d_%H_%M_%S')}.pdf"
+        report_name = f'Report_{datetime.now().__format__('%Y-%m-%d_%H_%M_%S')}.pdf'
         report_path = os.getcwd() + '\\' + report_name
         training_handler.generate_report(report_path)
         aws_handler = AWSHandler()
-        aws_handler.upload_file_to_s3(os.getenv('BUCKET_NAME'), report_path, report_name)
+        aws_handler.upload_file_to_s3(os.getenv('BUCKET_NAME'), report_path, 'reports/inflow/' + report_name)
 
     except Exception:
         logging.error('Encounter problem during script execution!', exc_info = True)
