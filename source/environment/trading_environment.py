@@ -10,7 +10,6 @@ import random
 from enum import Enum
 from gym import Env
 from gym.spaces import Box, Discrete
-from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from tensorflow.keras.utils import to_categorical
 from types import SimpleNamespace
@@ -90,6 +89,11 @@ class TradingEnvironment(Env):
 
         if trading_mode is None:
             trading_mode = TradingEnvironment.TradingMode.IMPLICIT_ORDER_CLOSING
+        elif isinstance(trading_mode, int):
+            trading_mode = TradingEnvironment.TradingMode(trading_mode)
+
+        if not isinstance(trading_mode, TradingEnvironment.TradingMode):
+            raise ValueError(f"Invalid trading_mode: {trading_mode}. It should be of type TradingEnvironment.TradingMode or int.")
 
         # Initializing the environment
         self.__data: dict[pd.DataFrame, pd.DataFrame] = self.__split_data(data, test_ratio)
@@ -514,7 +518,7 @@ class TradingEnvironment(Env):
 
         if (self.current_iteration >= self.get_environment_length() - 1 or
             self.__trading_data.current_budget  > 10 * self.__trading_consts.INITIAL_BUDGET or
-            (self.__trading_data.current_budget + self.__trading_data.currently_invested) / self.__trading_consts.INITIAL_BUDGET < 0.8):
+            (self.__trading_data.current_budget + self.__trading_data.currently_invested) / self.__trading_consts.INITIAL_BUDGET < 0.6):
             done = True
         else:
             done = False
