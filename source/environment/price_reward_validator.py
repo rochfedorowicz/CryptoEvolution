@@ -37,9 +37,11 @@ class PriceRewardValidator(RewardValidatorBase):
         """
 
         reward = 0
+
         for order in orders:
             summand = (order.current_value - order.initial_value) * self.__coefficient
             if (self.__normalizable):
-                summand = summand / order.initial_value * 100
+                summand = summand / order.initial_value
             reward = reward + summand
+
         return reward

@@ -46,9 +46,9 @@ class PriceRewardValidatorTestCase(TestCase):
 
     @data(
         ([Order(100, True, 0.8, 1.2)], [125], 25, False),
-        ([Order(100, False, 0.8, 1.2)], [75], -25, True),
+        ([Order(100, False, 0.8, 1.2)], [75], -0.25, True),
         ([Order(90, True, 0.9, 1.3), Order(100, False, 0.9, 1.3)], [135, 85], 30, False),
-        ([Order(90, True, 0.9, 1.3), Order(100, False, 0.9, 1.3)], [135, 85], 35, True)
+        ([Order(90, True, 0.9, 1.3), Order(100, False, 0.9, 1.3)], [135, 85], 0.35, True)
     )
     @unpack
     def test_price_reward_validator_validate_orders(self, orders: list[Order], current_values: list[float],
