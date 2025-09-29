@@ -124,8 +124,9 @@ class TradingEnvironmentTestCase(TestCase):
                           -1,   # normalized close[1] -> lower value from 20600.0 and 20400.0
                            1,   # normalized volume[1] -> higher value from 1000.0 and 1200.0
                            0,   # current_profitability_coeff -> current budget equal initial
-                           0,   # current_trades_occupancy_coeff -> no trades placed
-                           0]   # current_no_trades_penalty_coeff -> no penalty
+                           0,   # current_no_trades_penalty_coeff -> no penalty
+                           0,   # current_long_trades_occupancy_coeff -> no long trades placed
+                           0]   # current_short_trades_occupancy_coeff -> no short trades placed
 
         logging.info("Checking created observation state.")
         assert [round(observation, 0) for observation in self.__sut.state] == expected_state
@@ -169,8 +170,10 @@ class TradingEnvironmentTestCase(TestCase):
         expected_invested_after_buy = 200
         expected_invested_after_sell = 400
         expected_no_trades_for = 0
-        expected_nr_of_trades_after_buy = 1
-        expected_nr_of_trades_after_sell = 2
+        expected_nr_of_long_trades_after_buy = 1
+        expected_nr_of_short_trades_after_buy = 0
+        expected_nr_of_long_trades_after_sell = 1
+        expected_nr_of_short_trades_after_sell = 1
 
         logging.info("Performing buy action.")
         buy_action = 0
@@ -182,7 +185,8 @@ class TradingEnvironmentTestCase(TestCase):
         assert step_info['current_budget'] == expected_budget_after_buy
         assert step_info['currently_invested'] == expected_invested_after_buy
         assert step_info['no_trades_placed_for'] == expected_no_trades_for
-        assert step_info['currently_placed_trades'] == expected_nr_of_trades_after_buy
+        assert step_info['currently_placed_long_trades'] == expected_nr_of_long_trades_after_buy
+        assert step_info['currently_placed_short_trades'] == expected_nr_of_short_trades_after_buy
         assert round(reward, 0) == traiding_consts.STATIC_REWARD_ADJUSTMENT
 
         logging.info("Performing sell action.")
@@ -195,7 +199,8 @@ class TradingEnvironmentTestCase(TestCase):
         assert step_info['current_budget'] == expected_budget_after_sell
         assert step_info['currently_invested'] == expected_invested_after_sell
         assert step_info['no_trades_placed_for'] == expected_no_trades_for
-        assert step_info['currently_placed_trades'] == expected_nr_of_trades_after_sell
+        assert step_info['currently_placed_long_trades'] == expected_nr_of_long_trades_after_sell
+        assert step_info['currently_placed_short_trades'] == expected_nr_of_short_trades_after_sell
         assert round(reward, 0) == traiding_consts.STATIC_REWARD_ADJUSTMENT
 
     def test_traiding_environment_step__action_successful_wait(self) -> None:
@@ -214,13 +219,14 @@ class TradingEnvironmentTestCase(TestCase):
 
         logging.info("Starting step test case.")
         traiding_consts = self.__sut.get_trading_consts()
-        self.__update_sut(currently_placed_trades = traiding_consts.MAX_AMOUNT_OF_TRADES)
+        self.__update_sut(currently_placed_long_trades = traiding_consts.MAX_AMOUNT_OF_TRADES)
 
         expected_money_to_be_spent_on_trade = 0
         expected_budget_after_wait = 1000
         expected_invested_after_wait = 0
         expected_no_trades_for = 1
-        expected_nr_of_trades_after_wait = traiding_consts.MAX_AMOUNT_OF_TRADES
+        expected_nr_of_long_trades_after_wait = traiding_consts.MAX_AMOUNT_OF_TRADES
+        expected_nr_of_short_trades_after_wait = 0
 
         logging.info("Performing wait action.")
         wait_action = 1
@@ -232,7 +238,8 @@ class TradingEnvironmentTestCase(TestCase):
         assert step_info['current_budget'] == expected_budget_after_wait
         assert step_info['currently_invested'] == expected_invested_after_wait
         assert step_info['no_trades_placed_for'] == expected_no_trades_for
-        assert step_info['currently_placed_trades'] == expected_nr_of_trades_after_wait
+        assert step_info['currently_placed_long_trades'] == expected_nr_of_long_trades_after_wait
+        assert step_info['currently_placed_short_trades'] == expected_nr_of_short_trades_after_wait
         assert round(reward, 0) == traiding_consts.STATIC_REWARD_ADJUSTMENT
 
     def test_traiding_environment_step__action_failure_buy_sell(self) -> None:
@@ -242,7 +249,7 @@ class TradingEnvironmentTestCase(TestCase):
         Verifies step execution with non-waiting actions when they are not expected.
         In this case, before executing step function number of ongoing trades
         equals max possible number of trades to be placed, so each performed non-waiting
-        action should be rewarded with negative static reward adjusment.
+        action should be rewarded with negative static reward adjusment. Assumes IMPLICIT_ORDER_CLOSING.
 
         Asserts:
             Each of two actions is corrctly performed. The environment is correctly
@@ -251,7 +258,7 @@ class TradingEnvironmentTestCase(TestCase):
 
         logging.info("Starting step test case.")
         traiding_consts = self.__sut.get_trading_consts()
-        self.__update_sut(currently_placed_trades = traiding_consts.MAX_AMOUNT_OF_TRADES)
+        self.__update_sut(currently_placed_long_trades = traiding_consts.MAX_AMOUNT_OF_TRADES)
 
         expected_money_to_be_spent_on_trade = 0
         expected_budget_after_buy = 1000
@@ -260,7 +267,8 @@ class TradingEnvironmentTestCase(TestCase):
         expected_invested_after_sell = 0
         expected_no_trades_for_after_buy = 1
         expected_no_trades_for_after_sell = 2
-        expected_nr_of_trades = traiding_consts.MAX_AMOUNT_OF_TRADES
+        expected_nr_of_long_trades = traiding_consts.MAX_AMOUNT_OF_TRADES
+        expected_nr_of_short_trades = 0
 
         logging.info("Performing buy action.")
         buy_action = 0
@@ -272,7 +280,8 @@ class TradingEnvironmentTestCase(TestCase):
         assert step_info['current_budget'] == expected_budget_after_buy
         assert step_info['currently_invested'] == expected_invested_after_buy
         assert step_info['no_trades_placed_for'] == expected_no_trades_for_after_buy
-        assert step_info['currently_placed_trades'] == expected_nr_of_trades
+        assert step_info['currently_placed_long_trades'] == expected_nr_of_long_trades
+        assert step_info['currently_placed_short_trades'] == expected_nr_of_short_trades
         assert round(reward, 0) == -traiding_consts.STATIC_REWARD_ADJUSTMENT
 
         logging.info("Performing sell action.")
@@ -285,7 +294,8 @@ class TradingEnvironmentTestCase(TestCase):
         assert step_info['current_budget'] == expected_budget_after_sell
         assert step_info['currently_invested'] == expected_invested_after_sell
         assert step_info['no_trades_placed_for'] == expected_no_trades_for_after_sell
-        assert step_info['currently_placed_trades'] == expected_nr_of_trades
+        assert step_info['currently_placed_short_trades'] == expected_nr_of_short_trades
+        assert step_info['currently_placed_long_trades'] == expected_nr_of_long_trades
         assert round(reward, 0) == -traiding_consts.STATIC_REWARD_ADJUSTMENT
 
     def test_traiding_environment_step__action_failure_wait(self) -> None:
@@ -307,7 +317,8 @@ class TradingEnvironmentTestCase(TestCase):
         traiding_consts = self.__sut.get_trading_consts()
         orders = [Order(200, True, 0.99, 1.01)]
         self.__update_sut(current_orders = orders,
-                          currently_placed_trades = 1,
+                          currently_placed_long_trades = 1,
+                          currently_placed_short_trades = 0,
                           current_budget = 800,
                           currently_invested = 200,
                           no_trades_placed_for = traiding_consts.PENALTY_STOPS + 1)
@@ -316,7 +327,8 @@ class TradingEnvironmentTestCase(TestCase):
         expected_budget_after_wait = 1000
         expected_invested_after_wait = 0
         expected_no_trades_for_after_wait = traiding_consts.PENALTY_STOPS + 2
-        expected_nr_of_trades = 0
+        expected_nr_of_long_trades = 0
+        expected_nr_of_short_trades = 0
 
         logging.info("Performing wait action.")
         wait_action = 1
@@ -328,7 +340,8 @@ class TradingEnvironmentTestCase(TestCase):
         assert round(step_info['current_budget'], -1) == expected_budget_after_wait
         assert step_info['currently_invested'] == expected_invested_after_wait
         assert step_info['no_trades_placed_for'] == expected_no_trades_for_after_wait
-        assert step_info['currently_placed_trades'] == expected_nr_of_trades
+        assert step_info['currently_placed_long_trades'] == expected_nr_of_long_trades
+        assert step_info['currently_placed_short_trades'] == expected_nr_of_short_trades
         assert round(reward, 0) == -traiding_consts.STATIC_REWARD_ADJUSTMENT
 
     def test_traiding_environment_step__scenario_winning_trades(self) -> None:
@@ -425,7 +438,8 @@ class TradingEnvironmentTestCase(TestCase):
         orders = [Order(200, True, 0.9, 1.1), Order(200, False, 0.8, 1.2)]
         self.__update_sut(leverage = 10,
                           current_orders = orders,
-                          currently_placed_trades = 2,
+                          currently_placed_long_trades = 1,
+                          currently_placed_short_trades = 1,
                           current_budget = 600,
                           currently_invested = 400,
                           no_trades_placed_for = traiding_consts.PENALTY_STARTS)
@@ -434,9 +448,12 @@ class TradingEnvironmentTestCase(TestCase):
         expected_budget_after_third_wait_at_most = 1000
         expected_invested_after_first_wait = 200
         expected_invested_after_third_wait = 0
-        expected_nr_of_trades_after_first_wait = 1
-        expected_nr_of_trades_after_second_wait = 1
-        expected_nr_of_trades_after_third_wait = 0
+        expected_nr_of_long_trades_after_first_wait = 0
+        expected_nr_of_short_trades_after_first_wait = 1
+        expected_nr_of_long_trades_after_second_wait = 0
+        expected_nr_of_short_trades_after_second_wait = 1
+        expected_nr_of_long_trades_after_third_wait = 0
+        expected_nr_of_short_trades_after_third_wait = 0
         expected_first_coeff = (20800.0 - 20400.0) / 20400.0
         expected_reward_after_first_wait_at_most = expected_first_coeff * \
             orders[0].initial_value * self.__sut.get_broker().get_leverage()
@@ -452,7 +469,8 @@ class TradingEnvironmentTestCase(TestCase):
         assert step_info['coeff'] == 1 + expected_first_coeff
         assert step_info['current_budget'] >= expected_budget_after_first_wait_at_least
         assert step_info['currently_invested'] == expected_invested_after_first_wait
-        assert step_info['currently_placed_trades'] == expected_nr_of_trades_after_first_wait
+        assert step_info['currently_placed_long_trades'] == expected_nr_of_long_trades_after_first_wait
+        assert step_info['currently_placed_short_trades'] == expected_nr_of_short_trades_after_first_wait
         assert round(reward, 0) <= expected_reward_after_first_wait_at_most
 
         logging.info("Performing wait action.")
@@ -460,7 +478,8 @@ class TradingEnvironmentTestCase(TestCase):
         # no_trades_placed_for = PENALTY_STOPS
 
         logging.info("Checking step info for getting penalty.")
-        assert step_info['currently_placed_trades'] == expected_nr_of_trades_after_second_wait
+        assert step_info['currently_placed_long_trades'] == expected_nr_of_long_trades_after_second_wait
+        assert step_info['currently_placed_short_trades'] == expected_nr_of_short_trades_after_second_wait
         assert round(reward, 0) == expected_reward_after_second_wait
 
         logging.info("Performing wait action.")
@@ -470,7 +489,8 @@ class TradingEnvironmentTestCase(TestCase):
         logging.info("Checking step info for getting penalty.")
         assert step_info['current_budget'] <= expected_budget_after_third_wait_at_most
         assert step_info['currently_invested'] == expected_invested_after_third_wait
-        assert step_info['currently_placed_trades'] == expected_nr_of_trades_after_third_wait
+        assert step_info['currently_placed_long_trades'] == expected_nr_of_long_trades_after_third_wait
+        assert step_info['currently_placed_short_trades'] == expected_nr_of_short_trades_after_third_wait
         assert round(reward, 0) <= expected_reward_after_third_wait_at_most
 
     def test_traiding_environment_reset(self) -> None:
@@ -488,7 +508,8 @@ class TradingEnvironmentTestCase(TestCase):
         expected_budget = traiding_consts.INITIAL_BUDGET
         expected_invested = 0
         expected_no_trades_for = 0
-        expected_nr_of_trades = 0
+        expected_nr_of_long_trades = 0
+        expected_nr_of_short_trades = 0
         expected_orders = []
 
         logging.info("Performing reset.")
@@ -500,7 +521,8 @@ class TradingEnvironmentTestCase(TestCase):
         assert traiding_data.current_budget == expected_budget
         assert traiding_data.currently_invested == expected_invested
         assert traiding_data.no_trades_placed_for == expected_no_trades_for
-        assert traiding_data.currently_placed_trades == expected_nr_of_trades
+        assert traiding_data.currently_placed_long_trades == expected_nr_of_long_trades
+        assert traiding_data.currently_placed_short_trades == expected_nr_of_short_trades
         assert orders == expected_orders
 
     def test_traiding_environment_get_labeled_data(self) -> None:

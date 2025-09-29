@@ -78,7 +78,7 @@ def __get_local_path(file_path: str) -> str:
 
 def main(config_path: str, invoked_inside_gradient: bool = False) -> bool:
     try:
-        DynamicFromStringConverter().register_packages(['source',  'typing', 'imblearn', 'sklearn', 'tensorflow'])
+        DynamicFromStringConverter().register_packages(['source',  'typing', 'imblearn', 'sklearn', 'tensorflow', 'rl'])
 
         config_local_path = __get_local_path(config_path)
         config = json.load(open(config_local_path, 'r'))

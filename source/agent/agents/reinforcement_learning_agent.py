@@ -32,7 +32,7 @@ class ReinforcementLearningAgent(AgentBase, PerformanceTestable):
             optimizer (Optimizer): The optimizer to use for training the agent.
         """
 
-        memory = SequentialMemory(limit = 100000, window_length = 1)
+        memory = SequentialMemory(limit = 500000, window_length = 1)
         self.__DQNAgent: DQNAgent = rl.agents.DQNAgent(model, policy, memory = memory,
                                                        nb_actions = model.output_shape[-1],
                                                        target_model_update = 1e-2)
