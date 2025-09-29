@@ -48,13 +48,13 @@ class DynamicFromStringConverterTestCase(TestCase):
                     setattr(self.__sut, attribute_name, value)
 
     @data(
-        (['builtins'], 'str', str),
-        (['pandas'], 'DataFrame', pd.DataFrame),
-        (['sklearn'], 'RandomForestClassifier', sklearn.ensemble.RandomForestClassifier),
-        (['source'], 'TradingEnvironment', TradingEnvironment)
+        ({'builtins': False}, 'str', str),
+        ({'pandas': False}, 'DataFrame', pd.DataFrame),
+        ({'sklearn': False}, 'RandomForestClassifier', sklearn.ensemble.RandomForestClassifier),
+        ({'source': False}, 'TradingEnvironment', TradingEnvironment)
     )
     @unpack
-    def test_dynamic_from_string_converter_convert_from_string__success(self, packages_to_be_registered: list[str],
+    def test_dynamic_from_string_converter_convert_from_string__success(self, packages_to_be_registered: dict[str, bool],
             expected_class_name: str, expected_class_handle: type) -> None:
         """
         Tests DynamicFromStringConverter's convert_from_string functionality.
@@ -63,7 +63,7 @@ class DynamicFromStringConverterTestCase(TestCase):
         representation of a class into the actual class handle.
 
         Parameters:
-            packages_to_be_registered: List of package names to be registered in the converter.
+            packages_to_be_registered: Dictionary of package names to be registered in the converter.
             expected_class_handle: The expected class handle that should be returned by the conversion.
 
         Asserts:

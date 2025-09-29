@@ -44,13 +44,15 @@ class DynamicFromStringConverter(metaclass = SingletonMeta):
 
         self.__registered_packages: list[PackageNode] = []
 
-    def __build_package_tree(self, package_name: str, parent: Optional[PackageNode] = None) -> PackageNode:
+    def __build_package_tree(self, package_name: str, parent: Optional[PackageNode] = None,
+        extended: bool = False) -> PackageNode:
         """
         Builds a tree structure of packages starting from the given package name.
 
         Parameters:
             package_name (str): The name of the package to build the tree for.
             parent (Optional[PackageNode]): The parent node in the tree structure.
+            extended (bool): Whether to add also modules that are not packages. Defaults to False.
 
         Returns:
             (PackageNode): The root node of the package tree.
@@ -62,9 +64,9 @@ class DynamicFromStringConverter(metaclass = SingletonMeta):
             root_node = PackageNode(name = package_name, package = package, parent = parent)
 
             if hasattr(package, '__path__'):
-                for _, module_name, _ in pkgutil.iter_modules(package.__path__, package_name + '.'):
-                    if '.test' not in module_name:
-                        self.__build_package_tree(module_name, parent = root_node)
+                for _, module_name, is_package in pkgutil.iter_modules(package.__path__, package_name + '.'):
+                    if extended or is_package:
+                        self.__build_package_tree(module_name, parent = root_node, extended = extended)
         except:
             logging.warning(f"Failed to import {package_name}. Skipping...")
 
@@ -93,16 +95,17 @@ class DynamicFromStringConverter(metaclass = SingletonMeta):
         return None
 
 
-    def register_packages(self, packages_to_get_registered: list[str]) -> None:
+    def register_packages(self, packages_to_get_registered: dict[str, bool]) -> None:
         """
         Registers a list of packages by building their package trees.
 
         Parameters:
-            packages_to_get_registered (list[str]): A list of package names to register.
+            packages_to_get_registered (dict[str, bool]): A dictionary where keys are package names
+                and values indicate whether to include non-package modules (True) or not (False).
         """
 
-        self.__registered_packages: list[PackageNode] = [self.__build_package_tree(package_name) \
-                                                         for package_name in packages_to_get_registered]
+        self.__registered_packages: list[PackageNode] = [self.__build_package_tree(package_name, extended = extended) \
+                                                         for package_name, extended in packages_to_get_registered.items()]
 
     def get_class_handle(self, class_name: str) -> type:
         """
