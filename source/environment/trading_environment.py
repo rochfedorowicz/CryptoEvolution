@@ -111,7 +111,8 @@ class TradingEnvironment(Env):
         self.__trading_data.current_budget: float = initial_budget
         self.__trading_data.currently_invested: float = 0
         self.__trading_data.no_trades_placed_for: int = 0
-        self.__trading_data.currently_placed_trades: int = 0
+        self.__trading_data.currently_placed_long_trades: int = 0
+        self.__trading_data.currently_placed_short_trades: int = 0
 
         # Setting up trading constants
         self.__trading_consts = SimpleNamespace()
@@ -224,9 +225,11 @@ class TradingEnvironment(Env):
         if include_trading_data:
             current_normalized_budget = 1.0 * self.__trading_data.current_budget / self.__trading_consts.INITIAL_BUDGET
             current_profitability_coeff = self.__trading_consts.PROFITABILITY_FUNCTION(current_normalized_budget)
-            current_trades_occupancy_coeff = 1.0 * self.__trading_data.currently_placed_trades  / self.__trading_consts.MAX_AMOUNT_OF_TRADES
             current_no_trades_penalty_coeff = self.__trading_consts.PENALTY_FUNCTION(self.__trading_data.no_trades_placed_for)
-            current_inner_state_list = [current_profitability_coeff, current_trades_occupancy_coeff, current_no_trades_penalty_coeff]
+            current_long_trades_occupancy_coeff = 1.0 * self.__trading_data.currently_placed_long_trades  / self.__trading_consts.MAX_AMOUNT_OF_TRADES
+            current_short_trades_occupancy_coeff = 1.0 * self.__trading_data.currently_placed_short_trades  / self.__trading_consts.MAX_AMOUNT_OF_TRADES
+            current_inner_state_list = [current_profitability_coeff, current_no_trades_penalty_coeff, \
+                                        current_long_trades_occupancy_coeff, current_short_trades_occupancy_coeff]
             current_marked_data_list += current_inner_state_list
 
         return current_marked_data_list
@@ -476,11 +479,15 @@ class TradingEnvironment(Env):
                     closed_orders += self.__broker.force_close_orders()
 
         reward = self.__validator.validate_orders(closed_orders)
-        self.__trading_data.currently_placed_trades -= len(closed_orders)
-        self.__trading_data.current_budget += np.sum([trade.current_value for trade in closed_orders])
-        self.__trading_data.currently_invested -= np.sum([trade.initial_value for trade in closed_orders])
+        number_of_closed_long_trades = len([order for order in closed_orders if order.is_buy_order])
+        number_of_closed_short_trades = len(closed_orders) - number_of_closed_long_trades
+        self.__trading_data.currently_placed_long_trades -= number_of_closed_long_trades
+        self.__trading_data.currently_placed_short_trades -= number_of_closed_short_trades
+        self.__trading_data.current_budget += np.sum([order.current_value for order in closed_orders])
+        self.__trading_data.currently_invested -= np.sum([order.initial_value for order in closed_orders])
 
-        number_of_possible_trades = self.__trading_consts.MAX_AMOUNT_OF_TRADES - self.__trading_data.currently_placed_trades
+        number_of_possible_trades = self.__trading_consts.MAX_AMOUNT_OF_TRADES \
+            - self.__trading_data.currently_placed_long_trades - self.__trading_data.currently_placed_short_trades
         money_to_trade = 0
         if number_of_possible_trades > 0:
             money_to_trade = 1.0 / number_of_possible_trades * self.__trading_data.current_budget
@@ -499,9 +506,12 @@ class TradingEnvironment(Env):
                 self.__trading_data.current_budget -= money_to_trade
                 self.__trading_data.currently_invested += money_to_trade
                 self.__broker.place_order(money_to_trade, is_buy_order, stop_loss, take_profit)
-                self.__trading_data.currently_placed_trades += 1
                 self.__trading_data.no_trades_placed_for = 0
                 reward += self.__trading_consts.STATIC_REWARD_ADJUSTMENT
+                if action == 0:
+                    self.__trading_data.currently_placed_long_trades += 1
+                elif action == 2:
+                    self.__trading_data.currently_placed_short_trades += 1
             else:
                 self.__trading_data.no_trades_placed_for += 1
                 reward -= self.__trading_consts.STATIC_REWARD_ADJUSTMENT
@@ -531,7 +541,8 @@ class TradingEnvironment(Env):
                 'current_budget': self.__trading_data.current_budget,
                 'currently_invested': self.__trading_data.currently_invested,
                 'no_trades_placed_for': self.__trading_data.no_trades_placed_for,
-                'currently_placed_trades': self.__trading_data.currently_placed_trades}
+                'currently_placed_long_trades': self.__trading_data.currently_placed_long_trades,
+                'currently_placed_short_trades': self.__trading_data.currently_placed_short_trades}
 
         return self.state, reward, done, info
 
@@ -562,7 +573,8 @@ class TradingEnvironment(Env):
         self.__trading_data.current_budget = self.__trading_consts.INITIAL_BUDGET
         self.__trading_data.currently_invested = 0
         self.__trading_data.no_trades_placed_for = 0
-        self.__trading_data.currently_placed_trades = 0
+        self.__trading_data.currently_placed_long_trades = 0
+        self.__trading_data.currently_placed_short_trades = 0
         self.__broker.reset()
         self.current_iteration = randkey
         self.state = self.__get_current_state_data()

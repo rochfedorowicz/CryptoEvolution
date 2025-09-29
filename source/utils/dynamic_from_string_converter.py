@@ -62,11 +62,11 @@ class DynamicFromStringConverter(metaclass = SingletonMeta):
             root_node = PackageNode(name = package_name, package = package, parent = parent)
 
             if hasattr(package, '__path__'):
-                for _, module_name, is_pkg in pkgutil.iter_modules(package.__path__, package_name + '.'):
-                    if is_pkg:
+                for _, module_name, _ in pkgutil.iter_modules(package.__path__, package_name + '.'):
+                    if '.test' not in module_name:
                         self.__build_package_tree(module_name, parent = root_node)
-        except ImportError as e:
-            logging.error(f"Failed to import {package_name}: {e}")
+        except:
+            logging.warning(f"Failed to import {package_name}. Skipping...")
 
         return root_node
 
