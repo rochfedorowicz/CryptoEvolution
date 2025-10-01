@@ -2,7 +2,7 @@
 
 # global imports
 import matplotlib.pyplot as plt
-import numpy as np
+import pandas as pd
 
 # local imports
 from source.agent import ReinforcementLearningStrategyHandler
@@ -51,8 +51,10 @@ class ReinforcementTrainingPlotResponsibilityChain(PlotResponsibilityChainBase):
         steps = [0] + plot_data['nb_steps']
         reward = [0] + plot_data['episode_reward']
         adjusted_window_size = min(self.__window_size, len(reward))
-        filter = np.ones(adjusted_window_size) / adjusted_window_size
-        avg_reward = np.convolve(reward, filter, mode = 'same')
+        avg_reward = pd.Series(reward).rolling(
+            window = adjusted_window_size,
+            min_periods = 1
+        ).mean().values
 
         plt.figure(figsize = self._EXPECTED_FIGURE_SIZE)
         plt.plot(steps, reward, label = 'Episode reward', color = 'blue')
