@@ -85,8 +85,611 @@
 
           <div class="body" role="main">
             
-  <section id="utils-module">
-<h1>Utils Module<a class="headerlink" href="#utils-module" title="Permalink to this heading">¶</a></h1>
+  <section id="module-source.utils.aws_handler">
+<span id="utils-module"></span><h1>Utils Module<a class="headerlink" href="#module-source.utils.aws_handler" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="source.utils.aws_handler.AWSHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AWSHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.utils.aws_handler.AWSHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Responsible for handling communication with Amazon AWS services.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="source.utils.aws_handler.AWSHandler.download_file_from_s3">
+<span class="sig-name descname"><span class="pre">download_file_from_s3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bucket_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">desired_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#source.utils.aws_handler.AWSHandler.download_file_from_s3" title="Permalink to this definition">¶</a></dt>
+<dd><p>Downloads a file from an S3 bucket to a local path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bucket_name</strong> (<em>str</em>) – The name of the S3 bucket.</p></li>
+<li><p><strong>file_name</strong> (<em>str</em>) – The key/path of the file in the S3 bucket.</p></li>
+<li><p><strong>desired_path</strong> (<em>str</em><em>, </em><em>optional</em>) – The local path where the file will be saved.
+If not provided, the file will be downloaded to the current working directory
+with the original filename.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>RuntimeError</strong> – If the download operation fails.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="source.utils.aws_handler.AWSHandler.upload_buffer_to_s3">
+<span class="sig-name descname"><span class="pre">upload_buffer_to_s3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bucket_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buffer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">StringIO</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">desired_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#source.utils.aws_handler.AWSHandler.upload_buffer_to_s3" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attempts to upload buffer as file body directly to S3 Amazon bucket.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bucket_name</strong> (<em>str</em>) – String denoting bucket name.</p></li>
+<li><p><strong>buffer</strong> (<em>io.StringIO</em>) – Buffer containing data that should be directly
+written to bucket.</p></li>
+<li><p><strong>desired_name</strong> (<em>str</em>) – Desired name to be given to the file after being uploaded.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>RuntimeError</strong> – If approached problem during file uploading.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="source.utils.aws_handler.AWSHandler.upload_file_to_s3">
+<span class="sig-name descname"><span class="pre">upload_file_to_s3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bucket_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">desired_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#source.utils.aws_handler.AWSHandler.upload_file_to_s3" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attempts to upload local file specified by path to S3 Amazon bucket.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bucket_name</strong> (<em>str</em>) – String denoting bucket name.</p></li>
+<li><p><strong>file_path</strong> (<em>str</em>) – String representing file to the path that should be uploaded.</p></li>
+<li><p><strong>desired_name</strong> (<em>str</em>) – Desired name to be given to the file after being uploaded.
+If left unspecified, name does not change.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>RuntimeError</strong> – If approached problem during file uploading.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="source.utils.aws_handler.AWSHandler.with_session_renewal">
+<span class="sig-name descname"><span class="pre">with_session_renewal</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#source.utils.aws_handler.AWSHandler.with_session_renewal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorator to handle session renewal on ExpiredToken error.</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-source.utils.dynamic_from_string_converter"></span><dl class="py class">
+<dt class="sig sig-object py" id="source.utils.dynamic_from_string_converter.DynamicFromStringConverter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DynamicFromStringConverter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.utils.dynamic_from_string_converter.DynamicFromStringConverter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Implements a dynamic class converter that allows for the conversion of class names
+from strings to actual class handles. It builds a tree structure of packages and allows
+for the retrieval of class handles based on their names.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="source.utils.dynamic_from_string_converter.DynamicFromStringConverter.get_class_handle">
+<span class="sig-name descname"><span class="pre">get_class_handle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">class_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">type</span></span></span><a class="headerlink" href="#source.utils.dynamic_from_string_converter.DynamicFromStringConverter.get_class_handle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves the class handle for a given class name from the registered packages.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>class_name</strong> (<em>str</em>) – The name of the class to retrieve.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the class is not found in the registered packages.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The class type if found.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>(type)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="source.utils.dynamic_from_string_converter.DynamicFromStringConverter.register_packages">
+<span class="sig-name descname"><span class="pre">register_packages</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">packages_to_get_registered</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#source.utils.dynamic_from_string_converter.DynamicFromStringConverter.register_packages" title="Permalink to this definition">¶</a></dt>
+<dd><p>Registers a list of packages by building their package trees.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>packages_to_get_registered</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>bool</em><em>]</em>) – A dictionary where keys are package names
+and values indicate whether to include non-package modules (True) or not (False).</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="source.utils.dynamic_from_string_converter.PackageNode">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PackageNode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">package</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">module</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#source.utils.dynamic_from_string_converter.PackageNode" title="source.utils.dynamic_from_string_converter.PackageNode"><span class="pre">PackageNode</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.utils.dynamic_from_string_converter.PackageNode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Node</span></code></p>
+<p>Implements a node in the package tree structure. Each node represents a package
+and contains its name, the package itself, and a reference to its parent node.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="source.utils.dynamic_from_string_converter.PackageNode.ancestors">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ancestors</span></span><a class="headerlink" href="#source.utils.dynamic_from_string_converter.PackageNode.ancestors" title="Permalink to this definition">¶</a></dt>
+<dd><p>All parent nodes and their parent nodes.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">anytree</span><span class="w"> </span><span class="kn">import</span> <span class="n">Node</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">udo</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;Udo&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">marc</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;Marc&quot;</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">udo</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lian</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;Lian&quot;</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">marc</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">udo</span><span class="o">.</span><span class="n">ancestors</span>
+<span class="go">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">marc</span><span class="o">.</span><span class="n">ancestors</span>
+<span class="go">(Node(&#39;/Udo&#39;),)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lian</span><span class="o">.</span><span class="n">ancestors</span>
+<span class="go">(Node(&#39;/Udo&#39;), Node(&#39;/Udo/Marc&#39;))</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="source.utils.dynamic_from_string_converter.PackageNode.anchestors">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">anchestors</span></span><a class="headerlink" href="#source.utils.dynamic_from_string_converter.PackageNode.anchestors" title="Permalink to this definition">¶</a></dt>
+<dd><p>All parent nodes and their parent nodes - see <a class="reference internal" href="#source.utils.dynamic_from_string_converter.PackageNode.ancestors" title="source.utils.dynamic_from_string_converter.PackageNode.ancestors"><code class="xref any py py-attr docutils literal notranslate"><span class="pre">ancestors</span></code></a>.</p>
+<p>The attribute <cite>anchestors</cite> is just a typo of <cite>ancestors</cite>. Please use <cite>ancestors</cite>.
+This attribute will be removed in the 3.0.0 release.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="source.utils.dynamic_from_string_converter.PackageNode.children">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">children</span></span><a class="headerlink" href="#source.utils.dynamic_from_string_converter.PackageNode.children" title="Permalink to this definition">¶</a></dt>
+<dd><p>All child nodes.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">anytree</span><span class="w"> </span><span class="kn">import</span> <span class="n">Node</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">n</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;n&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">n</span><span class="o">.</span><span class="n">children</span>
+<span class="go">(Node(&#39;/n/a&#39;), Node(&#39;/n/b&#39;), Node(&#39;/n/c&#39;))</span>
+</pre></div>
+</div>
+<p>Modifying the children attribute modifies the tree.</p>
+<p><strong>Detach</strong></p>
+<p>The children attribute can be updated by setting to an iterable.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">n</span><span class="o">.</span><span class="n">children</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">n</span><span class="o">.</span><span class="n">children</span>
+<span class="go">(Node(&#39;/n/a&#39;), Node(&#39;/n/b&#39;))</span>
+</pre></div>
+</div>
+<p>Node <cite>c</cite> is removed from the tree.
+In case of an existing reference, the node <cite>c</cite> does not vanish and is the root of its own tree.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">c</span>
+<span class="go">Node(&#39;/c&#39;)</span>
+</pre></div>
+</div>
+<p><strong>Attach</strong></p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;d&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span>
+<span class="go">Node(&#39;/d&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">n</span><span class="o">.</span><span class="n">children</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">d</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">n</span><span class="o">.</span><span class="n">children</span>
+<span class="go">(Node(&#39;/n/a&#39;), Node(&#39;/n/b&#39;), Node(&#39;/n/d&#39;))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span>
+<span class="go">Node(&#39;/n/d&#39;)</span>
+</pre></div>
+</div>
+<p><strong>Duplicate</strong></p>
+<p>A node can just be the children once. Duplicates cause a <code class="xref any docutils literal notranslate"><span class="pre">TreeError</span></code>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">n</span><span class="o">.</span><span class="n">children</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">a</span><span class="p">]</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="w">    </span><span class="o">...</span>
+<span class="gr">anytree.node.exceptions.TreeError</span>: <span class="n">Cannot add node Node(&#39;/n/a&#39;) multiple times as child.</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="source.utils.dynamic_from_string_converter.PackageNode.depth">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">depth</span></span><a class="headerlink" href="#source.utils.dynamic_from_string_converter.PackageNode.depth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of edges to the root <cite>Node</cite>.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">anytree</span><span class="w"> </span><span class="kn">import</span> <span class="n">Node</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">udo</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;Udo&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">marc</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;Marc&quot;</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">udo</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lian</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;Lian&quot;</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">marc</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">udo</span><span class="o">.</span><span class="n">depth</span>
+<span class="go">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">marc</span><span class="o">.</span><span class="n">depth</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lian</span><span class="o">.</span><span class="n">depth</span>
+<span class="go">2</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="source.utils.dynamic_from_string_converter.PackageNode.descendants">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">descendants</span></span><a class="headerlink" href="#source.utils.dynamic_from_string_converter.PackageNode.descendants" title="Permalink to this definition">¶</a></dt>
+<dd><p>All child nodes and all their child nodes.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">anytree</span><span class="w"> </span><span class="kn">import</span> <span class="n">Node</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">udo</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;Udo&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">marc</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;Marc&quot;</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">udo</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lian</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;Lian&quot;</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">marc</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loui</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;Loui&quot;</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">marc</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">soe</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;Soe&quot;</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">lian</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">udo</span><span class="o">.</span><span class="n">descendants</span>
+<span class="go">(Node(&#39;/Udo/Marc&#39;), Node(&#39;/Udo/Marc/Lian&#39;), Node(&#39;/Udo/Marc/Lian/Soe&#39;), Node(&#39;/Udo/Marc/Loui&#39;))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">marc</span><span class="o">.</span><span class="n">descendants</span>
+<span class="go">(Node(&#39;/Udo/Marc/Lian&#39;), Node(&#39;/Udo/Marc/Lian/Soe&#39;), Node(&#39;/Udo/Marc/Loui&#39;))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lian</span><span class="o">.</span><span class="n">descendants</span>
+<span class="go">(Node(&#39;/Udo/Marc/Lian/Soe&#39;),)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="source.utils.dynamic_from_string_converter.PackageNode.height">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">height</span></span><a class="headerlink" href="#source.utils.dynamic_from_string_converter.PackageNode.height" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of edges on the longest path to a leaf <cite>Node</cite>.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">anytree</span><span class="w"> </span><span class="kn">import</span> <span class="n">Node</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">udo</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;Udo&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">marc</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;Marc&quot;</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">udo</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lian</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;Lian&quot;</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">marc</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">udo</span><span class="o">.</span><span class="n">height</span>
+<span class="go">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">marc</span><span class="o">.</span><span class="n">height</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lian</span><span class="o">.</span><span class="n">height</span>
+<span class="go">0</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="source.utils.dynamic_from_string_converter.PackageNode.is_leaf">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_leaf</span></span><a class="headerlink" href="#source.utils.dynamic_from_string_converter.PackageNode.is_leaf" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>Node</cite> has no children (External Node).</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">anytree</span><span class="w"> </span><span class="kn">import</span> <span class="n">Node</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">udo</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;Udo&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">marc</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;Marc&quot;</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">udo</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lian</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;Lian&quot;</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">marc</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">udo</span><span class="o">.</span><span class="n">is_leaf</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">marc</span><span class="o">.</span><span class="n">is_leaf</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lian</span><span class="o">.</span><span class="n">is_leaf</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="source.utils.dynamic_from_string_converter.PackageNode.is_root">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_root</span></span><a class="headerlink" href="#source.utils.dynamic_from_string_converter.PackageNode.is_root" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>Node</cite> is tree root.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">anytree</span><span class="w"> </span><span class="kn">import</span> <span class="n">Node</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">udo</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;Udo&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">marc</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;Marc&quot;</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">udo</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lian</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;Lian&quot;</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">marc</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">udo</span><span class="o">.</span><span class="n">is_root</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">marc</span><span class="o">.</span><span class="n">is_root</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lian</span><span class="o">.</span><span class="n">is_root</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="source.utils.dynamic_from_string_converter.PackageNode.iter_path_reverse">
+<span class="sig-name descname"><span class="pre">iter_path_reverse</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#source.utils.dynamic_from_string_converter.PackageNode.iter_path_reverse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterate up the tree from the current node to the root node.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">anytree</span><span class="w"> </span><span class="kn">import</span> <span class="n">Node</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">udo</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;Udo&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">marc</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;Marc&quot;</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">udo</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lian</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;Lian&quot;</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">marc</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">udo</span><span class="o">.</span><span class="n">iter_path_reverse</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+<span class="go">Node(&#39;/Udo&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">marc</span><span class="o">.</span><span class="n">iter_path_reverse</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+<span class="go">Node(&#39;/Udo/Marc&#39;)</span>
+<span class="go">Node(&#39;/Udo&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">lian</span><span class="o">.</span><span class="n">iter_path_reverse</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+<span class="go">Node(&#39;/Udo/Marc/Lian&#39;)</span>
+<span class="go">Node(&#39;/Udo/Marc&#39;)</span>
+<span class="go">Node(&#39;/Udo&#39;)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="source.utils.dynamic_from_string_converter.PackageNode.leaves">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">leaves</span></span><a class="headerlink" href="#source.utils.dynamic_from_string_converter.PackageNode.leaves" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tuple of all leaf nodes.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">anytree</span><span class="w"> </span><span class="kn">import</span> <span class="n">Node</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">udo</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;Udo&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">marc</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;Marc&quot;</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">udo</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lian</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;Lian&quot;</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">marc</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loui</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;Loui&quot;</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">marc</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lazy</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;Lazy&quot;</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">marc</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">udo</span><span class="o">.</span><span class="n">leaves</span>
+<span class="go">(Node(&#39;/Udo/Marc/Lian&#39;), Node(&#39;/Udo/Marc/Loui&#39;), Node(&#39;/Udo/Marc/Lazy&#39;))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">marc</span><span class="o">.</span><span class="n">leaves</span>
+<span class="go">(Node(&#39;/Udo/Marc/Lian&#39;), Node(&#39;/Udo/Marc/Loui&#39;), Node(&#39;/Udo/Marc/Lazy&#39;))</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="source.utils.dynamic_from_string_converter.PackageNode.parent">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parent</span></span><a class="headerlink" href="#source.utils.dynamic_from_string_converter.PackageNode.parent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parent Node.</p>
+<p>On set, the node is detached from any previous parent node and attached
+to the new node.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">anytree</span><span class="w"> </span><span class="kn">import</span> <span class="n">Node</span><span class="p">,</span> <span class="n">RenderTree</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">udo</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;Udo&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">marc</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;Marc&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lian</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;Lian&quot;</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">marc</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">RenderTree</span><span class="p">(</span><span class="n">udo</span><span class="p">))</span>
+<span class="go">Node(&#39;/Udo&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">RenderTree</span><span class="p">(</span><span class="n">marc</span><span class="p">))</span>
+<span class="go">Node(&#39;/Marc&#39;)</span>
+<span class="go">└── Node(&#39;/Marc/Lian&#39;)</span>
+</pre></div>
+</div>
+<p><strong>Attach</strong></p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">marc</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">udo</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">RenderTree</span><span class="p">(</span><span class="n">udo</span><span class="p">))</span>
+<span class="go">Node(&#39;/Udo&#39;)</span>
+<span class="go">└── Node(&#39;/Udo/Marc&#39;)</span>
+<span class="go">    └── Node(&#39;/Udo/Marc/Lian&#39;)</span>
+</pre></div>
+</div>
+<p><strong>Detach</strong></p>
+<p>To make a node to a root node, just set this attribute to <cite>None</cite>.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">marc</span><span class="o">.</span><span class="n">is_root</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">marc</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">marc</span><span class="o">.</span><span class="n">is_root</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="source.utils.dynamic_from_string_converter.PackageNode.path">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">path</span></span><a class="headerlink" href="#source.utils.dynamic_from_string_converter.PackageNode.path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Path from root node down to this <cite>Node</cite>.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">anytree</span><span class="w"> </span><span class="kn">import</span> <span class="n">Node</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">udo</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;Udo&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">marc</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;Marc&quot;</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">udo</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lian</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;Lian&quot;</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">marc</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">udo</span><span class="o">.</span><span class="n">path</span>
+<span class="go">(Node(&#39;/Udo&#39;),)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">marc</span><span class="o">.</span><span class="n">path</span>
+<span class="go">(Node(&#39;/Udo&#39;), Node(&#39;/Udo/Marc&#39;))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lian</span><span class="o">.</span><span class="n">path</span>
+<span class="go">(Node(&#39;/Udo&#39;), Node(&#39;/Udo/Marc&#39;), Node(&#39;/Udo/Marc/Lian&#39;))</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="source.utils.dynamic_from_string_converter.PackageNode.root">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">root</span></span><a class="headerlink" href="#source.utils.dynamic_from_string_converter.PackageNode.root" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tree Root Node.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">anytree</span><span class="w"> </span><span class="kn">import</span> <span class="n">Node</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">udo</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;Udo&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">marc</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;Marc&quot;</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">udo</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lian</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;Lian&quot;</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">marc</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">udo</span><span class="o">.</span><span class="n">root</span>
+<span class="go">Node(&#39;/Udo&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">marc</span><span class="o">.</span><span class="n">root</span>
+<span class="go">Node(&#39;/Udo&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lian</span><span class="o">.</span><span class="n">root</span>
+<span class="go">Node(&#39;/Udo&#39;)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="source.utils.dynamic_from_string_converter.PackageNode.separator">
+<span class="sig-name descname"><span class="pre">separator</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'/'</span></em><a class="headerlink" href="#source.utils.dynamic_from_string_converter.PackageNode.separator" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="source.utils.dynamic_from_string_converter.PackageNode.siblings">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">siblings</span></span><a class="headerlink" href="#source.utils.dynamic_from_string_converter.PackageNode.siblings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tuple of nodes with the same parent.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">anytree</span><span class="w"> </span><span class="kn">import</span> <span class="n">Node</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">udo</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;Udo&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">marc</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;Marc&quot;</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">udo</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lian</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;Lian&quot;</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">marc</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loui</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;Loui&quot;</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">marc</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lazy</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;Lazy&quot;</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">marc</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">udo</span><span class="o">.</span><span class="n">siblings</span>
+<span class="go">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">marc</span><span class="o">.</span><span class="n">siblings</span>
+<span class="go">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lian</span><span class="o">.</span><span class="n">siblings</span>
+<span class="go">(Node(&#39;/Udo/Marc/Loui&#39;), Node(&#39;/Udo/Marc/Lazy&#39;))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loui</span><span class="o">.</span><span class="n">siblings</span>
+<span class="go">(Node(&#39;/Udo/Marc/Lian&#39;), Node(&#39;/Udo/Marc/Lazy&#39;))</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="source.utils.dynamic_from_string_converter.PackageNode.size">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">size</span></span><a class="headerlink" href="#source.utils.dynamic_from_string_converter.PackageNode.size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tree size — the number of nodes in tree starting at this node.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">anytree</span><span class="w"> </span><span class="kn">import</span> <span class="n">Node</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">udo</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;Udo&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">marc</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;Marc&quot;</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">udo</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lian</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;Lian&quot;</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">marc</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loui</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;Loui&quot;</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">marc</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">soe</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;Soe&quot;</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">lian</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">udo</span><span class="o">.</span><span class="n">size</span>
+<span class="go">5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">marc</span><span class="o">.</span><span class="n">size</span>
+<span class="go">4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lian</span><span class="o">.</span><span class="n">size</span>
+<span class="go">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loui</span><span class="o">.</span><span class="n">size</span>
+<span class="go">1</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-source.utils.gradient_handler"></span><dl class="py class">
+<dt class="sig sig-object py" id="source.utils.gradient_handler.GradientHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">GradientHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.utils.gradient_handler.GradientHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Responsible for communication and management of Paperspace Gradient services.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="source.utils.gradient_handler.GradientHandler.create_notebook">
+<span class="sig-name descname"><span class="pre">create_notebook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">command_to_invoke</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">github_repository_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">notebook_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">datetime.datetime(2026,</span> <span class="pre">2,</span> <span class="pre">15,</span> <span class="pre">20,</span> <span class="pre">56,</span> <span class="pre">8,</span> <span class="pre">397644)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">machine_types</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">['Free-P5000']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">environment_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#source.utils.gradient_handler.GradientHandler.create_notebook" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attempts to create notebook basing on certain github repository, starting command and
+sets needed environmental parameters (e.g. variables, machine type, etc.).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>command_to_invoke</strong> (<em>str</em>) – Command to be invoked after notebook is started.</p></li>
+<li><p><strong>github_repository_url</strong> (<em>str</em>) – URL to repository that should be downloaded to notebook.</p></li>
+<li><p><strong>notebook_name</strong> (<em>str</em>) – Name that should be given to notebook.</p></li>
+<li><p><strong>machine_types</strong> (<em>list</em>) – List of demanded machine’s types that notebook should be attempted
+to be created on. The first successful creation stops attempts to create notebook for
+machine types that are further in the list. Therefore, machine’s types should be ordered
+from the most wanted to the least one.</p></li>
+<li><p><strong>timeout</strong> (<em>int</em>) – Number of hours that notebook should be active for. For free instances maximal
+value for this parameter is 6.</p></li>
+<li><p><strong>environment_dict</strong> (<em>dict</em>) – Dictionary containing defined environmental variables.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>RuntimeError</strong> – If approached problem during notebook creation.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="source.utils.gradient_handler.GradientHandler.delete_notebook">
+<span class="sig-name descname"><span class="pre">delete_notebook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">notebook_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#source.utils.gradient_handler.GradientHandler.delete_notebook" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes notebook with the given ID from Paperspace Gradient.</p>
+<p>This method attempts to remove a previously created notebook from
+the Paperspace Gradient platform.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>notebook_id</strong> (<em>str</em>) – ID of the notebook to be deleted.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>RuntimeError</strong> – If approached problem during notebook deletion.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-source.utils.granularity"></span><dl class="py class">
+<dt class="sig sig-object py" id="source.utils.granularity.Granularity">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Granularity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.utils.granularity.Granularity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
+<p>Enum representing possible values of time granularity that coinbase API can handle.
+Values assigned to particular options represent number of seconds that certain option denotes.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="source.utils.granularity.Granularity.FIFTEEN_MINUTES">
+<span class="sig-name descname"><span class="pre">FIFTEEN_MINUTES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">900</span></em><a class="headerlink" href="#source.utils.granularity.Granularity.FIFTEEN_MINUTES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="source.utils.granularity.Granularity.FIVE_MINUTES">
+<span class="sig-name descname"><span class="pre">FIVE_MINUTES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">300</span></em><a class="headerlink" href="#source.utils.granularity.Granularity.FIVE_MINUTES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="source.utils.granularity.Granularity.ONE_DAY">
+<span class="sig-name descname"><span class="pre">ONE_DAY</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">86400</span></em><a class="headerlink" href="#source.utils.granularity.Granularity.ONE_DAY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="source.utils.granularity.Granularity.ONE_HOUR">
+<span class="sig-name descname"><span class="pre">ONE_HOUR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3600</span></em><a class="headerlink" href="#source.utils.granularity.Granularity.ONE_HOUR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="source.utils.granularity.Granularity.ONE_MINUTE">
+<span class="sig-name descname"><span class="pre">ONE_MINUTE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">60</span></em><a class="headerlink" href="#source.utils.granularity.Granularity.ONE_MINUTE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="source.utils.granularity.Granularity.SIX_HOURS">
+<span class="sig-name descname"><span class="pre">SIX_HOURS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">21600</span></em><a class="headerlink" href="#source.utils.granularity.Granularity.SIX_HOURS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="source.utils.granularity.Granularity.THIRTY_MINUTES">
+<span class="sig-name descname"><span class="pre">THIRTY_MINUTES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1800</span></em><a class="headerlink" href="#source.utils.granularity.Granularity.THIRTY_MINUTES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="source.utils.granularity.Granularity.from_string">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">granularity_str</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#source.utils.granularity.Granularity" title="source.utils.granularity.Granularity"><span class="pre">Granularity</span></a></span></span><a class="headerlink" href="#source.utils.granularity.Granularity.from_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts string representation of granularity to Granularity enum.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>granularity_str</strong> (<em>str</em>) – String representation of granularity.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Corresponding Granularity enum.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#source.utils.granularity.Granularity" title="source.utils.granularity.Granularity">Granularity</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-source.utils.singleton_meta"></span><dl class="py class">
+<dt class="sig sig-object py" id="source.utils.singleton_meta.SingletonMeta">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SingletonMeta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bases</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attrs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.utils.singleton_meta.SingletonMeta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">type</span></code></p>
+<p>Metaclass for defining singleton classes.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="source.utils.singleton_meta.SingletonMeta.mro">
+<span class="sig-name descname"><span class="pre">mro</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#source.utils.singleton_meta.SingletonMeta.mro" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a type’s method resolution order.</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-source.utils.stdout_redirecting"></span><dl class="py class">
+<dt class="sig sig-object py" id="source.utils.stdout_redirecting.LoggingOut">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">LoggingOut</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.utils.stdout_redirecting.LoggingOut" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Implements a custom output stream that redirects stdout to the logging module.
+It captures text written to stdout and logs it as info messages.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="source.utils.stdout_redirecting.LoggingOut.flush">
+<span class="sig-name descname"><span class="pre">flush</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#source.utils.stdout_redirecting.LoggingOut.flush" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flushes the internal buffer by logging all captured text.
+If the buffer contains new lines, it splits the text into lines and logs each line.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="source.utils.stdout_redirecting.LoggingOut.write">
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#source.utils.stdout_redirecting.LoggingOut.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes text to the internal buffer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>text</strong> (<em>str</em>) – The text to write to the buffer.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="source.utils.stdout_redirecting.redirect_stdout_to_logging">
+<span class="sig-name descname"><span class="pre">redirect_stdout_to_logging</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="headerlink" href="#source.utils.stdout_redirecting.redirect_stdout_to_logging" title="Permalink to this definition">¶</a></dt>
+<dd><p>Context manager that redirects stdout to a custom logging stream.</p>
+</dd></dl>
+
 </section>
 
 

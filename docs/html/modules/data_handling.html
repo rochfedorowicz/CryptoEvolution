@@ -87,8 +87,95 @@
 
           <div class="body" role="main">
             
-  <section id="data-handling-module">
-<h1>Data Handling Module<a class="headerlink" href="#data-handling-module" title="Permalink to this heading">¶</a></h1>
+  <section id="module-source.data_handling.data_handler">
+<span id="data-handling-module"></span><h1>Data Handling Module<a class="headerlink" href="#module-source.data_handling.data_handler" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="source.data_handling.data_handler.DataHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DataHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.data_handling.data_handler.DataHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Responsible for data handling. Including data collection and preparation.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="source.data_handling.data_handler.DataHandler.prepare_data">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">prepare_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">granularity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="utils.html#source.utils.granularity.Granularity" title="source.utils.granularity.Granularity"><span class="pre">Granularity</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">list_of_indicators</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="indicators.html#source.indicators.indicator_handler_base.IndicatorHandlerBase" title="source.indicators.indicator_handler_base.IndicatorHandlerBase"><span class="pre">source.indicators.indicator_handler_base.IndicatorHandlerBase</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#source.data_handling.data_handler.DataHandler.prepare_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Collects data from coinbase API and extends it with list of indicators.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_source</strong> (<em>str</em>) – String representing unique trading symbol or path
+to the file to be preprocessed.</p></li>
+<li><p><strong>start_date</strong> (<em>str</em>) – String representing date that collected data should start from.</p></li>
+<li><p><strong>end_date</strong> (<em>str</em>) – String representing date that collected data should finish at.</p></li>
+<li><p><strong>granularity</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="utils.html#source.utils.granularity.Granularity" title="source.utils.granularity.Granularity"><em>Granularity</em></a><em>]</em>) – Enum specifying resolution of collected data - e.g. each
+15 minutes or 1 hour or 6 hours is treated separately. It is optional when input_source is a file path,
+but must be provided when input_source is a ticker.</p></li>
+<li><p><strong>list_of_indicators</strong> (<em>Optional</em><em>[</em><em>list</em><em>[</em><a class="reference internal" href="indicators.html#source.indicators.indicator_handler_base.IndicatorHandlerBase" title="source.indicators.indicator_handler_base.IndicatorHandlerBase"><em>IndicatorHandlerBase</em></a><em>]</em><em>]</em>) – List of indicators that should be
+calculated and added to the data. Defaults to None, which means no indicators
+will be added.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>RuntimeError</strong> – If given trading pair symbol is not recognized.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Preprocessed data extended with given indicators.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>(pd.DataFrame)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="source.data_handling.data_handler.DataHandler.read_extended_data_from_csv_formatted_string_buffer">
+<span class="sig-name descname"><span class="pre">read_extended_data_from_csv_formatted_string_buffer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_content_string_buffer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">StringIO</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">pandas.core.frame.DataFrame</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#source.data_handling.data_handler.DataHandler.read_extended_data_from_csv_formatted_string_buffer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads extended data from a CSV formatted string buffer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_content_string_buffer</strong> (<em>io.StringIO</em>) – StringIO buffer containing the CSV formatted data.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tuple containing the data frame with extended data
+and optional metadata.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(tuple[pd.DataFrame, Optional[dict[str, Any]]])</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="source.data_handling.data_handler.DataHandler.register_api_data_collectors">
+<span class="sig-name descname"><span class="pre">register_api_data_collectors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">api_data_collectors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">source.data_handling.api_data_collector_base.ApiDataCollectorBase</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#source.data_handling.data_handler.DataHandler.register_api_data_collectors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Registers API data collectors for data collection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>api_data_collectors</strong> (<em>list</em><em>[</em><em>ApiDataCollectorBase</em><em>]</em>) – A list of instances of ApiDataCollectorBase or its subclasses.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="source.data_handling.data_handler.DataHandler.save_extended_data_into_csv_formatted_string_buffer">
+<span class="sig-name descname"><span class="pre">save_extended_data_into_csv_formatted_string_buffer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meta_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">StringIO</span></span></span><a class="headerlink" href="#source.data_handling.data_handler.DataHandler.save_extended_data_into_csv_formatted_string_buffer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves extended data into a CSV formatted string buffer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>pd.DataFrame</em>) – Data frame to be saved.</p></li>
+<li><p><strong>meta_data</strong> (<em>Optional</em><em>[</em><em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em><em>]</em>) – Optional metadata to include in the CSV.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>StringIO buffer containing the CSV formatted data.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(io.StringIO)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 
 

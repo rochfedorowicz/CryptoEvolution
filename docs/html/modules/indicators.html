@@ -87,8 +87,520 @@
 
           <div class="body" role="main">
             
-  <section id="indicators-module">
-<h1>Indicators Module<a class="headerlink" href="#indicators-module" title="Permalink to this heading">¶</a></h1>
+  <section id="module-source.indicators.average_true_range_indicator_handler">
+<span id="indicators-module"></span><h1>Indicators Module<a class="headerlink" href="#module-source.indicators.average_true_range_indicator_handler" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="source.indicators.average_true_range_indicator_handler.AverageTrueRangeIndicatorHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AverageTrueRangeIndicatorHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">window_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">14</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.indicators.average_true_range_indicator_handler.AverageTrueRangeIndicatorHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#source.indicators.indicator_handler_base.IndicatorHandlerBase" title="source.indicators.indicator_handler_base.IndicatorHandlerBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">IndicatorHandlerBase</span></code></a></p>
+<p>Implements Average True Range (ATR) indicator. It measures market volatility by decomposing
+the entire range of an asset price for that period.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="source.indicators.average_true_range_indicator_handler.AverageTrueRangeIndicatorHandler.calculate">
+<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#source.indicators.average_true_range_indicator_handler.AverageTrueRangeIndicatorHandler.calculate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates Average True Range (ATR) indicator values for given data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>pd.DataFrame</em>) – Data frame with input data.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Output data with calculated ATR values.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(pd.DataFrame)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="source.indicators.average_true_range_indicator_handler.AverageTrueRangeIndicatorHandler.can_be_normalized">
+<span class="sig-name descname"><span class="pre">can_be_normalized</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#source.indicators.average_true_range_indicator_handler.AverageTrueRangeIndicatorHandler.can_be_normalized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the indicator can be normalized.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if the indicator can be normalized, False otherwise.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>(bool)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-source.indicators.bollinger_bands_deviator_indicator_handler"></span><dl class="py class">
+<dt class="sig sig-object py" id="source.indicators.bollinger_bands_deviator_indicator_handler.BollingerBandsDeviatorIndicatorHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">BollingerBandsDeviatorIndicatorHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">window_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">std_coeff</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.indicators.bollinger_bands_deviator_indicator_handler.BollingerBandsDeviatorIndicatorHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#source.indicators.indicator_handler_base.IndicatorHandlerBase" title="source.indicators.indicator_handler_base.IndicatorHandlerBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">IndicatorHandlerBase</span></code></a></p>
+<p>Implements Bollinger Bands deviator indicator. It describes how far the current price is
+from the simple moving average (SMA) in terms of standard deviations.
+The Bollinger Bands itself is a volatility indicator that consists of two outer bands
+(standard deviations above and below the SMA) that Bollinger Bands deviator implementation
+uses for upper and lower boundaries.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="source.indicators.bollinger_bands_deviator_indicator_handler.BollingerBandsDeviatorIndicatorHandler.calculate">
+<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#source.indicators.bollinger_bands_deviator_indicator_handler.BollingerBandsDeviatorIndicatorHandler.calculate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates Bollinger Bands deviator indicator values for given data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>pd.DataFrame</em>) – Data frame with input data.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Output data with calculated Bollinger Bands deviator values.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(pd.DataFrame)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="source.indicators.bollinger_bands_deviator_indicator_handler.BollingerBandsDeviatorIndicatorHandler.can_be_normalized">
+<span class="sig-name descname"><span class="pre">can_be_normalized</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#source.indicators.bollinger_bands_deviator_indicator_handler.BollingerBandsDeviatorIndicatorHandler.can_be_normalized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the indicator can be normalized.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if the indicator can be normalized, False otherwise.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>(bool)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-source.indicators.donchain_channels_indicator_handler"></span><dl class="py class">
+<dt class="sig sig-object py" id="source.indicators.donchain_channels_indicator_handler.DonchainChannelsIndicatorHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DonchainChannelsIndicatorHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">window_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">20</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.indicators.donchain_channels_indicator_handler.DonchainChannelsIndicatorHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#source.indicators.indicator_handler_base.IndicatorHandlerBase" title="source.indicators.indicator_handler_base.IndicatorHandlerBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">IndicatorHandlerBase</span></code></a></p>
+<p>Implements donchain channels indicator. It indicates the highest and the
+lowest price for the certain period, creating so called channel. It also
+calculates average price as the average of the lowest and the highest price.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="source.indicators.donchain_channels_indicator_handler.DonchainChannelsIndicatorHandler.calculate">
+<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#source.indicators.donchain_channels_indicator_handler.DonchainChannelsIndicatorHandler.calculate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates donchain channels indicator values for given data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>pd.DataFrame</em>) – Data frame with input data.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Output data with calculated donchain channels values.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(pd.DataFrame)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="source.indicators.donchain_channels_indicator_handler.DonchainChannelsIndicatorHandler.can_be_normalized">
+<span class="sig-name descname"><span class="pre">can_be_normalized</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#source.indicators.donchain_channels_indicator_handler.DonchainChannelsIndicatorHandler.can_be_normalized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the indicator can be normalized.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if the indicator can be normalized, False otherwise.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>(bool)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-source.indicators.ema_indicator_handler"></span><dl class="py class">
+<dt class="sig sig-object py" id="source.indicators.ema_indicator_handler.ExponentialMovingAverageIndicatorHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ExponentialMovingAverageIndicatorHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">window_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">20</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.indicators.ema_indicator_handler.ExponentialMovingAverageIndicatorHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#source.indicators.indicator_handler_base.IndicatorHandlerBase" title="source.indicators.indicator_handler_base.IndicatorHandlerBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">IndicatorHandlerBase</span></code></a></p>
+<p>Implements Exponential Moving Average (EMA) indicator. It gives more weight to recent prices
+and reacts more quickly to price changes than a simple moving average.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="source.indicators.ema_indicator_handler.ExponentialMovingAverageIndicatorHandler.calculate">
+<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#source.indicators.ema_indicator_handler.ExponentialMovingAverageIndicatorHandler.calculate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates Exponential Moving Average (EMA) indicator values for given data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>pd.DataFrame</em>) – Data frame with input data.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Output data with calculated EMA values.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(pd.DataFrame)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="source.indicators.ema_indicator_handler.ExponentialMovingAverageIndicatorHandler.can_be_normalized">
+<span class="sig-name descname"><span class="pre">can_be_normalized</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#source.indicators.ema_indicator_handler.ExponentialMovingAverageIndicatorHandler.can_be_normalized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the indicator can be normalized.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if the indicator can be normalized, False otherwise.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>(bool)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-source.indicators.indicator_handler_base"></span><dl class="py class">
+<dt class="sig sig-object py" id="source.indicators.indicator_handler_base.IndicatorHandlerBase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">IndicatorHandlerBase</span></span><a class="headerlink" href="#source.indicators.indicator_handler_base.IndicatorHandlerBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<p>Base class for indicators. Enforces certain functions to be implemented
+in derivative classes.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="source.indicators.indicator_handler_base.IndicatorHandlerBase.calculate">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#source.indicators.indicator_handler_base.IndicatorHandlerBase.calculate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates indicator values for given data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>pd.DataFrame</em>) – Data frame with input data.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Output data with calculated values for certain indicator.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(pd.DataFrame)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="source.indicators.indicator_handler_base.IndicatorHandlerBase.can_be_normalized">
+<span class="sig-name descname"><span class="pre">can_be_normalized</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#source.indicators.indicator_handler_base.IndicatorHandlerBase.can_be_normalized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the indicator can be normalized.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if the indicator can be normalized, False otherwise.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>(bool)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-source.indicators.macd_indicator_handler"></span><dl class="py class">
+<dt class="sig sig-object py" id="source.indicators.macd_indicator_handler.MovingAverageConvergenceDivergenceIndicatorHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MovingAverageConvergenceDivergenceIndicatorHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fast_period_window_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">12</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slow_period_window_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">26</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signal_period_window_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">9</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.indicators.macd_indicator_handler.MovingAverageConvergenceDivergenceIndicatorHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#source.indicators.indicator_handler_base.IndicatorHandlerBase" title="source.indicators.indicator_handler_base.IndicatorHandlerBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">IndicatorHandlerBase</span></code></a></p>
+<p>Implements Moving Average Convergence Divergence (MACD) indicator. It shows the relationship
+between two moving averages of an asset’s price.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="source.indicators.macd_indicator_handler.MovingAverageConvergenceDivergenceIndicatorHandler.calculate">
+<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#source.indicators.macd_indicator_handler.MovingAverageConvergenceDivergenceIndicatorHandler.calculate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates Moving Average Convergence Divergence (MACD) indicator values for given data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>pd.DataFrame</em>) – Data frame with input data.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Output data with calculated MACD values.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(pd.DataFrame)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="source.indicators.macd_indicator_handler.MovingAverageConvergenceDivergenceIndicatorHandler.can_be_normalized">
+<span class="sig-name descname"><span class="pre">can_be_normalized</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#source.indicators.macd_indicator_handler.MovingAverageConvergenceDivergenceIndicatorHandler.can_be_normalized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the indicator can be normalized.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if the indicator can be normalized, False otherwise.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>(bool)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-source.indicators.money_flow_index_indicator_handler"></span><dl class="py class">
+<dt class="sig sig-object py" id="source.indicators.money_flow_index_indicator_handler.MoneyFlowIndexIndicatorHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MoneyFlowIndexIndicatorHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">window_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">14</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.indicators.money_flow_index_indicator_handler.MoneyFlowIndexIndicatorHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#source.indicators.indicator_handler_base.IndicatorHandlerBase" title="source.indicators.indicator_handler_base.IndicatorHandlerBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">IndicatorHandlerBase</span></code></a></p>
+<p>Implements Money Flow Index (MFI) indicator. It measures the flow of money into and out of an asset.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="source.indicators.money_flow_index_indicator_handler.MoneyFlowIndexIndicatorHandler.calculate">
+<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#source.indicators.money_flow_index_indicator_handler.MoneyFlowIndexIndicatorHandler.calculate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates Money Flow Index (MFI) indicator values for given data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>pd.DataFrame</em>) – Data frame with input data.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Output data with calculated MFI values.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(pd.DataFrame)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="source.indicators.money_flow_index_indicator_handler.MoneyFlowIndexIndicatorHandler.can_be_normalized">
+<span class="sig-name descname"><span class="pre">can_be_normalized</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#source.indicators.money_flow_index_indicator_handler.MoneyFlowIndexIndicatorHandler.can_be_normalized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the indicator can be normalized.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if the indicator can be normalized, False otherwise.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>(bool)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-source.indicators.moving_volume_profile_indicator_handler"></span><dl class="py class">
+<dt class="sig sig-object py" id="source.indicators.moving_volume_profile_indicator_handler.MovingVolumeProfileIndicatorHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MovingVolumeProfileIndicatorHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">window_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">14</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_of_steps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">40</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.indicators.moving_volume_profile_indicator_handler.MovingVolumeProfileIndicatorHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#source.indicators.volume_profile_indicator_handler.VolumeProfileIndicatorHandler" title="source.indicators.volume_profile_indicator_handler.VolumeProfileIndicatorHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">VolumeProfileIndicatorHandler</span></code></a></p>
+<p>Implements moving volume profile indicator. Uses normal volume profile indicator
+to calculate volume profile for the given window size. It denotes volume traded
+at certain price over the period given by window size.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="source.indicators.moving_volume_profile_indicator_handler.MovingVolumeProfileIndicatorHandler.calculate">
+<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#source.indicators.moving_volume_profile_indicator_handler.MovingVolumeProfileIndicatorHandler.calculate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates moving volume profile indicator values for given data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>pd.DataFrame</em>) – Data frame with input data.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Output data with calculated moving volume profile values.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(pd.DataFrame)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="source.indicators.moving_volume_profile_indicator_handler.MovingVolumeProfileIndicatorHandler.can_be_normalized">
+<span class="sig-name descname"><span class="pre">can_be_normalized</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#source.indicators.moving_volume_profile_indicator_handler.MovingVolumeProfileIndicatorHandler.can_be_normalized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the indicator can be normalized.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if the indicator can be normalized, False otherwise.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>(bool)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-source.indicators.on_balance_volume_indicator_handler"></span><dl class="py class">
+<dt class="sig sig-object py" id="source.indicators.on_balance_volume_indicator_handler.OnBalanceVolumeIndicatorHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">OnBalanceVolumeIndicatorHandler</span></span><a class="headerlink" href="#source.indicators.on_balance_volume_indicator_handler.OnBalanceVolumeIndicatorHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#source.indicators.indicator_handler_base.IndicatorHandlerBase" title="source.indicators.indicator_handler_base.IndicatorHandlerBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">IndicatorHandlerBase</span></code></a></p>
+<p>Implements On-Balance Volume (OBV) indicator. It uses volume flow to predict changes in stock price.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="source.indicators.on_balance_volume_indicator_handler.OnBalanceVolumeIndicatorHandler.calculate">
+<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#source.indicators.on_balance_volume_indicator_handler.OnBalanceVolumeIndicatorHandler.calculate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates On-Balance Volume (OBV) indicator values for given data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>pd.DataFrame</em>) – Data frame with input data.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Output data with calculated On-Balance Volume values.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(pd.DataFrame)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="source.indicators.on_balance_volume_indicator_handler.OnBalanceVolumeIndicatorHandler.can_be_normalized">
+<span class="sig-name descname"><span class="pre">can_be_normalized</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#source.indicators.on_balance_volume_indicator_handler.OnBalanceVolumeIndicatorHandler.can_be_normalized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the indicator can be normalized.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if the indicator can be normalized, False otherwise.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>(bool)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-source.indicators.relative_strength_index_indicator_handler"></span><dl class="py class">
+<dt class="sig sig-object py" id="source.indicators.relative_strength_index_indicator_handler.RelativeStrengthIndexIndicatorHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RelativeStrengthIndexIndicatorHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">window_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">14</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.indicators.relative_strength_index_indicator_handler.RelativeStrengthIndexIndicatorHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#source.indicators.indicator_handler_base.IndicatorHandlerBase" title="source.indicators.indicator_handler_base.IndicatorHandlerBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">IndicatorHandlerBase</span></code></a></p>
+<p>Implements Relative Strength Index (RSI) indicator. It measures the speed and change
+of price movements.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="source.indicators.relative_strength_index_indicator_handler.RelativeStrengthIndexIndicatorHandler.calculate">
+<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#source.indicators.relative_strength_index_indicator_handler.RelativeStrengthIndexIndicatorHandler.calculate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates Relative Strength Index (RSI) indicator values for given data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>pd.DataFrame</em>) – Data frame with input data.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Output data with calculated RSI values.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(pd.DataFrame)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="source.indicators.relative_strength_index_indicator_handler.RelativeStrengthIndexIndicatorHandler.can_be_normalized">
+<span class="sig-name descname"><span class="pre">can_be_normalized</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#source.indicators.relative_strength_index_indicator_handler.RelativeStrengthIndexIndicatorHandler.can_be_normalized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the indicator can be normalized.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if the indicator can be normalized, False otherwise.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>(bool)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-source.indicators.stochastic_oscillator_indicator_handler"></span><dl class="py class">
+<dt class="sig sig-object py" id="source.indicators.stochastic_oscillator_indicator_handler.StochasticOscillatorIndicatorHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">StochasticOscillatorIndicatorHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">window_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">14</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d_period</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.indicators.stochastic_oscillator_indicator_handler.StochasticOscillatorIndicatorHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#source.indicators.indicator_handler_base.IndicatorHandlerBase" title="source.indicators.indicator_handler_base.IndicatorHandlerBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">IndicatorHandlerBase</span></code></a></p>
+<p>Implements stochastic oscillator indicator. It describes how expensive or cheap
+current price is over the given period. Result of calculation is percentage
+assuming values over 80% for expensive and under 20% for cheap price.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="source.indicators.stochastic_oscillator_indicator_handler.StochasticOscillatorIndicatorHandler.calculate">
+<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#source.indicators.stochastic_oscillator_indicator_handler.StochasticOscillatorIndicatorHandler.calculate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates stochastic oscillator indicator values for given data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>pd.DataFrame</em>) – Data frame with input data.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Output data with calculated stochastic oscillator values.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(pd.DataFrame)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="source.indicators.stochastic_oscillator_indicator_handler.StochasticOscillatorIndicatorHandler.can_be_normalized">
+<span class="sig-name descname"><span class="pre">can_be_normalized</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#source.indicators.stochastic_oscillator_indicator_handler.StochasticOscillatorIndicatorHandler.can_be_normalized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the indicator can be normalized.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if the indicator can be normalized, False otherwise.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>(bool)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-source.indicators.volatility_indicator_handler"></span><dl class="py class">
+<dt class="sig sig-object py" id="source.indicators.volatility_indicator_handler.VolatilityIndicatorHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">VolatilityIndicatorHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">window_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.indicators.volatility_indicator_handler.VolatilityIndicatorHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#source.indicators.indicator_handler_base.IndicatorHandlerBase" title="source.indicators.indicator_handler_base.IndicatorHandlerBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">IndicatorHandlerBase</span></code></a></p>
+<p>Implements volatility indicator. It measures the price fluctuations over a
+certain period of time.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="source.indicators.volatility_indicator_handler.VolatilityIndicatorHandler.calculate">
+<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#source.indicators.volatility_indicator_handler.VolatilityIndicatorHandler.calculate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates volatility indicator values for given data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>pd.DataFrame</em>) – Data frame with input data.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Output data with calculated volatility values.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(pd.DataFrame)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="source.indicators.volatility_indicator_handler.VolatilityIndicatorHandler.can_be_normalized">
+<span class="sig-name descname"><span class="pre">can_be_normalized</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#source.indicators.volatility_indicator_handler.VolatilityIndicatorHandler.can_be_normalized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the indicator can be normalized.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if the indicator can be normalized, False otherwise.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>(bool)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-source.indicators.volume_profile_indicator_handler"></span><dl class="py class">
+<dt class="sig sig-object py" id="source.indicators.volume_profile_indicator_handler.VolumeProfileIndicatorHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">VolumeProfileIndicatorHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">number_of_steps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">40</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.indicators.volume_profile_indicator_handler.VolumeProfileIndicatorHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#source.indicators.indicator_handler_base.IndicatorHandlerBase" title="source.indicators.indicator_handler_base.IndicatorHandlerBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">IndicatorHandlerBase</span></code></a></p>
+<p>Implements static volume profile indicator. It denotes volume traded at
+certain price levels. Calculated data can not be directly mapped to input
+data and should be treated as the separate chart.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="source.indicators.volume_profile_indicator_handler.VolumeProfileIndicatorHandler.calculate">
+<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#source.indicators.volume_profile_indicator_handler.VolumeProfileIndicatorHandler.calculate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates static volume profile indicator values for given data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>pd.DataFrame</em>) – Data frame with input data.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Output data with calculated static volume profile values.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(pd.DataFrame)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="source.indicators.volume_profile_indicator_handler.VolumeProfileIndicatorHandler.can_be_normalized">
+<span class="sig-name descname"><span class="pre">can_be_normalized</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#source.indicators.volume_profile_indicator_handler.VolumeProfileIndicatorHandler.can_be_normalized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the indicator can be normalized.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if the indicator can be normalized, False otherwise.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>(bool)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 
 

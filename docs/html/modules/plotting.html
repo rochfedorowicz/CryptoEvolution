@@ -87,8 +87,331 @@
 
           <div class="body" role="main">
             
-  <section id="plotting-module">
-<h1>Plotting Module<a class="headerlink" href="#plotting-module" title="Permalink to this heading">¶</a></h1>
+  <section id="module-source.plotting.asset_price_movement_summary_plot_responsibility_chain">
+<span id="plotting-module"></span><h1>Plotting Module<a class="headerlink" href="#module-source.plotting.asset_price_movement_summary_plot_responsibility_chain" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="source.plotting.asset_price_movement_summary_plot_responsibility_chain.AssetPriceMovementSummaryPlotResponsibilityChain">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AssetPriceMovementSummaryPlotResponsibilityChain</span></span><a class="headerlink" href="#source.plotting.asset_price_movement_summary_plot_responsibility_chain.AssetPriceMovementSummaryPlotResponsibilityChain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#source.plotting.plot_responsibility_chain_base.PlotResponsibilityChainBase" title="source.plotting.plot_responsibility_chain_base.PlotResponsibilityChainBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlotResponsibilityChainBase</span></code></a></p>
+<p>Implements a plotting responsibility chain for asset price movement summary plots.
+It implements the _can_plot and _plot methods to visualize asset price movements
+and volatility over time.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="source.plotting.asset_price_movement_summary_plot_responsibility_chain.AssetPriceMovementSummaryPlotResponsibilityChain.add_next_chain_link">
+<span class="sig-name descname"><span class="pre">add_next_chain_link</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">next_chain_link</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#source.plotting.plot_responsibility_chain_base.PlotResponsibilityChainBase" title="source.plotting.plot_responsibility_chain_base.PlotResponsibilityChainBase"><span class="pre">PlotResponsibilityChainBase</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.plotting.asset_price_movement_summary_plot_responsibility_chain.AssetPriceMovementSummaryPlotResponsibilityChain.add_next_chain_link" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds the next handler to the responsibility chain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>next_chain_link</strong> (<a class="reference internal" href="#source.plotting.plot_responsibility_chain_base.PlotResponsibilityChainBase" title="source.plotting.plot_responsibility_chain_base.PlotResponsibilityChainBase"><em>PlotResponsibilityChainBase</em></a>) – The next handler to process
+requests if this handler cannot.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="source.plotting.asset_price_movement_summary_plot_responsibility_chain.AssetPriceMovementSummaryPlotResponsibilityChain.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Axes</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#source.plotting.asset_price_movement_summary_plot_responsibility_chain.AssetPriceMovementSummaryPlotResponsibilityChain.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attempts to plot data by finding an appropriate handler in the chain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>dict</em>) – Dictionary containing ‘key’ identifying the plot type
+and ‘plot_data’ containing the actual data to be plotted.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>The matplotlib Axes object if plotting was successful,</dt><dd><p>None if no handler in the chain could process the request.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Optional[plt.Axes]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-source.plotting.classification_testing_plot_responsibility_chain"></span><dl class="py class">
+<dt class="sig sig-object py" id="source.plotting.classification_testing_plot_responsibility_chain.ClassificationTestingPlotResponsibilityChain">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ClassificationTestingPlotResponsibilityChain</span></span><a class="headerlink" href="#source.plotting.classification_testing_plot_responsibility_chain.ClassificationTestingPlotResponsibilityChain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#source.plotting.plot_responsibility_chain_base.PlotResponsibilityChainBase" title="source.plotting.plot_responsibility_chain_base.PlotResponsibilityChainBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlotResponsibilityChainBase</span></code></a></p>
+<p>Implements a plotting responsibility chain for classification testing results.
+It implements the _can_plot and _plot methods to visualize confusion matrices,
+classification reports, and ROC curves.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="source.plotting.classification_testing_plot_responsibility_chain.ClassificationTestingPlotResponsibilityChain.add_next_chain_link">
+<span class="sig-name descname"><span class="pre">add_next_chain_link</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">next_chain_link</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#source.plotting.plot_responsibility_chain_base.PlotResponsibilityChainBase" title="source.plotting.plot_responsibility_chain_base.PlotResponsibilityChainBase"><span class="pre">PlotResponsibilityChainBase</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.plotting.classification_testing_plot_responsibility_chain.ClassificationTestingPlotResponsibilityChain.add_next_chain_link" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds the next handler to the responsibility chain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>next_chain_link</strong> (<a class="reference internal" href="#source.plotting.plot_responsibility_chain_base.PlotResponsibilityChainBase" title="source.plotting.plot_responsibility_chain_base.PlotResponsibilityChainBase"><em>PlotResponsibilityChainBase</em></a>) – The next handler to process
+requests if this handler cannot.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="source.plotting.classification_testing_plot_responsibility_chain.ClassificationTestingPlotResponsibilityChain.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Axes</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#source.plotting.classification_testing_plot_responsibility_chain.ClassificationTestingPlotResponsibilityChain.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attempts to plot data by finding an appropriate handler in the chain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>dict</em>) – Dictionary containing ‘key’ identifying the plot type
+and ‘plot_data’ containing the actual data to be plotted.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>The matplotlib Axes object if plotting was successful,</dt><dd><p>None if no handler in the chain could process the request.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Optional[plt.Axes]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-source.plotting.classification_training_plot_responsibility_chain"></span><dl class="py class">
+<dt class="sig sig-object py" id="source.plotting.classification_training_plot_responsibility_chain.ClassificationTrainingPlotResponsibilityChain">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ClassificationTrainingPlotResponsibilityChain</span></span><a class="headerlink" href="#source.plotting.classification_training_plot_responsibility_chain.ClassificationTrainingPlotResponsibilityChain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#source.plotting.plot_responsibility_chain_base.PlotResponsibilityChainBase" title="source.plotting.plot_responsibility_chain_base.PlotResponsibilityChainBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlotResponsibilityChainBase</span></code></a></p>
+<p>Implements a plotting responsibility chain for classification training results.
+It implements the _can_plot and _plot methods to visualize training loss and accuracy.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="source.plotting.classification_training_plot_responsibility_chain.ClassificationTrainingPlotResponsibilityChain.PlottingMode">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PlottingMode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.plotting.classification_training_plot_responsibility_chain.ClassificationTrainingPlotResponsibilityChain.PlottingMode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
+<p>Enumeration for the different plotting modes.
+It defines the modes for TensorFlow and Scikit-learn models.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="source.plotting.classification_training_plot_responsibility_chain.ClassificationTrainingPlotResponsibilityChain.PlottingMode.SKLEARN">
+<span class="sig-name descname"><span class="pre">SKLEARN</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'sklearn'</span></em><a class="headerlink" href="#source.plotting.classification_training_plot_responsibility_chain.ClassificationTrainingPlotResponsibilityChain.PlottingMode.SKLEARN" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="source.plotting.classification_training_plot_responsibility_chain.ClassificationTrainingPlotResponsibilityChain.PlottingMode.TF">
+<span class="sig-name descname"><span class="pre">TF</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'tensorflow'</span></em><a class="headerlink" href="#source.plotting.classification_training_plot_responsibility_chain.ClassificationTrainingPlotResponsibilityChain.PlottingMode.TF" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="source.plotting.classification_training_plot_responsibility_chain.ClassificationTrainingPlotResponsibilityChain.PlottingMode.UNSUPPORTED">
+<span class="sig-name descname"><span class="pre">UNSUPPORTED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'unsupported'</span></em><a class="headerlink" href="#source.plotting.classification_training_plot_responsibility_chain.ClassificationTrainingPlotResponsibilityChain.PlottingMode.UNSUPPORTED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="source.plotting.classification_training_plot_responsibility_chain.ClassificationTrainingPlotResponsibilityChain.add_next_chain_link">
+<span class="sig-name descname"><span class="pre">add_next_chain_link</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">next_chain_link</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#source.plotting.plot_responsibility_chain_base.PlotResponsibilityChainBase" title="source.plotting.plot_responsibility_chain_base.PlotResponsibilityChainBase"><span class="pre">PlotResponsibilityChainBase</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.plotting.classification_training_plot_responsibility_chain.ClassificationTrainingPlotResponsibilityChain.add_next_chain_link" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds the next handler to the responsibility chain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>next_chain_link</strong> (<a class="reference internal" href="#source.plotting.plot_responsibility_chain_base.PlotResponsibilityChainBase" title="source.plotting.plot_responsibility_chain_base.PlotResponsibilityChainBase"><em>PlotResponsibilityChainBase</em></a>) – The next handler to process
+requests if this handler cannot.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="source.plotting.classification_training_plot_responsibility_chain.ClassificationTrainingPlotResponsibilityChain.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Axes</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#source.plotting.classification_training_plot_responsibility_chain.ClassificationTrainingPlotResponsibilityChain.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attempts to plot data by finding an appropriate handler in the chain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>dict</em>) – Dictionary containing ‘key’ identifying the plot type
+and ‘plot_data’ containing the actual data to be plotted.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>The matplotlib Axes object if plotting was successful,</dt><dd><p>None if no handler in the chain could process the request.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Optional[plt.Axes]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-source.plotting.performance_testing_plot_responsibility_chain"></span><dl class="py class">
+<dt class="sig sig-object py" id="source.plotting.performance_testing_plot_responsibility_chain.PerformanceTestingPlotResponsibilityChain">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PerformanceTestingPlotResponsibilityChain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">window_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">risk_free_rate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.042</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.plotting.performance_testing_plot_responsibility_chain.PerformanceTestingPlotResponsibilityChain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#source.plotting.plot_responsibility_chain_base.PlotResponsibilityChainBase" title="source.plotting.plot_responsibility_chain_base.PlotResponsibilityChainBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlotResponsibilityChainBase</span></code></a></p>
+<p>Implements a plotting responsibility chain for performance testing results.
+It implements the _can_plot and _plot methods to visualize assets values, currency prices,
+and solvency coefficients over time.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="source.plotting.performance_testing_plot_responsibility_chain.PerformanceTestingPlotResponsibilityChain.add_next_chain_link">
+<span class="sig-name descname"><span class="pre">add_next_chain_link</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">next_chain_link</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#source.plotting.plot_responsibility_chain_base.PlotResponsibilityChainBase" title="source.plotting.plot_responsibility_chain_base.PlotResponsibilityChainBase"><span class="pre">PlotResponsibilityChainBase</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.plotting.performance_testing_plot_responsibility_chain.PerformanceTestingPlotResponsibilityChain.add_next_chain_link" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds the next handler to the responsibility chain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>next_chain_link</strong> (<a class="reference internal" href="#source.plotting.plot_responsibility_chain_base.PlotResponsibilityChainBase" title="source.plotting.plot_responsibility_chain_base.PlotResponsibilityChainBase"><em>PlotResponsibilityChainBase</em></a>) – The next handler to process
+requests if this handler cannot.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="source.plotting.performance_testing_plot_responsibility_chain.PerformanceTestingPlotResponsibilityChain.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Axes</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#source.plotting.performance_testing_plot_responsibility_chain.PerformanceTestingPlotResponsibilityChain.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attempts to plot data by finding an appropriate handler in the chain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>dict</em>) – Dictionary containing ‘key’ identifying the plot type
+and ‘plot_data’ containing the actual data to be plotted.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>The matplotlib Axes object if plotting was successful,</dt><dd><p>None if no handler in the chain could process the request.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Optional[plt.Axes]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-source.plotting.plot_responsibility_chain_base"></span><dl class="py class">
+<dt class="sig sig-object py" id="source.plotting.plot_responsibility_chain_base.PlotResponsibilityChainBase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PlotResponsibilityChainBase</span></span><a class="headerlink" href="#source.plotting.plot_responsibility_chain_base.PlotResponsibilityChainBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<p>Base class for implementing the responsibility chain pattern for plotting.</p>
+<p>This class provides a framework for creating a chain of plotting handlers where
+each handler can decide whether it can handle a specific plot request. If a handler
+cannot process the request, it passes the request to the next handler in the chain.
+All plotting chain implementations should inherit from this class and implement
+the _can_plot and _plot methods.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="source.plotting.plot_responsibility_chain_base.PlotResponsibilityChainBase.add_next_chain_link">
+<span class="sig-name descname"><span class="pre">add_next_chain_link</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">next_chain_link</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#source.plotting.plot_responsibility_chain_base.PlotResponsibilityChainBase" title="source.plotting.plot_responsibility_chain_base.PlotResponsibilityChainBase"><span class="pre">PlotResponsibilityChainBase</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.plotting.plot_responsibility_chain_base.PlotResponsibilityChainBase.add_next_chain_link" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds the next handler to the responsibility chain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>next_chain_link</strong> (<a class="reference internal" href="#source.plotting.plot_responsibility_chain_base.PlotResponsibilityChainBase" title="source.plotting.plot_responsibility_chain_base.PlotResponsibilityChainBase"><em>PlotResponsibilityChainBase</em></a>) – The next handler to process
+requests if this handler cannot.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="source.plotting.plot_responsibility_chain_base.PlotResponsibilityChainBase.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Axes</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#source.plotting.plot_responsibility_chain_base.PlotResponsibilityChainBase.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attempts to plot data by finding an appropriate handler in the chain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>dict</em>) – Dictionary containing ‘key’ identifying the plot type
+and ‘plot_data’ containing the actual data to be plotted.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>The matplotlib Axes object if plotting was successful,</dt><dd><p>None if no handler in the chain could process the request.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Optional[plt.Axes]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-source.plotting.price_movement_trend_class_summary_plot_responsibility_chain"></span><dl class="py class">
+<dt class="sig sig-object py" id="source.plotting.price_movement_trend_class_summary_plot_responsibility_chain.PriceMovementTrendClassSummaryPlotResponsibilityChain">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PriceMovementTrendClassSummaryPlotResponsibilityChain</span></span><a class="headerlink" href="#source.plotting.price_movement_trend_class_summary_plot_responsibility_chain.PriceMovementTrendClassSummaryPlotResponsibilityChain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#source.plotting.plot_responsibility_chain_base.PlotResponsibilityChainBase" title="source.plotting.plot_responsibility_chain_base.PlotResponsibilityChainBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlotResponsibilityChainBase</span></code></a></p>
+<p>Implements a plotting responsibility chain for price movement trend classification results.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="source.plotting.price_movement_trend_class_summary_plot_responsibility_chain.PriceMovementTrendClassSummaryPlotResponsibilityChain.add_next_chain_link">
+<span class="sig-name descname"><span class="pre">add_next_chain_link</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">next_chain_link</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#source.plotting.plot_responsibility_chain_base.PlotResponsibilityChainBase" title="source.plotting.plot_responsibility_chain_base.PlotResponsibilityChainBase"><span class="pre">PlotResponsibilityChainBase</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.plotting.price_movement_trend_class_summary_plot_responsibility_chain.PriceMovementTrendClassSummaryPlotResponsibilityChain.add_next_chain_link" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds the next handler to the responsibility chain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>next_chain_link</strong> (<a class="reference internal" href="#source.plotting.plot_responsibility_chain_base.PlotResponsibilityChainBase" title="source.plotting.plot_responsibility_chain_base.PlotResponsibilityChainBase"><em>PlotResponsibilityChainBase</em></a>) – The next handler to process
+requests if this handler cannot.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="source.plotting.price_movement_trend_class_summary_plot_responsibility_chain.PriceMovementTrendClassSummaryPlotResponsibilityChain.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Axes</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#source.plotting.price_movement_trend_class_summary_plot_responsibility_chain.PriceMovementTrendClassSummaryPlotResponsibilityChain.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attempts to plot data by finding an appropriate handler in the chain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>dict</em>) – Dictionary containing ‘key’ identifying the plot type
+and ‘plot_data’ containing the actual data to be plotted.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>The matplotlib Axes object if plotting was successful,</dt><dd><p>None if no handler in the chain could process the request.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Optional[plt.Axes]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-source.plotting.reinforcement_training_plot_responsibility_chain"></span><dl class="py class">
+<dt class="sig sig-object py" id="source.plotting.reinforcement_training_plot_responsibility_chain.ReinforcementTrainingPlotResponsibilityChain">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ReinforcementTrainingPlotResponsibilityChain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">window_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.plotting.reinforcement_training_plot_responsibility_chain.ReinforcementTrainingPlotResponsibilityChain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#source.plotting.plot_responsibility_chain_base.PlotResponsibilityChainBase" title="source.plotting.plot_responsibility_chain_base.PlotResponsibilityChainBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">PlotResponsibilityChainBase</span></code></a></p>
+<p>Implements a plotting responsibility chain for reinforcement learning training results.
+It implements the _can_plot and _plot methods to visualize training history.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="source.plotting.reinforcement_training_plot_responsibility_chain.ReinforcementTrainingPlotResponsibilityChain.add_next_chain_link">
+<span class="sig-name descname"><span class="pre">add_next_chain_link</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">next_chain_link</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#source.plotting.plot_responsibility_chain_base.PlotResponsibilityChainBase" title="source.plotting.plot_responsibility_chain_base.PlotResponsibilityChainBase"><span class="pre">PlotResponsibilityChainBase</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.plotting.reinforcement_training_plot_responsibility_chain.ReinforcementTrainingPlotResponsibilityChain.add_next_chain_link" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds the next handler to the responsibility chain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>next_chain_link</strong> (<a class="reference internal" href="#source.plotting.plot_responsibility_chain_base.PlotResponsibilityChainBase" title="source.plotting.plot_responsibility_chain_base.PlotResponsibilityChainBase"><em>PlotResponsibilityChainBase</em></a>) – The next handler to process
+requests if this handler cannot.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="source.plotting.reinforcement_training_plot_responsibility_chain.ReinforcementTrainingPlotResponsibilityChain.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Axes</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#source.plotting.reinforcement_training_plot_responsibility_chain.ReinforcementTrainingPlotResponsibilityChain.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attempts to plot data by finding an appropriate handler in the chain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>dict</em>) – Dictionary containing ‘key’ identifying the plot type
+and ‘plot_data’ containing the actual data to be plotted.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>The matplotlib Axes object if plotting was successful,</dt><dd><p>None if no handler in the chain could process the request.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Optional[plt.Axes]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 
 
