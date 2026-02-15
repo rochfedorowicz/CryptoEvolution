@@ -87,9 +87,74 @@
 
           <div class="body" role="main">
             
-  <section id="module-source.data_handling.data_handler">
-<span id="data-handling-module"></span><h1>Data Handling Module<a class="headerlink" href="#module-source.data_handling.data_handler" title="Permalink to this heading">¶</a></h1>
+  <section id="module-source.data_handling.api_data_collector_base">
+<span id="data-handling-module"></span><h1>Data Handling Module<a class="headerlink" href="#module-source.data_handling.api_data_collector_base" title="Permalink to this heading">¶</a></h1>
 <dl class="py class">
+<dt class="sig sig-object py" id="source.data_handling.api_data_collector_base.ApiDataCollectorBase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ApiDataCollectorBase</span></span><a class="headerlink" href="#source.data_handling.api_data_collector_base.ApiDataCollectorBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<p>Implements a base class for collecting data from various APIs.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="source.data_handling.api_data_collector_base.ApiDataCollectorBase.collect_data">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">collect_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ticker</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">granularity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="utils.html#source.utils.granularity.Granularity" title="source.utils.granularity.Granularity"><span class="pre">Granularity</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">pandas.core.frame.DataFrame</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#source.data_handling.api_data_collector_base.ApiDataCollectorBase.collect_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Collects data for a specific ticker from the API.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ticker</strong> (<em>str</em>) – Stock ticker to collect data for.</p></li>
+<li><p><strong>start_date</strong> (<em>str</em>) – Start date for the data collection.</p></li>
+<li><p><strong>end_date</strong> (<em>str</em>) – End date for the data collection.</p></li>
+<li><p><strong>granularity</strong> (<a class="reference internal" href="utils.html#source.utils.granularity.Granularity" title="source.utils.granularity.Granularity"><em>Granularity</em></a>) – Data resolution.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the ticker is not supported by the API or if the granularity is not valid.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A tuple containing the collected data and metadata.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple[pd.DataFrame, dict[str, str]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-source.data_handling.coinbase_api_data_collector"></span><dl class="py class">
+<dt class="sig sig-object py" id="source.data_handling.coinbase_api_data_collector.CoinbaseApiDataCollector">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CoinbaseApiDataCollector</span></span><a class="headerlink" href="#source.data_handling.coinbase_api_data_collector.CoinbaseApiDataCollector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#source.data_handling.api_data_collector_base.ApiDataCollectorBase" title="source.data_handling.api_data_collector_base.ApiDataCollectorBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">ApiDataCollectorBase</span></code></a></p>
+<p>Implements a data collector for Coinbase API.
+Responsible for collecting historical data for a given trading pair.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="source.data_handling.coinbase_api_data_collector.CoinbaseApiDataCollector.collect_data">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">collect_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ticker</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">granularity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="utils.html#source.utils.granularity.Granularity" title="source.utils.granularity.Granularity"><span class="pre">Granularity</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">pandas.core.frame.DataFrame</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#source.data_handling.coinbase_api_data_collector.CoinbaseApiDataCollector.collect_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Collects data for a specific ticker from the API.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ticker</strong> (<em>str</em>) – Stock ticker to collect data for.</p></li>
+<li><p><strong>start_date</strong> (<em>str</em>) – Start date for the data collection.</p></li>
+<li><p><strong>end_date</strong> (<em>str</em>) – End date for the data collection.</p></li>
+<li><p><strong>granularity</strong> (<a class="reference internal" href="utils.html#source.utils.granularity.Granularity" title="source.utils.granularity.Granularity"><em>Granularity</em></a>) – Data resolution.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the ticker is not supported by the API or if the granularity is not valid.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A tuple containing the collected data and metadata.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple[pd.DataFrame, dict[str, str]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-source.data_handling.data_handler"></span><dl class="py class">
 <dt class="sig sig-object py" id="source.data_handling.data_handler.DataHandler">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DataHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.data_handling.data_handler.DataHandler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
@@ -145,11 +210,11 @@ and optional metadata.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="source.data_handling.data_handler.DataHandler.register_api_data_collectors">
-<span class="sig-name descname"><span class="pre">register_api_data_collectors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">api_data_collectors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">source.data_handling.api_data_collector_base.ApiDataCollectorBase</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#source.data_handling.data_handler.DataHandler.register_api_data_collectors" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">register_api_data_collectors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">api_data_collectors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#source.data_handling.api_data_collector_base.ApiDataCollectorBase" title="source.data_handling.api_data_collector_base.ApiDataCollectorBase"><span class="pre">source.data_handling.api_data_collector_base.ApiDataCollectorBase</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#source.data_handling.data_handler.DataHandler.register_api_data_collectors" title="Permalink to this definition">¶</a></dt>
 <dd><p>Registers API data collectors for data collection.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>api_data_collectors</strong> (<em>list</em><em>[</em><em>ApiDataCollectorBase</em><em>]</em>) – A list of instances of ApiDataCollectorBase or its subclasses.</p>
+<dd class="field-odd"><p><strong>api_data_collectors</strong> (<em>list</em><em>[</em><a class="reference internal" href="#source.data_handling.api_data_collector_base.ApiDataCollectorBase" title="source.data_handling.api_data_collector_base.ApiDataCollectorBase"><em>ApiDataCollectorBase</em></a><em>]</em>) – A list of instances of ApiDataCollectorBase or its subclasses.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -170,6 +235,39 @@ and optional metadata.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>(io.StringIO)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-source.data_handling.yahoo_finance_api_data_collector"></span><dl class="py class">
+<dt class="sig sig-object py" id="source.data_handling.yahoo_finance_api_data_collector.YahooFinanceApiDataCollector">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">YahooFinanceApiDataCollector</span></span><a class="headerlink" href="#source.data_handling.yahoo_finance_api_data_collector.YahooFinanceApiDataCollector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#source.data_handling.api_data_collector_base.ApiDataCollectorBase" title="source.data_handling.api_data_collector_base.ApiDataCollectorBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">ApiDataCollectorBase</span></code></a></p>
+<p>Implements a data collector for Yahoo Finance API.
+Responsible for collecting historical data for a given ticker.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="source.data_handling.yahoo_finance_api_data_collector.YahooFinanceApiDataCollector.collect_data">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">collect_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ticker</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">granularity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="utils.html#source.utils.granularity.Granularity" title="source.utils.granularity.Granularity"><span class="pre">Granularity</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">pandas.core.frame.DataFrame</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#source.data_handling.yahoo_finance_api_data_collector.YahooFinanceApiDataCollector.collect_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Collects data for a specific ticker from the API.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ticker</strong> (<em>str</em>) – Stock ticker to collect data for.</p></li>
+<li><p><strong>start_date</strong> (<em>str</em>) – Start date for the data collection.</p></li>
+<li><p><strong>end_date</strong> (<em>str</em>) – End date for the data collection.</p></li>
+<li><p><strong>granularity</strong> (<a class="reference internal" href="utils.html#source.utils.granularity.Granularity" title="source.utils.granularity.Granularity"><em>Granularity</em></a>) – Data resolution.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the ticker is not supported by the API or if the granularity is not valid.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A tuple containing the collected data and metadata.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple[pd.DataFrame, dict[str, str]]</p>
 </dd>
 </dl>
 </dd></dl>

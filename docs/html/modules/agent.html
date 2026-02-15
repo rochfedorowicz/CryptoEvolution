@@ -297,6 +297,119 @@ are dynamically determined based on the model’s requirements.</p>
 
 </dd></dl>
 
+<span class="target" id="module-source.agent.agents.performance_testable_classification_learning_agent"></span><dl class="py class">
+<dt class="sig sig-object py" id="source.agent.agents.performance_testable_classification_learning_agent.PerformanceTestableClassificationLearningAgent">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PerformanceTestableClassificationLearningAgent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_adapter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="model.html#source.model.model_adapters.model_adapter_base.ModelAdapterBase" title="source.model.model_adapters.model_adapter_base.ModelAdapterBase"><span class="pre">ModelAdapterBase</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">trading_algorithm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#source.agent.agents.trading_algorithm_base.TradingAlgorithmBase" title="source.agent.agents.trading_algorithm_base.TradingAlgorithmBase"><span class="pre">TradingAlgorithmBase</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.agent.agents.performance_testable_classification_learning_agent.PerformanceTestableClassificationLearningAgent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#source.agent.agents.classification_learning_agent.ClassificationLearningAgent" title="source.agent.agents.classification_learning_agent.ClassificationLearningAgent"><code class="xref py py-class docutils literal notranslate"><span class="pre">ClassificationLearningAgent</span></code></a>, <a class="reference internal" href="#source.agent.strategies.performance_testable.PerformanceTestable" title="source.agent.strategies.performance_testable.PerformanceTestable"><code class="xref py py-class docutils literal notranslate"><span class="pre">PerformanceTestable</span></code></a></p>
+<p>Class that extends ClassificationLearningAgent to include performance testing capabilities.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="source.agent.agents.performance_testable_classification_learning_agent.PerformanceTestableClassificationLearningAgent.classification_fit">
+<span class="sig-name descname"><span class="pre">classification_fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validation_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callbacks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">tensorflow.python.keras.callbacks.Callback</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#source.agent.agents.performance_testable_classification_learning_agent.PerformanceTestableClassificationLearningAgent.classification_fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fits the model to the classification data. Parameters passed to the model adapter
+are dynamically determined based on the model’s requirements.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_data</strong> (<em>np.ndarray</em>) – The input data for training.</p></li>
+<li><p><strong>output_data</strong> (<em>np.ndarray</em>) – The output data for training.</p></li>
+<li><p><strong>validation_data</strong> (<em>tuple</em><em>[</em><em>np.ndarray</em><em>, </em><em>np.ndarray</em><em>]</em>) – The validation data (input, output).</p></li>
+<li><p><strong>batch_size</strong> (<em>int</em>) – The batch size to be used during training.</p></li>
+<li><p><strong>epochs</strong> (<em>int</em>) – The number of epochs to train the model.</p></li>
+<li><p><strong>callbacks</strong> (<em>list</em><em>[</em><em>Callback</em><em>]</em>) – A list of callbacks to be used during training.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary containing the training history and other relevant information.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(dict[str, Any])</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="source.agent.agents.performance_testable_classification_learning_agent.PerformanceTestableClassificationLearningAgent.classify">
+<span class="sig-name descname"><span class="pre">classify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#source.agent.agents.performance_testable_classification_learning_agent.PerformanceTestableClassificationLearningAgent.classify" title="Permalink to this definition">¶</a></dt>
+<dd><p>Classifies the input data using the trained model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>np.ndarray</em>) – The input data to be classified.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The predicted class probabilities for each input sample.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(list[list[float]])</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="source.agent.agents.performance_testable_classification_learning_agent.PerformanceTestableClassificationLearningAgent.get_model_adapter_tag">
+<span class="sig-name descname"><span class="pre">get_model_adapter_tag</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#source.agent.agents.performance_testable_classification_learning_agent.PerformanceTestableClassificationLearningAgent.get_model_adapter_tag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the tag of the model adapter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The tag of the model adapter.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>(str)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="source.agent.agents.performance_testable_classification_learning_agent.PerformanceTestableClassificationLearningAgent.load_model">
+<span class="sig-name descname"><span class="pre">load_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#source.agent.agents.performance_testable_classification_learning_agent.PerformanceTestableClassificationLearningAgent.load_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads the model from the specified path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>model_path</strong> (<em>str</em>) – The path to the model file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="source.agent.agents.performance_testable_classification_learning_agent.PerformanceTestableClassificationLearningAgent.perform">
+<span class="sig-name descname"><span class="pre">perform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#source.agent.agents.performance_testable_classification_learning_agent.PerformanceTestableClassificationLearningAgent.perform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs the action for the agent based on the given observation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>observation</strong> (<em>list</em><em>[</em><em>float</em><em>]</em>) – The observation data to use for the action.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The result of the action.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(int)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="source.agent.agents.performance_testable_classification_learning_agent.PerformanceTestableClassificationLearningAgent.print_summary">
+<span class="sig-name descname"><span class="pre">print_summary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">print_function:</span> <span class="pre">~typing.Optional[~typing.Callable]</span> <span class="pre">=</span> <span class="pre">&lt;built-in</span> <span class="pre">function</span> <span class="pre">print&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#source.agent.agents.performance_testable_classification_learning_agent.PerformanceTestableClassificationLearningAgent.print_summary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints a summary of the model architecture and parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>print_function</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>]</em>) – A function to print the summary. Defaults to print.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="source.agent.agents.performance_testable_classification_learning_agent.PerformanceTestableClassificationLearningAgent.save_model">
+<span class="sig-name descname"><span class="pre">save_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#source.agent.agents.performance_testable_classification_learning_agent.PerformanceTestableClassificationLearningAgent.save_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves the model to the specified path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>model_path</strong> (<em>str</em>) – The path to the model file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 <span class="target" id="module-source.agent.agents.reinforcement_learning_agent"></span><dl class="py class">
 <dt class="sig sig-object py" id="source.agent.agents.reinforcement_learning_agent.ReinforcementLearningAgent">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ReinforcementLearningAgent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">policy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Policy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">OptimizerV2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.agent.agents.reinforcement_learning_agent.ReinforcementLearningAgent" title="Permalink to this definition">¶</a></dt>
@@ -373,6 +486,62 @@ Defaults to the print function.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>model_path</strong> (<em>str</em>) – The path to the model weights file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-source.agent.agents.simple_trading_algorithm"></span><dl class="py class">
+<dt class="sig sig-object py" id="source.agent.agents.simple_trading_algorithm.SimpleTradingAlgorithm">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SimpleTradingAlgorithm</span></span><a class="headerlink" href="#source.agent.agents.simple_trading_algorithm.SimpleTradingAlgorithm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#source.agent.agents.trading_algorithm_base.TradingAlgorithmBase" title="source.agent.agents.trading_algorithm_base.TradingAlgorithmBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">TradingAlgorithmBase</span></code></a></p>
+<p>Implements a simple trading algorithm that performs actions based on trend predictions.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="source.agent.agents.simple_trading_algorithm.SimpleTradingAlgorithm.perform_action">
+<span class="sig-name descname"><span class="pre">perform_action</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trend_predictions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">market_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#source.agent.agents.simple_trading_algorithm.SimpleTradingAlgorithm.perform_action" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs the trading action based on the trend predictions and market data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>trend_predictions</strong> (<em>np.ndarray</em>) – The predicted trends.</p></li>
+<li><p><strong>market_data</strong> (<em>np.ndarray</em>) – The current market data. This
+implementation does not use market data.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The result of the trading action.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(int)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-source.agent.agents.trading_algorithm_base"></span><dl class="py class">
+<dt class="sig sig-object py" id="source.agent.agents.trading_algorithm_base.TradingAlgorithmBase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TradingAlgorithmBase</span></span><a class="headerlink" href="#source.agent.agents.trading_algorithm_base.TradingAlgorithmBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<p>Implements a base class for trading algorithms. It defines the perform_action method
+that must be implemented by subclasses.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="source.agent.agents.trading_algorithm_base.TradingAlgorithmBase.perform_action">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">perform_action</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trend_predictions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">market_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#source.agent.agents.trading_algorithm_base.TradingAlgorithmBase.perform_action" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs the trading action based on the trend predictions and market data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>trend_predictions</strong> (<em>np.ndarray</em>) – The predicted trends.</p></li>
+<li><p><strong>market_data</strong> (<em>np.ndarray</em>) – The current market data.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The result of the trading action.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(int)</p>
 </dd>
 </dl>
 </dd></dl>

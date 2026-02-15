@@ -439,6 +439,54 @@ saving, printing summaries, fitting, predicting, and retrieving the model.</p>
 
 </dd></dl>
 
+<span class="target" id="module-source.model.model_blue_prints.dnn_blue_print"></span><dl class="py class">
+<dt class="sig sig-object py" id="source.model.model_blue_prints.dnn_blue_print.DnnBluePrint">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DnnBluePrint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dense_squeezing_coeff</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dense_repetition_coeff</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.model.model_blue_prints.dnn_blue_print.DnnBluePrint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BluePrintBase</span></code></p>
+<p>Blueprint for creating a DNN.</p>
+<p>This class implements a model blueprint that constructs a neural network using
+fully connected (dense) layers. Expected input is a 1D vector of features.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="source.model.model_blue_prints.dnn_blue_print.DnnBluePrint.instantiate_model">
+<span class="sig-name descname"><span class="pre">instantiate_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_shape</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dense_squeezing_coeff</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dense_repetition_coeff</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#source.model.model_adapters.model_adapter_base.ModelAdapterBase" title="source.model.model_adapters.model_adapter_base.ModelAdapterBase"><span class="pre">ModelAdapterBase</span></a></span></span><a class="headerlink" href="#source.model.model_blue_prints.dnn_blue_print.DnnBluePrint.instantiate_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates and returns a DNN model according to specified parameters.</p>
+<p>The method constructs a neural network that:
+1. Processes a 1D input vector through multiple dense layers
+2. Produces a softmax output for classification</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_shape</strong> (<em>tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>]</em>) – Shape of the input tensor</p></li>
+<li><p><strong>output_length</strong> (<em>int</em>) – Number of output classes/actions</p></li>
+<li><p><strong>dense_squeezing_coeff</strong> (<em>int</em>) – Factor by which dense layer sizes are reduced</p></li>
+<li><p><strong>dense_repetition_coeff</strong> (<em>int</em>) – Number of dense layers of the same size to use</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Keras model implementing the DNN architecture to be compiled further.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Model</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="source.model.model_blue_prints.dnn_blue_print.DnnBluePrint.report_parameters_needed_for_instantiation">
+<span class="sig-name descname"><span class="pre">report_parameters_needed_for_instantiation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#source.model.model_blue_prints.dnn_blue_print.DnnBluePrint.report_parameters_needed_for_instantiation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reports the parameters needed for model instantiation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A list of parameter names that are required for instantiation.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>(list[str])</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 <span class="target" id="module-source.model.model_blue_prints.general_sklearn_blue_print"></span><dl class="py class">
 <dt class="sig sig-object py" id="source.model.model_blue_prints.general_sklearn_blue_print.GeneralSklearnBluePrint">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">GeneralSklearnBluePrint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_estimator_class</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">type</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.model.model_blue_prints.general_sklearn_blue_print.GeneralSklearnBluePrint" title="Permalink to this definition">¶</a></dt>
@@ -466,6 +514,59 @@ a model based on the provided base estimator class and keyword arguments.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="source.model.model_blue_prints.general_sklearn_blue_print.GeneralSklearnBluePrint.report_parameters_needed_for_instantiation">
 <span class="sig-name descname"><span class="pre">report_parameters_needed_for_instantiation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#source.model.model_blue_prints.general_sklearn_blue_print.GeneralSklearnBluePrint.report_parameters_needed_for_instantiation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reports the parameters needed for model instantiation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A list of parameter names that are required for instantiation.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>(list[str])</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-source.model.model_blue_prints.rnn_blue_print"></span><dl class="py class">
+<dt class="sig sig-object py" id="source.model.model_blue_prints.rnn_blue_print.RnnBluePrint">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RnnBluePrint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dense_squeezing_coeff</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dense_repetition_coeff</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.model.model_blue_prints.rnn_blue_print.RnnBluePrint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BluePrintBase</span></code></p>
+<p>Blueprint for creating an RNN model.</p>
+<p>This class implements a model blueprint that constructs a recurrent neural network
+(RNN) using LSTM layers. It’s designed to process sequential data with temporal
+dependencies.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="source.model.model_blue_prints.rnn_blue_print.RnnBluePrint.instantiate_model">
+<span class="sig-name descname"><span class="pre">instantiate_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_shape</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spatial_data_shape</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dense_squeezing_coeff</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dense_repetition_coeff</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#source.model.model_adapters.model_adapter_base.ModelAdapterBase" title="source.model.model_adapters.model_adapter_base.ModelAdapterBase"><span class="pre">ModelAdapterBase</span></a></span></span><a class="headerlink" href="#source.model.model_blue_prints.rnn_blue_print.RnnBluePrint.instantiate_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates and returns an RNN model according to specified parameters.</p>
+<p>The method constructs a neural network that:
+1. Separates the input into spatial and non-spatial components
+2. Processes the spatial data through LSTM layers
+3. Flattens the LSTM output and concatenates with non-spatial features
+4. Passes the combined features through a series of dense layers
+5. Produces a softmax output for classification</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_shape</strong> (<em>tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>]</em>) – Shape of the input tensor</p></li>
+<li><p><strong>output_length</strong> (<em>int</em>) – Number of output classes/actions</p></li>
+<li><p><strong>spatial_data_shape</strong> (<em>tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>]</em>) – Rows and columns to reshape spatial data</p></li>
+<li><p><strong>dense_squeezing_coeff</strong> (<em>int</em>) – Factor by which dense layer sizes are reduced</p></li>
+<li><p><strong>dense_repetition_coeff</strong> (<em>int</em>) – Number of dense layers of the same size to use</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Keras model implementing the RNN architecture to be compiled further.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Model</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="source.model.model_blue_prints.rnn_blue_print.RnnBluePrint.report_parameters_needed_for_instantiation">
+<span class="sig-name descname"><span class="pre">report_parameters_needed_for_instantiation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#source.model.model_blue_prints.rnn_blue_print.RnnBluePrint.report_parameters_needed_for_instantiation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reports the parameters needed for model instantiation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
