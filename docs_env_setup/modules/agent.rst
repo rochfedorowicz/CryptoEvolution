@@ -16,7 +16,22 @@ Agent Module
    :undoc-members:
    :show-inheritance:
 
+.. automodule:: source.agent.agents.performance_testable_classification_learning_agent
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 .. automodule:: source.agent.agents.reinforcement_learning_agent
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: source.agent.agents.simple_trading_algorithm
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: source.agent.agents.trading_algorithm_base
    :members:
    :undoc-members:
    :show-inheritance:

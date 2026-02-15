@@ -45,3 +45,8 @@ Environment Module
    :members:
    :undoc-members:
    :show-inheritance:
+
+.. automodule:: source.environment.volatility_included_simple_label_annotator
+   :members:
+   :undoc-members:
+   :show-inheritance:

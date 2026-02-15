@@ -21,7 +21,17 @@ Model Module
    :undoc-members:
    :show-inheritance:
 
+.. automodule:: source.model.model_blue_prints.dnn_blue_print
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 .. automodule:: source.model.model_blue_prints.general_sklearn_blue_print
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: source.model.model_blue_prints.rnn_blue_print
    :members:
    :undoc-members:
    :show-inheritance:
