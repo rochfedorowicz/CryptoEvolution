@@ -5,7 +5,12 @@
 
 import os
 import sys
+
 sys.path.insert(0, os.path.abspath('..'))
+# For CI: source might be in the editable install location
+editable_install_path = os.path.abspath('../src/cryptoevolutionpackage')
+if os.path.exists(editable_install_path):
+    sys.path.insert(0, editable_install_path)
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
