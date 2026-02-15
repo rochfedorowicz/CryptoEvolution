@@ -55,7 +55,7 @@ class ModelAdapterBase(ABC):
         Parameters:
             input_data (Any): The input data for fitting the model.
             output_data (Any): The output data for fitting the model.
-            (**kwargs): Additional keyword arguments for fitting the model.
+            **kwargs: Additional keyword arguments for fitting the model.
 
         Returns:
             (Any): The result of the fitting process, which may vary depending on the model.

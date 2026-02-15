@@ -110,7 +110,7 @@ class TFModelAdapter(ModelAdapterBase):
             epochs (int): The number of epochs to train the model.
             batch_size (int): The batch size to use for training.
             callbacks (list[Callback]): The list of callbacks to use during training.
-            (**kwargs): Additional keyword arguments for fitting the model.
+            **kwargs: Additional keyword arguments for fitting the model.
 
         Returns:
             (dict): A dictionary containing the results of the fitting process.

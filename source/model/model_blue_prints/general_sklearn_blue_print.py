@@ -21,7 +21,7 @@ class GeneralSklearnBluePrint(BluePrintBase):
 
         Parameters:
             base_estimator_class (type): The base estimator class to use for model instantiation.
-            (**kwargs): Optional keyword arguments for the model.
+            **kwargs: Optional keyword arguments for the model.
         """
 
         if not issubclass(base_estimator_class, BaseEstimator):
@@ -41,7 +41,7 @@ class GeneralSklearnBluePrint(BluePrintBase):
         Instantiates a model based on the provided keyword arguments.
 
         Parameters:
-            (**kwargs): Optional keyword arguments for the model.
+            **kwargs: Optional keyword arguments for the model.
 
         Returns:
             (ModelAdapterBase): The model adapter for the instantiated model.

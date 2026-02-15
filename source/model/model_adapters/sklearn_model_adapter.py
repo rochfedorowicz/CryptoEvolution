@@ -102,7 +102,7 @@ class SklearnModelAdapter(ModelAdapterBase):
             input_data (Any): The input data for fitting the model.
             output_data (Any): The output data for fitting the model.
             validation_data (Any): The validation data for evaluating the model.
-            (**kwargs): Additional keyword arguments for fitting the model.
+            **kwargs: Additional keyword arguments for fitting the model.
 
         Returns:
             (dict): A dictionary containing the results of the fitting process.

@@ -19,7 +19,7 @@ class BluePrintBase(ABC):
         Instantiates a model based on the provided keyword arguments.
 
         Parameters:
-            (**kwargs): Keyword arguments containing the parameters needed for model instantiation.
+            **kwargs: Keyword arguments containing the parameters needed for model instantiation.
 
         Returns:
             (ModelAdapterBase): An instance of the model adapter.

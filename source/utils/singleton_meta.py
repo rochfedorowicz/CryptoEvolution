@@ -29,8 +29,8 @@ class SingletonMeta(type):
         Creates or returns the singleton instance of the class.
 
         Parameters:
-            (*args): Positional arguments for the class constructor
-            (**kwargs): Keyword arguments for the class constructor
+            *args: Positional arguments for the class constructor
+            **kwargs: Keyword arguments for the class constructor
 
         Returns:
             (Any): The singleton instance of the class.
