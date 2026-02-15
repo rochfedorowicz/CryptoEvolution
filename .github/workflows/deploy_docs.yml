@@ -54,10 +54,14 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install -e git+https://github.com/${{ github.repository }}.git@${{ env.SHA }}#egg=CryptoEvolutionPackage
+          pip freeze
+          echo "Checking if 'source' module can be imported..."
+          python -c "import importlib.util; print('EXISTS' if importlib.util.find_spec('source') else 'NOT FOUND')"
 
       - name: Generate documentation
         run: |
           cd gh-pages/
+          python -c "import importlib.util; print('EXISTS' if importlib.util.find_spec('source') else 'NOT FOUND')"
           make html
 
       - name: Add personalized index.html
