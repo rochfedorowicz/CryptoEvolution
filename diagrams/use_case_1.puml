@@ -1,0 +1,89 @@
+@startuml
+
+skinparam {
+  defaultFontName Courier
+  defaultFontSize 16
+
+  sequence {
+    ArrowFontSize 12
+    GroupHeaderFontSize 12
+    GroupFontSize 12
+  }
+
+  actor {
+    FontSize 14
+    FontStyle bold
+    FontColor black
+  }
+
+  participant {
+    FontSize 14
+    FontStyle bold
+    FontColor black
+  }
+
+  note {
+    FontSize 12
+    FontStyle italic
+    FontColor black
+  }
+
+}
+
+actor User as user
+box "<<Platform>> GitHub" #LightSteelBlue
+  participant "<<Service>> GitHub Actions" as githubactions #Ivory
+  participant "Runtime environment" as environment #F0E68C
+end box
+box "<<Platform>> AWS" #LightCoral
+  participant "<<Service>> S3" as S3 #Ivory
+end box
+
+user -> githubactions : Start automated use case\n"Data preparation"
+
+activate githubactions
+
+githubactions --> environment ** : Create runtime environment
+
+githubactions -> environment : Prepare data for:\n\
+   * trading symbol or file path,\n\
+   * range,\n\
+   * granularity,\n\
+   * list of indicators
+
+deactivate githubactions
+
+activate environment
+
+alt #white if trading symbol is provided
+
+note over environment : Fetch data
+
+end alt
+
+note over environment : Process data to expected format
+
+alt #white if indicators are provided
+
+note over environment : Extend data with indicators from list
+
+end alt
+
+alt #white if data preparation succeeded
+
+environment --> S3 : Upload created dataset
+
+end alt
+
+environment -> githubactions : Task completed
+
+deactivate environment
+
+activate githubactions
+
+githubactions --> environment !! : Delete runtime environment
+
+githubactions -> user: Notify about completion
+
+deactivate githubactions
+@enduml

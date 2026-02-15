@@ -5,15 +5,19 @@
 
 import os
 import sys
-sys.path.insert(0, os.path.abspath('..'))
+try:
+    import source
+except ImportError:
+    # Fallback for local development
+    sys.path.insert(0, os.path.abspath('..'))
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'Crypto Evolution'
-copyright = '2024-2025, Roch Fedorowicz'
+copyright = '2024-2026, Roch Fedorowicz'
 author = 'Roch Fedorowicz'
-release = '0.1'
+release = '1.0'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration

@@ -1,0 +1,109 @@
+@startuml
+
+skinparam {
+  defaultFontName Courier
+  defaultFontSize 16
+
+  sequence {
+    ArrowFontSize 12
+    GroupHeaderFontSize 12
+    GroupFontSize 12
+  }
+
+  actor {
+    FontSize 14
+    FontStyle bold
+    FontColor black
+  }
+
+  participant {
+    FontSize 14
+    FontStyle bold
+    FontColor black
+  }
+
+  note {
+    FontSize 12
+    FontStyle italic
+    FontColor black
+  }
+
+}
+
+actor User as user
+box "<<Platform>> GitHub" #LightSteelBlue
+  participant "<<Service>> GitHub Actions" as githubactions #Ivory
+  participant "Runtime environment" as environment #F0E68C
+end box
+box "<<Platform>> Paperspace" #LightYellow
+  participant "<<Service>> Gradient" as gradient #Ivory
+  participant "Runtime environment" as notebook #F0E68C
+end box
+box "<<Platform>> AWS" #LightCoral
+  participant "<<Service>> S3" as S3 #Ivory
+end box
+
+user -> githubactions : Start automated\nuse case\n"Experiment execution"
+
+activate githubactions
+
+githubactions --> environment ** : Create runtime\nenvironment
+
+githubactions -> environment : Initialize experiment\nusing:\n\
+   * configuration file,\n\
+   * computational power
+
+deactivate githubactions
+
+activate environment
+
+environment --> gradient : Request creation of runtime\nenvironment and\nexperiment execution
+
+gradient --> notebook ** : Create runtime\nenvironment with\nrequired computational\npower
+
+environment -> githubactions : Task completed
+
+deactivate environment
+
+activate githubactions
+
+githubactions --> environment !! : Delete runtime environment
+
+deactivate environment
+
+githubactions -> user : Notify about experiment\ninitialization
+
+deactivate githubactions
+
+gradient -> notebook : Start experiment for\nconfiguration file
+
+activate notebook
+
+notebook --> S3 : Fetch data file and\nconfiguration file
+
+S3 --> notebook
+
+alt #white if classification
+
+note over notebook : Label data
+
+end alt
+
+note over notebook : Normalize data
+
+note over notebook : Conduct learning process
+
+note over notebook : Conduct testing process
+
+note over notebook : Generate report
+
+alt #white if experiment succeeded
+
+notebook --> S3 : Upload report
+
+end alt
+
+notebook --> notebook !! : Delete runtime\nenvironment
+
+deactivate notebook
+@enduml

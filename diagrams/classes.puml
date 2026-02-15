@@ -1,0 +1,163 @@
+@startuml
+
+skinparam {
+
+  defaultFontName Courier
+  defaultFontSize 14
+
+  class {
+    FontStyle bold
+    FontColor black
+    ArrowThickness 1.5
+    ArrowFontSize 20
+  }
+
+  note {
+    FontSize 14
+    FontStyle italic
+    FontColor black
+  }
+
+}
+
+namespace training {
+   class TrainingHandler {
+      Class managing the course
+      of the training process
+   }
+}
+
+namespace agent {
+   class AgentHandler {
+      Class simplifying the management
+      of algorithms and machine learning models
+   }
+
+   AgentHandler "1" -down-* "1" TrainingHandler
+
+   namespace agents {
+      abstract class AgentBase {
+         Abstract class defining requirements
+         for classes implementing models
+         consistent with a specific
+         learning approach
+      }
+      class ClassificationLearningAgent {
+         Class implementing an agent
+         solvable and testable based
+         on classification problem
+      }
+      class ReinforcementLearningAgent {
+         Class implementing an agent
+         solvable and testable based
+         on simulated trading environment
+      }
+      class PerformanceTestableClassificationLearningAgent {
+         Class implementing an agent solvable
+         and testable based on classification problem,
+         additionally testable based on
+         simulated trading environment
+      }
+
+      AgentBase "1" --* "1" AgentHandler
+      ClassificationLearningAgent .down.|> AgentBase
+      ReinforcementLearningAgent .up.|> AgentBase
+      PerformanceTestableClassificationLearningAgent --|> ClassificationLearningAgent
+   }
+
+   namespace strategies {
+      abstract class LearningStrategyHandlerBase {
+         Abstract class defining requirements
+         for classes implementing a specific
+         learning approach
+      }
+      abstract class TestingStrategyHandlerBase {
+         Abstract class defining requirements
+         for classes implementing a specific
+         testing approach
+      }
+      class ClassificationLearningStrategyHandler {
+         Class implementing the learning process
+         based on modeling algorithmic trading
+         as a trend change classification task
+      }
+      class ReinforcementLearningStrategyHandler {
+         Class implementing the learning process
+         based on modeling algorithmic trading
+         directly in a simulated environment
+      }
+      class ClassificationTestingStrategyHandler {
+         Class implementing testing based
+         on modeling algorithmic trading
+         as a trend change classification task
+      }
+      class PerformanceTestingStrategyHandler {
+         Class implementing testing based
+         on modeling algorithmic trading
+         directly in a simulated environment
+      }
+
+      LearningStrategyHandlerBase "1" --* "1" AgentHandler
+      TestingStrategyHandlerBase "0..*" --* "1" AgentHandler
+      ClassificationLearningStrategyHandler .down.|> LearningStrategyHandlerBase
+      ReinforcementLearningStrategyHandler .up.|> LearningStrategyHandlerBase
+      ClassificationTestingStrategyHandler .down.|> TestingStrategyHandlerBase
+      PerformanceTestingStrategyHandler .up.|> TestingStrategyHandlerBase
+   }
+
+   note "Consistent in terms of\nreinforcement learning process" as N1
+   ReinforcementLearningStrategyHandler .. N1
+   N1 .. ReinforcementLearningAgent
+
+   note "Consistent in terms of supervised\nlearning process (classification)" as N2
+   ClassificationLearningStrategyHandler .. N2
+   N2 .. ClassificationLearningAgent
+   N2 .. PerformanceTestableClassificationLearningAgent
+
+   note "Consistent in terms of testing\nbased on financial market realities" as N3
+   PerformanceTestingStrategyHandler .. N3
+   N3 .. ReinforcementLearningAgent
+   N3 .. PerformanceTestableClassificationLearningAgent
+
+   note "Consistent in terms of\nclassification testing" as N4
+   ClassificationTestingStrategyHandler .left. N4
+   N4 .down. ClassificationLearningAgent
+   N4 .down. PerformanceTestableClassificationLearningAgent
+}
+
+namespace plotting {
+   abstract class PlotResponsibilityChainBase {
+      Abstract class defining requirements
+      for classes generating plots based
+      on data collected during
+      the training process
+   }
+   class AssetPriceMovementSummaryPlotResponsibilityChain {
+      Class implementing plot generation
+      to summarize asset price changes
+   }
+   class ClassificationTrainingPlotResponsibilityChain {
+      Class implementing plot generation
+      to summarize the learning process
+      for classification
+   }
+
+   PlotResponsibilityChainBase "0..*" -up-* "1" TrainingHandler
+   AssetPriceMovementSummaryPlotResponsibilityChain .left.|> PlotResponsibilityChainBase
+   ClassificationTrainingPlotResponsibilityChain .left.|> PlotResponsibilityChainBase
+}
+
+   note "More implementations exist\nrelated to specific\nplot types" as N5
+   AssetPriceMovementSummaryPlotResponsibilityChain .right. N5
+   N5 .down. ClassificationTrainingPlotResponsibilityChain
+
+namespace environment {
+   class TradingEnvironment  {
+      Class implementing an environment
+      simulating the stock market
+   }
+
+   TradingEnvironment "1" -up-* "1" AgentHandler
+}
+
+@enduml
