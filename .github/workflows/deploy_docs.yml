@@ -55,9 +55,6 @@ jobs:
           pip install -r requirements.txt
           pip install -e git+https://github.com/${{ github.repository }}.git@${{ env.SHA }}#egg=CryptoEvolutionPackage
 
-      - name: Set PYTHONPATH
-        run: echo "PYTHONPATH=gh-pages" >> $GITHUB_ENV
-
       - name: Generate documentation
         run: |
           cd gh-pages/
