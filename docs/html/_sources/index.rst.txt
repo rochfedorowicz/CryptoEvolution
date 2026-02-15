@@ -6,13 +6,10 @@ Welcome to CryptoEvolution's documentation!
    :caption: Contents:
 
    modules/agent
-   modules/aws
-   modules/coinbase
    modules/data_handling
    modules/environment
    modules/indicators
    modules/model
-   modules/paperspace
    modules/plotting
    modules/training
    modules/utils
