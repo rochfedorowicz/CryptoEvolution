@@ -61,8 +61,13 @@ jobs:
       - name: Generate documentation
         run: |
           cd gh-pages/
-          python -c "import importlib.util; print('EXISTS' if importlib.util.find_spec('source') else 'NOT FOUND')"
+          echo "===== Setting PYTHONPATH to include installed package ====="
+          export PYTHONPATH="${PYTHONPATH}:$(pwd)/src/cryptoevolutionpackage"
+          echo "PYTHONPATH: $PYTHONPATH"
+          python -c "import importlib.util; spec = importlib.util.find_spec('source'); print('source found at:', spec.origin if spec else 'NOT FOUND')"
           make html
+        env:
+          PYTHONPATH: '${{ github.workspace }}/gh-pages/src/cryptoevolutionpackage'
 
       - name: Add personalized index.html
         run: |
