@@ -1,0 +1,137 @@
+@startuml
+
+skinparam {
+
+  defaultFontName Courier
+
+  component {
+    FontSize 20
+    FontStyle bold
+    FontColor black
+  }
+
+  frame {
+    FontSize 18
+    FontStyle bold
+    FontColor black
+  }
+
+  database {
+    FontSize 14
+    FontStyle italic
+    FontColor black
+  }
+
+  interface {
+    FontSize 18
+    FontStyle bold
+    FontColor black
+  }
+
+  node {
+    FontSize 14
+    FontStyle italic
+    FontColor black
+  }
+
+  card {
+    FontSize 14
+    FontStyle italic
+    FontColor black
+  }
+
+  artifact {
+    FontSize 14
+    FontStyle italic
+    FontColor black
+  }
+
+  file {
+    FontSize 12
+    FontStyle italic
+    FontColor black
+  }
+
+}
+
+cloud {
+
+  component github as "<<Platform>> GitHub" #LightSteelBlue {
+    frame github_actions as "<<Service>> GitHub Actions" #Ivory {
+      node env as "Runtime environment" #line.dotted {
+        card n1 as "//Created on demand//" #F0E68C;line:black;text:black
+      }
+    }
+    frame github_pages as "<<Service>> GitHub Pages" #Ivory {
+      database webpage as "Interactive documentation" {
+        file f7 as "*.html"
+        file f8 as "..."
+      }
+    }
+    frame github_repos as "<<Service>> GitHub Repos" #Ivory {
+      database codebase as "Source code repository" {
+        file f9 as "*.py"
+        file f10 as "..."
+      }
+    }
+
+    interface doc as "Documentation\ngeneration"
+    github_repos #~down~( doc
+    github_pages #~down~( doc
+    github_actions #~up~( doc
+
+    interface int as "CI/CD &\ntesting"
+    github_repos #~down~( int
+    github_actions #~up~( int
+
+    github_actions -[hidden]up-> github_pages
+    github_pages -[hidden]down-> github_actions
+    github_actions -[hidden]up-> github_repos
+    github_repos -[hidden]down-> github_actions
+  }
+
+  component aws as "<<Platform>> AWS" #LightCoral {
+    frame s3 as "<<Service>> S3" #Ivory {
+      database bucket as "Data storage for datasets,\nconfigurations, and reports" {
+        artifact reports as "Reports" {
+          file f1 as "*.pdf"
+          file f2 as "..."
+        }
+        artifact datasets as "Stock market data" {
+          file f3 as "*.csv"
+          file f4 as "..."
+        }
+        artifact configs as "Configuration files" {
+          file f5 as "*.json"
+          file f6 as "..."
+        }
+
+        configs -[hidden]d-> datasets
+        reports -[hidden]d-> datasets
+      }
+    }
+  }
+
+  component paperspace as "<<Platform>> Paperspace" #LightYellow {
+    frame gradient as "<<Service>> Gradient" #Ivory {
+      node env2 as "Runtime environment" #line.dotted {
+        card n2 as "//Created on demand//" #F0E68C;line:black;text:black
+      }
+    }
+  }
+
+  interface dat as "Dataset\npreparation"
+  s3 #~up~( dat
+  github_actions #~down~( dat
+
+  interface exp as "Experiment\nexecution"
+  s3 #~up~( exp
+  gradient #~down~( exp
+  github_actions #~~( exp
+
+  github -[hidden]down-> paperspace
+  paperspace -[hidden]up-> github
+  paperspace -[hidden]down-> aws
+  aws -[hidden]up-> paperspace
+}
+@enduml
