@@ -16,7 +16,7 @@ Model Module
    :undoc-members:
    :show-inheritance:
 
-.. automodule:: source.model.model_blue_prints.base_blue_print
+.. automodule:: source.model.model_blue_prints.blue_print_base
    :members:
    :undoc-members:
    :show-inheritance:

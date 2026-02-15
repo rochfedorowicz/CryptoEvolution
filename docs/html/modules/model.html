@@ -104,8 +104,7 @@ saving, printing summaries, fitting, predicting, and retrieving the model.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>input_data</strong> (<em>Any</em>) – The input data for fitting the model.</p></li>
 <li><p><strong>output_data</strong> (<em>Any</em>) – The output data for fitting the model.</p></li>
-<li><p><strong>(</strong><strong>**kwargs</strong><strong>)</strong> – <p>Additional keyword arguments for fitting the model.</p>
-</p></li>
+<li><p><strong>**kwargs</strong> – Additional keyword arguments for fitting the model.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -219,8 +218,7 @@ saving, printing summaries, fitting, predicting, and retrieving the model.</p>
 <li><p><strong>input_data</strong> (<em>Any</em>) – The input data for fitting the model.</p></li>
 <li><p><strong>output_data</strong> (<em>Any</em>) – The output data for fitting the model.</p></li>
 <li><p><strong>validation_data</strong> (<em>Any</em>) – The validation data for evaluating the model.</p></li>
-<li><p><strong>(</strong><strong>**kwargs</strong><strong>)</strong> – <p>Additional keyword arguments for fitting the model.</p>
-</p></li>
+<li><p><strong>**kwargs</strong> – Additional keyword arguments for fitting the model.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -346,8 +344,7 @@ saving, printing summaries, fitting, predicting, and retrieving the model.</p>
 <li><p><strong>epochs</strong> (<em>int</em>) – The number of epochs to train the model.</p></li>
 <li><p><strong>batch_size</strong> (<em>int</em>) – The batch size to use for training.</p></li>
 <li><p><strong>callbacks</strong> (<em>list</em><em>[</em><em>Callback</em><em>]</em>) – The list of callbacks to use during training.</p></li>
-<li><p><strong>(</strong><strong>**kwargs</strong><strong>)</strong> – <p>Additional keyword arguments for fitting the model.</p>
-</p></li>
+<li><p><strong>**kwargs</strong> – Additional keyword arguments for fitting the model.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -439,10 +436,49 @@ saving, printing summaries, fitting, predicting, and retrieving the model.</p>
 
 </dd></dl>
 
+<span class="target" id="module-source.model.model_blue_prints.blue_print_base"></span><dl class="py class">
+<dt class="sig sig-object py" id="source.model.model_blue_prints.blue_print_base.BluePrintBase">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">BluePrintBase</span></span><a class="headerlink" href="#source.model.model_blue_prints.blue_print_base.BluePrintBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<p>Implements a base class for model blueprints. It provides an interface for
+instantiating models and reporting parameters needed for instantiation.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="source.model.model_blue_prints.blue_print_base.BluePrintBase.instantiate_model">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">instantiate_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#source.model.model_adapters.model_adapter_base.ModelAdapterBase" title="source.model.model_adapters.model_adapter_base.ModelAdapterBase"><span class="pre">ModelAdapterBase</span></a></span></span><a class="headerlink" href="#source.model.model_blue_prints.blue_print_base.BluePrintBase.instantiate_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instantiates a model based on the provided keyword arguments.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>**kwargs</strong> – Keyword arguments containing the parameters needed for model instantiation.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An instance of the model adapter.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(<a class="reference internal" href="#source.model.model_adapters.model_adapter_base.ModelAdapterBase" title="source.model.model_adapters.model_adapter_base.ModelAdapterBase">ModelAdapterBase</a>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="source.model.model_blue_prints.blue_print_base.BluePrintBase.report_parameters_needed_for_instantiation">
+<span class="sig-name descname"><span class="pre">report_parameters_needed_for_instantiation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#source.model.model_blue_prints.blue_print_base.BluePrintBase.report_parameters_needed_for_instantiation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reports the parameters needed for model instantiation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A list of parameter names that are required for instantiation.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>(list[str])</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 <span class="target" id="module-source.model.model_blue_prints.dnn_blue_print"></span><dl class="py class">
 <dt class="sig sig-object py" id="source.model.model_blue_prints.dnn_blue_print.DnnBluePrint">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DnnBluePrint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dense_squeezing_coeff</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dense_repetition_coeff</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.model.model_blue_prints.dnn_blue_print.DnnBluePrint" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BluePrintBase</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="#source.model.model_blue_prints.blue_print_base.BluePrintBase" title="source.model.model_blue_prints.blue_print_base.BluePrintBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">BluePrintBase</span></code></a></p>
 <p>Blueprint for creating a DNN.</p>
 <p>This class implements a model blueprint that constructs a neural network using
 fully connected (dense) layers. Expected input is a 1D vector of features.</p>
@@ -490,7 +526,7 @@ fully connected (dense) layers. Expected input is a 1D vector of features.</p>
 <span class="target" id="module-source.model.model_blue_prints.general_sklearn_blue_print"></span><dl class="py class">
 <dt class="sig sig-object py" id="source.model.model_blue_prints.general_sklearn_blue_print.GeneralSklearnBluePrint">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">GeneralSklearnBluePrint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_estimator_class</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">type</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.model.model_blue_prints.general_sklearn_blue_print.GeneralSklearnBluePrint" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BluePrintBase</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="#source.model.model_blue_prints.blue_print_base.BluePrintBase" title="source.model.model_blue_prints.blue_print_base.BluePrintBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">BluePrintBase</span></code></a></p>
 <p>Implements a general blueprint for scikit-learn models. It provides a method to instantiate
 a model based on the provided base estimator class and keyword arguments.</p>
 <dl class="py method">
@@ -499,8 +535,7 @@ a model based on the provided base estimator class and keyword arguments.</p>
 <dd><p>Instantiates a model based on the provided keyword arguments.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>(</strong><strong>**kwargs</strong><strong>)</strong> – <p>Optional keyword arguments for the model.</p>
-</p>
+<dd class="field-odd"><p><strong>**kwargs</strong> – Optional keyword arguments for the model.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The model adapter for the instantiated model.</p>
@@ -530,7 +565,7 @@ a model based on the provided base estimator class and keyword arguments.</p>
 <span class="target" id="module-source.model.model_blue_prints.rnn_blue_print"></span><dl class="py class">
 <dt class="sig sig-object py" id="source.model.model_blue_prints.rnn_blue_print.RnnBluePrint">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RnnBluePrint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dense_squeezing_coeff</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dense_repetition_coeff</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.model.model_blue_prints.rnn_blue_print.RnnBluePrint" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BluePrintBase</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="#source.model.model_blue_prints.blue_print_base.BluePrintBase" title="source.model.model_blue_prints.blue_print_base.BluePrintBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">BluePrintBase</span></code></a></p>
 <p>Blueprint for creating an RNN model.</p>
 <p>This class implements a model blueprint that constructs a recurrent neural network
 (RNN) using LSTM layers. It’s designed to process sequential data with temporal
@@ -583,7 +618,7 @@ dependencies.</p>
 <span class="target" id="module-source.model.model_blue_prints.vggception_cnn_blue_print"></span><dl class="py class">
 <dt class="sig sig-object py" id="source.model.model_blue_prints.vggception_cnn_blue_print.VGGceptionCnnBluePrint">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">VGGceptionCnnBluePrint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">number_of_filters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cnn_squeezing_coeff</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dense_squeezing_coeff</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dense_repetition_coeff</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filters_number_coeff</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">should_apply_2d_convolution</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#source.model.model_blue_prints.vggception_cnn_blue_print.VGGceptionCnnBluePrint" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BluePrintBase</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="#source.model.model_blue_prints.blue_print_base.BluePrintBase" title="source.model.model_blue_prints.blue_print_base.BluePrintBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">BluePrintBase</span></code></a></p>
 <p>Blueprint for creating a hybrid CNN architecture combining VGG and Xception patterns.</p>
 <p>This class implements a model blueprint that constructs a neural network with a
 combined architecture inspired by VGG16 and Xception networks. It’s designed to
